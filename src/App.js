@@ -179,13 +179,13 @@ class App extends Component {
               const keys = keyRows[rowIndex];
 
               return (
-                <div>
+                <div style={{ marginLeft: 20 * (keyRows.length - rowIndex - 1) }} key={rowIndex}>
                   {
                     keys.split('').map((keyLabel) => {
                       const note = getNoteFromKey(keyLabel);
                       return (
                         <button
-                          className="btn"
+                          className="btn btn-key"
                           key={note}
                           onClick={this.onClick.bind(this, note)}
                         >
