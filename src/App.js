@@ -8,15 +8,38 @@ function getFrequency(note) {
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
 
-  onClick(note) {
-    var context = new window.AudioContext();
+    this.ctx = new window.AudioContext();
+    this.nodes = {};
 
-    var oscillator = context.createOscillator();
+    this.startNote = this.startNote.bind(this);
+    this.stopNote = this.stopNote.bind(this);
+  }
+
+  startNote(note) {
+    var oscillator = this.ctx.createOscillator();
     oscillator.type = 'square';
     oscillator.frequency.value = getFrequency(note);
-    oscillator.connect(context.destination);
+    oscillator.connect(this.ctx.destination);
     oscillator.start(0);
+
+    this.nodes[note] = oscillator;
+  }
+
+  stopNote(note) {
+    this.nodes[note].stop(0);
+    this.nodes[note].disconnect();
+    this.nodes[note] = null;
+  }
+
+  onClick(note) {
+    if (this.nodes[note]) {
+      this.stopNote(note);
+    } else {
+      this.startNote(note);
+    }
   }
 
   render() {
