@@ -190,7 +190,7 @@ class App extends Component {
                           onClick={this.onClick.bind(this, note)}
                         >
                           {note}<br />
-                          {keyLabel}
+                          <small className="text-muted">{keyLabel}</small>
                         </button>
                       );
                     })
