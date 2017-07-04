@@ -73,7 +73,6 @@ class App extends Component {
   }
 
   onKeyDown(key) {
-    console.log(key);
     const note = getNoteFromKey(key);
     if (note !== null) {
       this.startNote(note);
