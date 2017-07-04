@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import './App.css';
 
-const keySequence = `zxcvbnm,./asdfghjkl;'qwertyuiop[]1234567890-=`;
+// this skips some keys to keep each row as 10 keys, for better mathing
+const keySequence = `zxcvbnm,./asdfghjkl;qwertyuiop1234567890`;
 
 // note - number of half steps up from A440
 function getFrequency(note, stepsPerOctave) {
   return 440 * Math.pow(2, note * (1 / stepsPerOctave));
 }
 
+// TODO: support division of more than 1 octave
+// TODO: add keyboard map UI and show key presses
 // TODO: volume control
+// TODO: separate audio stuff into another file, separate from component
+// TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
 class App extends Component {
   constructor(props) {
     super(props);
