@@ -4,6 +4,7 @@ import './App.css';
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
+const ROOT_FREQUENCY = 55;
 
 // TODO: be able to configure 1-10 keys per row?
 const keyRows = [
@@ -14,15 +15,14 @@ const keyRows = [
 ];
 const keySequence = keyRows.join('');
 
-// note - number of half steps up from A440
-function getFrequency(note, numOctaves, numSteps) {
-  return 440 * Math.pow(2, note * (numOctaves / numSteps));
+function getFrequency(rootFrequency, note, numOctaves, numSteps) {
+  return rootFrequency * Math.pow(2, note * (numOctaves / numSteps));
 }
 
 function getNoteFromKey(key) {
   const offset = keySequence.indexOf(key);
   if (offset !== -1) {
-    return offset - 20; // TODO: configurable note offset
+    return offset; // TODO: configurable note offset
   }
   return null;
 }
@@ -93,7 +93,7 @@ class App extends Component {
 
     let oscillator = this.audioContext.createOscillator();
     oscillator.type = 'square';
-    oscillator.frequency.value = getFrequency(note, this.state.numOctaves, this.state.numSteps);
+    oscillator.frequency.value = getFrequency(ROOT_FREQUENCY, note, this.state.numOctaves, this.state.numSteps);
     oscillator.connect(this.gainNode);
     oscillator.start(0);
 
