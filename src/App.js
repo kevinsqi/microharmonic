@@ -7,6 +7,7 @@ function getFrequency(note, stepsPerOctave) {
   return 440 * Math.pow(2, note * (1 / stepsPerOctave));
 }
 
+// TODO: volume control
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,10 +18,11 @@ class App extends Component {
     };
 
     this.ctx = new window.AudioContext();
-    this.nodes = {};
+    this.notes = {};
 
     this.onChangeStepsPerOctave = this.onChangeStepsPerOctave.bind(this);
     this.startNote = this.startNote.bind(this);
+    this.stopAllNotes = this.stopAllNotes.bind(this);
     this.stopNote = this.stopNote.bind(this);
   }
 
@@ -33,17 +35,23 @@ class App extends Component {
 
     console.log('starting frequency: ', oscillator.frequency.value);
 
-    this.nodes[note] = oscillator;
+    this.notes[note] = oscillator;
+  }
+
+  stopAllNotes() {
+    Object.keys(this.notes).map((note) => {
+      this.notes[note].stop(0);
+      this.notes[note].disconnect();
+      delete this.notes[note];
+    });
   }
 
   stopNote(note) {
-    this.nodes[note].stop(0);
-    this.nodes[note].disconnect();
-    this.nodes[note] = null;
+    this.notes[note] = null;
   }
 
   onClick(note) {
-    if (this.nodes[note]) {
+    if (this.notes[note]) {
       this.stopNote(note);
     } else {
       this.startNote(note);
@@ -51,8 +59,11 @@ class App extends Component {
   }
 
   onChangeStepsPerOctave(event) {
+    console.log('onChangeStepsPerOctave', event.target.value);
+
+    this.stopAllNotes();
     this.setState({
-      stepsPerOctave: event.target.value,
+      stepsPerOctave: parseInt(event.target.value),
     });
   }
 
@@ -61,12 +72,19 @@ class App extends Component {
       <div>
         <select value={this.state.stepsPerOctave} onChange={this.onChangeStepsPerOctave}>
           {
-            _.range(24).map((index) => <option value={index} key={index}>{index}</option>)
+            _.range(50).map((index) => <option value={index} key={index}>{index}</option>)
           }
         </select>
-        <button onClick={this.onClick.bind(this, 0)}>C</button>
-        <button onClick={this.onClick.bind(this, 1)}>D</button>
-        <button onClick={this.onClick.bind(this, 2)}>E</button>
+
+        {
+          _.range(this.state.stepsPerOctave + 1).map((index) => {
+            return (
+              <button onClick={this.onClick.bind(this, index)} key={index}>{index}</button>
+            );
+          })
+        }
+
+        <button onClick={this.stopAllNotes}>Stop</button>
       </div>
     );
   }
