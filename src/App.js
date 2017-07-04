@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
 import './App.css';
 
 const MAX_NUM_STEPS = 100;
@@ -173,7 +174,7 @@ class App extends Component {
           Divide
           <select value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
             {
-              _.range(MAX_NUM_OCTAVES).map((index) => <option value={index} key={index}>{index} octave</option>)
+              _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
             }
           </select>
           into
@@ -197,7 +198,12 @@ class App extends Component {
                       const note = getNoteFromKey(keyLabel);
                       return (
                         <button
-                          className="btn btn-key"
+                          className={
+                            classNames('btn btn-key', {
+                              'btn-secondary': note % (this.state.numSteps / this.state.numOctaves) === 0,
+                              'btn-info': this.state.notes[note],
+                            })
+                          }
                           key={note}
                           onMouseDown={this.onKeyDown.bind(this, keyLabel)}
                           onMouseUp={this.onKeyUp.bind(this, keyLabel)}
