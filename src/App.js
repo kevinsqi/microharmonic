@@ -31,11 +31,11 @@ class App extends Component {
       stepsPerOctave: 12,
     };
 
-    this.ctx = new window.AudioContext();
+    this.audioContext = new window.AudioContext();
     this.notes = {};
-    this.gain = this.ctx.createGain();
-    this.gain.value = 0.1;
-    this.gain.connect(this.ctx.destination);
+    this.gainNode = this.audioContext.createGain();
+    this.gainNode.value = 0.01;
+    this.gainNode.connect(this.audioContext.destination);
 
     this.onChangeStepsPerOctave = this.onChangeStepsPerOctave.bind(this);
     this.startNote = this.startNote.bind(this);
@@ -66,10 +66,10 @@ class App extends Component {
       return;
     }
 
-    let oscillator = this.ctx.createOscillator();
+    let oscillator = this.audioContext.createOscillator();
     oscillator.type = 'square';
     oscillator.frequency.value = getFrequency(note, this.state.stepsPerOctave);
-    oscillator.connect(this.gain);
+    oscillator.connect(this.gainNode);
     oscillator.start(0);
 
     console.log('playing frequency: ', oscillator.frequency.value);
