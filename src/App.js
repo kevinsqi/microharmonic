@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import './App.css';
 
+const keySequence = `zxcvbnm,./asdfghjkl;'qwertyuiop[]1234567890-=`;
+
 // note - number of half steps up from A440
 function getFrequency(note, stepsPerOctave) {
   return 440 * Math.pow(2, note * (1 / stepsPerOctave));
@@ -26,14 +28,27 @@ class App extends Component {
     this.stopNote = this.stopNote.bind(this);
   }
 
+  componentDidMount() {
+    // TODO: unbind this on unmount
+
+    window.addEventListener('keydown', (event) => {
+      console.log('pressed key', event);
+
+      const offset = keySequence.indexOf(event.key);
+      if (offset !== -1) {
+        this.startNote(offset);
+      }
+    });
+  }
+
   startNote(note) {
-    var oscillator = this.ctx.createOscillator();
+    let oscillator = this.ctx.createOscillator();
     oscillator.type = 'square';
     oscillator.frequency.value = getFrequency(note, this.state.stepsPerOctave);
     oscillator.connect(this.ctx.destination);
     oscillator.start(0);
 
-    console.log('starting frequency: ', oscillator.frequency.value);
+    console.log('playing frequency: ', oscillator.frequency.value);
 
     this.notes[note] = oscillator;
   }
