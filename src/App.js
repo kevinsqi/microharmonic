@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import './App.css';
 
+// TODO: be able to configure 1-10 keys per row?
 // this skips some keys to keep each row as 10 keys, for better mathing
 const keySequence = `zxcvbnm,./asdfghjkl;qwertyuiop1234567890`;
 
@@ -29,6 +30,7 @@ class App extends Component {
     // TODO: have current active keys represented in state
     this.state = {
       stepsPerOctave: 12,
+      notes: {}, // TODO: use immutable.js
     };
 
     this.audioContext = new window.AudioContext();
@@ -50,6 +52,10 @@ class App extends Component {
       const note = getNoteFromKey(event.key);
       if (note !== null) {
         this.startNote(note);
+
+        this.setState({
+          notes: Object.assign({}, this.state.notes, { [note]: true }),
+        });
       }
     });
 
@@ -57,8 +63,16 @@ class App extends Component {
       const note = getNoteFromKey(event.key);
       if (note !== null) {
         this.stopNote(note);
+
+        this.setState({
+          notes: Object.assign({}, this.state.notes, { [note]: false }),
+        });
       }
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('state change', prevState, this.state);
   }
 
   startNote(note) {
@@ -120,7 +134,7 @@ class App extends Component {
         </select>
 
         {
-          _.range(this.state.stepsPerOctave + 1).map((index) => {
+          _.range(keySequence.length).map((index) => {
             return (
               <button
                 className="btn"
