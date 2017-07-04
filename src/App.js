@@ -189,7 +189,7 @@ class App extends Component {
                           key={note}
                           onClick={this.onClick.bind(this, note)}
                         >
-                          {note + 1}<br />
+                          {note}<br />
                           {keyLabel}
                         </button>
                       );
