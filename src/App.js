@@ -64,26 +64,35 @@ class App extends Component {
     // TODO: unbind this on unmount
 
     window.addEventListener('keydown', (event) => {
-      const note = getNoteFromKey(event.key);
-      if (note !== null) {
-        this.startNote(note);
-
-        this.setState({
-          notes: Object.assign({}, this.state.notes, { [note]: true }),
-        });
-      }
+      this.onKeyDown(event.key);
     });
 
     window.addEventListener('keyup', (event) => {
-      const note = getNoteFromKey(event.key);
-      if (note !== null) {
-        this.stopNote(note);
-
-        this.setState({
-          notes: Object.assign({}, this.state.notes, { [note]: false }),
-        });
-      }
+      this.onKeyUp(event.key);
     });
+  }
+
+  onKeyDown(key) {
+    console.log(key);
+    const note = getNoteFromKey(key);
+    if (note !== null) {
+      this.startNote(note);
+
+      this.setState({
+        notes: Object.assign({}, this.state.notes, { [note]: true }),
+      });
+    }
+  }
+
+  onKeyUp(key) {
+    const note = getNoteFromKey(key);
+    if (note !== null) {
+      this.stopNote(note);
+
+      this.setState({
+        notes: Object.assign({}, this.state.notes, { [note]: false }),
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -128,14 +137,6 @@ class App extends Component {
     this.notes[note].stop(0);
     this.notes[note].disconnect();
     delete this.notes[note];
-  }
-
-  onClick(note) {
-    if (this.notes[note]) {
-      this.stopNote(note);
-    } else {
-      this.startNote(note);
-    }
   }
 
   onChangeNumOctaves(event) {
@@ -199,10 +200,12 @@ class App extends Component {
                         <button
                           className="btn btn-key"
                           key={note}
-                          onClick={this.onClick.bind(this, note)}
+                          onMouseDown={this.onKeyDown.bind(this, keyLabel)}
+                          onMouseUp={this.onKeyUp.bind(this, keyLabel)}
+                          onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
                         >
                           {note}<br />
-                          <small>{this.getFrequencyRatioForNote(note).toFixed(2)}</small><br />
+                          <small>{this.getFrequencyRatioForNote(note).toFixed(3)}</small><br />
                           <small className="text-muted">{keyLabel}</small>
                         </button>
                       );
