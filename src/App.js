@@ -34,7 +34,7 @@ class App extends Component {
     this.audioContext = new window.AudioContext();
     this.notes = {};
     this.gainNode = this.audioContext.createGain();
-    this.gainNode.value = 0.01;
+    this.gainNode.gain.value = 0.2;
     this.gainNode.connect(this.audioContext.destination);
 
     this.onChangeStepsPerOctave = this.onChangeStepsPerOctave.bind(this);
@@ -48,14 +48,14 @@ class App extends Component {
 
     window.addEventListener('keydown', (event) => {
       const note = getNoteFromKey(event.key);
-      if (note) {
+      if (note !== null) {
         this.startNote(note);
       }
     });
 
     window.addEventListener('keyup', (event) => {
       const note = getNoteFromKey(event.key);
-      if (note) {
+      if (note !== null) {
         this.stopNote(note);
       }
     });
