@@ -3,8 +3,13 @@ import _ from 'lodash';
 import './App.css';
 
 // TODO: be able to configure 1-10 keys per row?
-// this skips some keys to keep each row as 10 keys, for better mathing
-const keySequence = `zxcvbnm,./asdfghjkl;qwertyuiop1234567890`;
+const keyRows = [
+  `zxcvbnm,./`,
+  `asdfghjkl;`,
+  `qwertyuiop`,
+  `1234567890`,
+];
+const keySequence = keyRows.join('');
 
 // note - number of half steps up from A440
 function getFrequency(note, stepsPerOctave) {
@@ -127,25 +132,41 @@ class App extends Component {
   render() {
     return (
       <div>
-        <select value={this.state.stepsPerOctave} onChange={this.onChangeStepsPerOctave}>
-          {
-            _.range(50).map((index) => <option value={index} key={index}>{index}</option>)
-          }
-        </select>
+        <div>
+          <select value={this.state.stepsPerOctave} onChange={this.onChangeStepsPerOctave}>
+            {
+              _.range(50).map((index) => <option value={index} key={index}>{index}</option>)
+            }
+          </select>
+        </div>
 
-        {
-          _.range(keySequence.length).map((index) => {
-            return (
-              <button
-                className="btn"
-                key={index}
-                onClick={this.onClick.bind(this, index)}
-              >
-                {index + 1}
-              </button>
-            );
-          })
-        }
+        <div>
+          {
+            _.range(keyRows.length - 1, -1, -1).map((rowIndex) => {
+              const keys = keyRows[rowIndex];
+
+              return (
+                <div>
+                  {
+                    keys.split('').map((keyLabel) => {
+                      const note = getNoteFromKey(keyLabel);
+                      return (
+                        <button
+                          className="btn"
+                          key={note}
+                          onClick={this.onClick.bind(this, note)}
+                        >
+                          {note + 1}<br />
+                          {keyLabel}
+                        </button>
+                      );
+                    })
+                  }
+                </div>
+              );
+            })
+          }
+        </div>
 
         <button onClick={this.stopAllNotes}>Stop</button>
       </div>
