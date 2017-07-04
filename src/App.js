@@ -44,6 +44,7 @@ class App extends Component {
     this.gainNode.gain.value = 0.2;
     this.gainNode.connect(this.audioContext.destination);
 
+    this.onChangeChord = this.onChangeChord.bind(this);
     this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
     this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
     this.startNote = this.startNote.bind(this);
@@ -78,7 +79,7 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('state change', prevState, this.state);
+    // TODO
   }
 
   startNote(note) {
@@ -135,17 +136,31 @@ class App extends Component {
     });
   }
 
+  // TODO: save chord in state
+  onChangeChord(event) {
+    this.stopAllNotes();
+    const notes = event.target.value.trim().split(' ').map((token) => {
+      return parseInt(token, 10);
+    }).filter((int) => !isNaN(int));
+    console.log(notes);
+
+    notes.forEach((note) => {
+      this.startNote(note);
+    });
+  }
+
   render() {
     return (
       <div>
-        <div>
+        <h1 className="mb-3">Microtoner</h1>
+        <div className="mb-3">
           Divide
           <select value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
             {
               _.range(10).map((index) => <option value={index} key={index}>{index} octave</option>)
             }
           </select>
-          by
+          into
           <select value={this.state.numSteps} onChange={this.onChangeNumSteps}>
             {
               _.range(50).map((index) => <option value={index} key={index}>{index} steps</option>)
@@ -154,6 +169,7 @@ class App extends Component {
         </div>
 
         <div>
+          <strong>Keyboard</strong>
           {
             _.range(keyRows.length - 1, -1, -1).map((rowIndex) => {
               const keys = keyRows[rowIndex];
@@ -179,6 +195,12 @@ class App extends Component {
               );
             })
           }
+        </div>
+
+        <div>
+          <strong>Chord builder</strong>
+
+          <input type="text" value={this.state.chord} onChange={this.onChangeChord} />
         </div>
 
         <button onClick={this.stopAllNotes}>Stop</button>
