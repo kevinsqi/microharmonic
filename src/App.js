@@ -15,8 +15,12 @@ const keyRows = [
 ];
 const keySequence = keyRows.join('');
 
+function getFrequencyRatio(note, numOctaves, numSteps) {
+  return Math.pow(2, note * (numOctaves / numSteps))
+}
+
 function getFrequency(rootFrequency, note, numOctaves, numSteps) {
-  return rootFrequency * Math.pow(2, note * (numOctaves / numSteps));
+  return rootFrequency * getFrequencyRatio(note, numOctaves, numSteps);
 }
 
 function getNoteFromKey(key) {
@@ -86,6 +90,14 @@ class App extends Component {
     // TODO
   }
 
+  getFrequencyForNote(note) {
+    return getFrequency(ROOT_FREQUENCY, note, this.state.numOctaves, this.state.numSteps);
+  }
+
+  getFrequencyRatioForNote(note) {
+    return getFrequencyRatio(note, this.state.numOctaves, this.state.numSteps);
+  }
+
   startNote(note) {
     if (this.notes[note]) {
       return;
@@ -93,7 +105,7 @@ class App extends Component {
 
     let oscillator = this.audioContext.createOscillator();
     oscillator.type = 'square';
-    oscillator.frequency.value = getFrequency(ROOT_FREQUENCY, note, this.state.numOctaves, this.state.numSteps);
+    oscillator.frequency.value = this.getFrequencyForNote(note);
     oscillator.connect(this.gainNode);
     oscillator.start(0);
 
@@ -190,6 +202,7 @@ class App extends Component {
                           onClick={this.onClick.bind(this, note)}
                         >
                           {note}<br />
+                          <small>{this.getFrequencyRatioForNote(note).toFixed(2)}</small><br />
                           <small className="text-muted">{keyLabel}</small>
                         </button>
                       );
