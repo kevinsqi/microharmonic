@@ -179,7 +179,7 @@ class App extends Component {
               const keys = keyRows[rowIndex];
 
               return (
-                <div style={{ marginLeft: 20 * (keyRows.length - rowIndex - 1) }} key={rowIndex}>
+                <div className={`keyrow-${rowIndex}`} key={rowIndex}>
                   {
                     keys.split('').map((keyLabel) => {
                       const note = getNoteFromKey(keyLabel);

@@ -2,3 +2,19 @@
   width: 50px;
   margin: 1px;
 }
+
+.keyrow-0 {
+  margin-left: 75px;
+}
+
+.keyrow-1 {
+  margin-left: 50px;
+}
+
+.keyrow-2 {
+  margin-left: 25px;
+}
+
+.keyrow-3 {
+  margin-left: 0px;
+}
