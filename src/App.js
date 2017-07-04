@@ -10,9 +10,16 @@ function getFrequency(note, stepsPerOctave) {
   return 440 * Math.pow(2, note * (1 / stepsPerOctave));
 }
 
+function getNoteFromKey(key) {
+  const offset = keySequence.indexOf(key);
+  if (offset !== -1) {
+    return offset - 20; // TODO: configurable note offset
+  }
+  return null;
+}
+
 // TODO: support division of more than 1 octave
 // TODO: add keyboard map UI and show key presses
-// TODO: volume control
 // TODO: separate audio stuff into another file, separate from component
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
 class App extends Component {
@@ -26,6 +33,9 @@ class App extends Component {
 
     this.ctx = new window.AudioContext();
     this.notes = {};
+    this.gain = this.ctx.createGain();
+    this.gain.value = 0.1;
+    this.gain.connect(this.ctx.destination);
 
     this.onChangeStepsPerOctave = this.onChangeStepsPerOctave.bind(this);
     this.startNote = this.startNote.bind(this);
@@ -37,16 +47,16 @@ class App extends Component {
     // TODO: unbind this on unmount
 
     window.addEventListener('keydown', (event) => {
-      const offset = keySequence.indexOf(event.key);
-      if (offset !== -1) {
-        this.startNote(offset);
+      const note = getNoteFromKey(event.key);
+      if (note) {
+        this.startNote(note);
       }
     });
 
     window.addEventListener('keyup', (event) => {
-      const offset = keySequence.indexOf(event.key);
-      if (offset !== -1) {
-        this.stopNote(offset);
+      const note = getNoteFromKey(event.key);
+      if (note) {
+        this.stopNote(note);
       }
     });
   }
@@ -59,7 +69,7 @@ class App extends Component {
     let oscillator = this.ctx.createOscillator();
     oscillator.type = 'square';
     oscillator.frequency.value = getFrequency(note, this.state.stepsPerOctave);
-    oscillator.connect(this.ctx.destination);
+    oscillator.connect(this.gain);
     oscillator.start(0);
 
     console.log('playing frequency: ', oscillator.frequency.value);
