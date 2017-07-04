@@ -32,16 +32,25 @@ class App extends Component {
     // TODO: unbind this on unmount
 
     window.addEventListener('keydown', (event) => {
-      console.log('pressed key', event);
-
       const offset = keySequence.indexOf(event.key);
       if (offset !== -1) {
         this.startNote(offset);
       }
     });
+
+    window.addEventListener('keyup', (event) => {
+      const offset = keySequence.indexOf(event.key);
+      if (offset !== -1) {
+        this.stopNote(offset);
+      }
+    });
   }
 
   startNote(note) {
+    if (this.notes[note]) {
+      return;
+    }
+
     let oscillator = this.ctx.createOscillator();
     oscillator.type = 'square';
     oscillator.frequency.value = getFrequency(note, this.state.stepsPerOctave);
@@ -60,6 +69,10 @@ class App extends Component {
   }
 
   stopNote(note) {
+    if (!this.notes[note]) {
+      return;
+    }
+
     this.notes[note].stop(0);
     this.notes[note].disconnect();
     delete this.notes[note];
