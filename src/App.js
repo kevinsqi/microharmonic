@@ -122,7 +122,13 @@ class App extends Component {
         {
           _.range(this.state.stepsPerOctave + 1).map((index) => {
             return (
-              <button onClick={this.onClick.bind(this, index)} key={index}>{index + 1}</button>
+              <button
+                className="btn"
+                key={index}
+                onClick={this.onClick.bind(this, index)}
+              >
+                {index + 1}
+              </button>
             );
           })
         }
