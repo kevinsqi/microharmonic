@@ -40,14 +40,14 @@ class App extends Component {
 
   stopAllNotes() {
     Object.keys(this.notes).map((note) => {
-      this.notes[note].stop(0);
-      this.notes[note].disconnect();
-      delete this.notes[note];
+      this.stopNote(note);
     });
   }
 
   stopNote(note) {
-    this.notes[note] = null;
+    this.notes[note].stop(0);
+    this.notes[note].disconnect();
+    delete this.notes[note];
   }
 
   onClick(note) {
