@@ -98,7 +98,7 @@ class App extends Component {
   }
 
   stopAllNotes() {
-    Object.keys(this.notes).map((note) => {
+    Object.keys(this.notes).forEach((note) => {
       this.stopNote(note);
     });
   }
@@ -124,14 +124,14 @@ class App extends Component {
   onChangeNumOctaves(event) {
     this.stopAllNotes();
     this.setState({
-      numOctaves: parseInt(event.target.value),
+      numOctaves: parseInt(event.target.value, 10),
     });
   }
 
   onChangeNumSteps(event) {
     this.stopAllNotes();
     this.setState({
-      numSteps: parseInt(event.target.value),
+      numSteps: parseInt(event.target.value, 10),
     });
   }
 
