@@ -168,7 +168,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="m-3">
         <h1 className="mb-3">Microtoner</h1>
         <div className="mb-3">
           Divide
@@ -180,13 +180,14 @@ class App extends Component {
           into
           <select value={this.state.numSteps} onChange={this.onChangeNumSteps}>
             {
-              _.range(MAX_NUM_STEPS).map((index) => <option value={index} key={index}>{index} steps</option>)
+              _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
             }
           </select>
         </div>
 
         <div>
-          <strong>Keyboard</strong>
+          <h2 className="h4">Keyboard</h2>
+          <p>Octave notes are highlighted</p>
           {
             _.range(keyRows.length - 1, -1, -1).map((rowIndex) => {
               const keys = keyRows[rowIndex];
@@ -222,13 +223,13 @@ class App extends Component {
           }
         </div>
 
-        <div>
-          <strong>Chord builder</strong>
+        <div className="mt-3">
+          <h2 className="h4">Chord builder (experimental)</h2>
 
           <input type="text" value={this.state.chord} onChange={this.onChangeChord} />
+          <button onClick={this.stopAllNotes}>Stop chord</button>
         </div>
 
-        <button onClick={this.stopAllNotes}>Stop</button>
       </div>
     );
   }
