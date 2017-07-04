@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import './App.css';
 
+const MAX_NUM_STEPS = 100;
+const MAX_NUM_OCTAVES = 10;
+
 // TODO: be able to configure 1-10 keys per row?
 const keyRows = [
   `zxcvbnm,./`,
@@ -24,6 +27,7 @@ function getNoteFromKey(key) {
   return null;
 }
 
+// TODO: add filter/effect to be similar to sevish-droplet
 // TODO: add keyboard map UI and show key presses
 // TODO: separate audio stuff into another file, separate from component
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
@@ -41,7 +45,7 @@ class App extends Component {
     this.audioContext = new window.AudioContext();
     this.notes = {};
     this.gainNode = this.audioContext.createGain();
-    this.gainNode.gain.value = 0.2;
+    this.gainNode.gain.value = 0.05;
     this.gainNode.connect(this.audioContext.destination);
 
     this.onChangeChord = this.onChangeChord.bind(this);
@@ -157,13 +161,13 @@ class App extends Component {
           Divide
           <select value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
             {
-              _.range(10).map((index) => <option value={index} key={index}>{index} octave</option>)
+              _.range(MAX_NUM_OCTAVES).map((index) => <option value={index} key={index}>{index} octave</option>)
             }
           </select>
           into
           <select value={this.state.numSteps} onChange={this.onChangeNumSteps}>
             {
-              _.range(50).map((index) => <option value={index} key={index}>{index} steps</option>)
+              _.range(MAX_NUM_STEPS).map((index) => <option value={index} key={index}>{index} steps</option>)
             }
           </select>
         </div>
