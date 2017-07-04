@@ -12,8 +12,8 @@ const keyRows = [
 const keySequence = keyRows.join('');
 
 // note - number of half steps up from A440
-function getFrequency(note, stepsPerOctave) {
-  return 440 * Math.pow(2, note * (1 / stepsPerOctave));
+function getFrequency(note, numOctaves, numSteps) {
+  return 440 * Math.pow(2, note * (numOctaves / numSteps));
 }
 
 function getNoteFromKey(key) {
@@ -24,7 +24,6 @@ function getNoteFromKey(key) {
   return null;
 }
 
-// TODO: support division of more than 1 octave
 // TODO: add keyboard map UI and show key presses
 // TODO: separate audio stuff into another file, separate from component
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
@@ -34,7 +33,8 @@ class App extends Component {
 
     // TODO: have current active keys represented in state
     this.state = {
-      stepsPerOctave: 12,
+      numOctaves: 1,
+      numSteps: 12,
       notes: {}, // TODO: use immutable.js
     };
 
@@ -44,7 +44,8 @@ class App extends Component {
     this.gainNode.gain.value = 0.2;
     this.gainNode.connect(this.audioContext.destination);
 
-    this.onChangeStepsPerOctave = this.onChangeStepsPerOctave.bind(this);
+    this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
+    this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
     this.startNote = this.startNote.bind(this);
     this.stopAllNotes = this.stopAllNotes.bind(this);
     this.stopNote = this.stopNote.bind(this);
@@ -87,7 +88,7 @@ class App extends Component {
 
     let oscillator = this.audioContext.createOscillator();
     oscillator.type = 'square';
-    oscillator.frequency.value = getFrequency(note, this.state.stepsPerOctave);
+    oscillator.frequency.value = getFrequency(note, this.state.numOctaves, this.state.numSteps);
     oscillator.connect(this.gainNode);
     oscillator.start(0);
 
@@ -120,12 +121,17 @@ class App extends Component {
     }
   }
 
-  onChangeStepsPerOctave(event) {
-    console.log('onChangeStepsPerOctave', event.target.value);
-
+  onChangeNumOctaves(event) {
     this.stopAllNotes();
     this.setState({
-      stepsPerOctave: parseInt(event.target.value),
+      numOctaves: parseInt(event.target.value),
+    });
+  }
+
+  onChangeNumSteps(event) {
+    this.stopAllNotes();
+    this.setState({
+      numSteps: parseInt(event.target.value),
     });
   }
 
@@ -133,9 +139,16 @@ class App extends Component {
     return (
       <div>
         <div>
-          <select value={this.state.stepsPerOctave} onChange={this.onChangeStepsPerOctave}>
+          Divide
+          <select value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
             {
-              _.range(50).map((index) => <option value={index} key={index}>{index}</option>)
+              _.range(10).map((index) => <option value={index} key={index}>{index} octave</option>)
+            }
+          </select>
+          by
+          <select value={this.state.numSteps} onChange={this.onChangeNumSteps}>
+            {
+              _.range(50).map((index) => <option value={index} key={index}>{index} steps</option>)
             }
           </select>
         </div>
