@@ -41,7 +41,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      minFrequency: 55,
+      minFrequency: 110,
       numOctaves: 1,
       numSteps: 12,
       notes: {}, // TODO: use immutable.js?
@@ -50,7 +50,7 @@ class App extends Component {
     this.audioContext = new window.AudioContext();
     this.notes = {};
     this.gainNode = this.audioContext.createGain();
-    this.gainNode.gain.value = 0.05;
+    this.gainNode.gain.value = 0.1;
     this.gainNode.connect(this.audioContext.destination);
 
     this.onChangeChord = this.onChangeChord.bind(this);
@@ -110,7 +110,7 @@ class App extends Component {
     }
 
     let oscillator = this.audioContext.createOscillator();
-    oscillator.type = 'square';
+    oscillator.type = 'sine';
     oscillator.frequency.value = this.getFrequencyForNote(note);
     oscillator.connect(this.gainNode);
     oscillator.start(0);
