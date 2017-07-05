@@ -5,7 +5,6 @@ import './App.css';
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
-const ROOT_FREQUENCY = 55;
 
 const keyRows = [
   `zxcvbnm,./`,
@@ -26,11 +25,12 @@ function getFrequency(rootFrequency, note, numOctaves, numSteps) {
 function getNoteFromKey(key) {
   const offset = keySequence.indexOf(key);
   if (offset !== -1) {
-    return offset; // TODO: configurable note offset
+    return offset;
   }
   return null;
 }
 
+// TODO: add button to play the whole scale
 // TODO: add filter/effect to be similar to sevish-droplet, nicer sounds
 // TODO: separate audio stuff into another file, separate from component
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
@@ -38,11 +38,11 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // TODO: have current active keys represented in state
     this.state = {
+      minFrequency: 55,
       numOctaves: 1,
       numSteps: 12,
-      notes: {}, // TODO: use immutable.js
+      notes: {}, // TODO: use immutable.js?
     };
 
     this.audioContext = new window.AudioContext();
@@ -52,6 +52,7 @@ class App extends Component {
     this.gainNode.connect(this.audioContext.destination);
 
     this.onChangeChord = this.onChangeChord.bind(this);
+    this.onChangeMinFrequency = this.onChangeMinFrequency.bind(this);
     this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
     this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
     this.startNote = this.startNote.bind(this);
@@ -93,12 +94,8 @@ class App extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // TODO
-  }
-
   getFrequencyForNote(note) {
-    return getFrequency(ROOT_FREQUENCY, note, this.state.numOctaves, this.state.numSteps);
+    return getFrequency(this.state.minFrequency, note, this.state.numOctaves, this.state.numSteps);
   }
 
   getFrequencyRatioForNote(note) {
@@ -137,6 +134,13 @@ class App extends Component {
     delete this.notes[note];
   }
 
+  onChangeMinFrequency(event) {
+    this.stopAllNotes();
+    this.setState({
+      minFrequency: parseFloat(event.target.value),
+    });
+  }
+
   onChangeNumOctaves(event) {
     this.stopAllNotes();
     this.setState({
@@ -169,18 +173,24 @@ class App extends Component {
       <div className="m-3">
         <h1 className="mb-3">Microtoner</h1>
         <div className="mb-3">
-          Divide
-          <select value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
-            {
-              _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
-            }
-          </select>
-          into
-          <select value={this.state.numSteps} onChange={this.onChangeNumSteps}>
-            {
-              _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
-            }
-          </select>
+          <div className="form-inline">
+            Divide
+            <select className="form-control" value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
+              {
+                _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
+              }
+            </select>
+            into
+            <select className="form-control" value={this.state.numSteps} onChange={this.onChangeNumSteps}>
+              {
+                _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
+              }
+            </select>
+          </div>
+          <div className="form-inline">
+            Frequency of lowest note:
+            <input className="form-control" type="text" value={this.state.minFrequency} onChange={this.onChangeMinFrequency} /> hz
+          </div>
         </div>
 
         <div>
