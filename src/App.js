@@ -7,14 +7,13 @@ const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
 const ROOT_FREQUENCY = 55;
 
-// TODO: be able to configure 1-10 keys per row?
 const keyRows = [
   `zxcvbnm,./`,
   `asdfghjkl;`,
   `qwertyuiop`,
   `1234567890`,
 ];
-const keySequence = keyRows.join('');
+const keySequence = keyRows.join('');  // keys in ascending pitch order
 
 function getFrequencyRatio(note, numOctaves, numSteps) {
   return Math.pow(2, note * (numOctaves / numSteps))
@@ -32,8 +31,7 @@ function getNoteFromKey(key) {
   return null;
 }
 
-// TODO: add filter/effect to be similar to sevish-droplet
-// TODO: add keyboard map UI and show key presses
+// TODO: add filter/effect to be similar to sevish-droplet, nicer sounds
 // TODO: separate audio stuff into another file, separate from component
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
 class App extends Component {
