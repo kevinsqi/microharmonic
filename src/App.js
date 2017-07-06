@@ -30,11 +30,11 @@ function getNoteFromKey(key) {
   return null;
 }
 
+// TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: show cent values instead of ratios
 // TODO: nicer sounds - connect to MIDI piano/other instruments, like scala
 // TODO: add button to play the whole scale?
 // TODO: add filter/effect to be similar to sevish-droplet?
-// TODO: separate audio stuff into another file, separate from component
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
 class App extends Component {
   constructor(props) {
