@@ -45,7 +45,7 @@ class App extends Component {
       numOctaves: 1,
       numSteps: 12,
       activeNotes: {}, // TODO: use immutable.js?
-      selectedNotes: [],
+      selectedNotes: {},
     };
 
     this.audioContext = new window.AudioContext();
@@ -103,11 +103,12 @@ class App extends Component {
   }
 
   getNoteFromOffset(offset) {
-    const numNotes = this.state.selectedNotes.length;
+    const sortedNotes = Object.keys(this.state.selectedNotes).map((str) => parseInt(str, 10)).sort();
+    const numNotes = sortedNotes.length;
     if (numNotes > 0) {
       const octaves = Math.floor(offset / numNotes);
       const remainder = offset % numNotes;
-      return (octaves * this.state.numSteps) + this.state.selectedNotes[remainder];
+      return (octaves * this.state.numSteps) + sortedNotes[remainder];
     } else {
       return offset;
     }
@@ -177,13 +178,17 @@ class App extends Component {
   onChangeSelectedNotes(event) {
     this.stopAllNotes();
 
-    const notes = event.target.value.trim().split(' ').map((token) => {
-      return parseInt(token, 10);
-    }).filter((int) => !isNaN(int));
+    const note = parseInt(event.target.name, 10);
+    const value = event.target.checked;
 
-    console.log(event, notes);
+    const selectedNotes = value ? (
+      Object.assign({}, this.state.selectedNotes, { [note]: true })
+    ) : (
+      _.omit(this.state.selectedNotes, note)
+    );
+
     this.setState({
-      selectedNotes: notes.length > 0 ? notes : [],
+      selectedNotes: selectedNotes,
     });
   }
 
@@ -213,7 +218,19 @@ class App extends Component {
           </div>
 
           <div>
-            <input type="text" value={this.state.selectedNotes} onChange={this.onChangeSelectedNotes} />
+            {
+              _.range(this.state.numSteps).map((note) => {
+                return (
+                  <input
+                    type="checkbox"
+                    name={note}
+                    value={this.state.selectedNotes[note]}
+                    onChange={this.onChangeSelectedNotes}
+                    key={note}
+                  />
+                );
+              })
+            }
           </div>
         </div>
 
