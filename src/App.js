@@ -33,9 +33,7 @@ function getOffsetFromKey(key) {
 
 // TODO: fix errant notes playing when ctrl+tabbing, etc
 // TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
-// TODO: show cent values instead of ratios
 // TODO: nicer sounds - connect to MIDI piano/other instruments, like scala
-// TODO: add button to play the whole scale?
 // TODO: add filter/effect to be similar to sevish-droplet?
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
 // TODO: use immutable.js?
@@ -273,6 +271,9 @@ class App extends Component {
                           onMouseDown={this.onKeyDown.bind(this, keyLabel)}
                           onMouseUp={this.onKeyUp.bind(this, keyLabel)}
                           onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
+                          onTouchStart={this.onKeyDown.bind(this, keyLabel)}
+                          onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
+                          onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
                         >
                           {note}<br />
                           <small>{Math.round(this.getCentsForNote(note))}</small><br />
