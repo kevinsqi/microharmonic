@@ -60,7 +60,6 @@ class App extends Component {
     this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
     this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
     this.startNote = this.startNote.bind(this);
-    this.stopAllNotes = this.stopAllNotes.bind(this);
     this.stopNote = this.stopNote.bind(this);
   }
 
@@ -140,17 +139,9 @@ class App extends Component {
   }
 
   reset() {
-    this.stopAllNotes();
-
     this.setState({
       activeNotes: {},
       selectedNotes: {},
-    });
-  }
-
-  stopAllNotes() {
-    Object.keys(this.activeNotes).forEach((note) => {
-      this.stopNote(note);
     });
   }
 
