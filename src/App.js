@@ -36,6 +36,7 @@ function getOffsetFromKey(key) {
 // TODO: add button to play the whole scale?
 // TODO: add filter/effect to be similar to sevish-droplet?
 // TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
+// TODO: use immutable.js?
 class App extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +45,7 @@ class App extends Component {
       minFrequency: 110,
       numOctaves: 1,
       numSteps: 12,
-      activeNotes: {}, // TODO: use immutable.js?
+      activeNotes: {},
       selectedNotes: {},
     };
 
@@ -103,7 +104,7 @@ class App extends Component {
   }
 
   getNoteFromOffset(offset) {
-    const sortedNotes = Object.keys(this.state.selectedNotes).map((str) => parseInt(str, 10)).sort();
+    const sortedNotes = _.sortBy(Object.keys(this.state.selectedNotes).map((str) => parseInt(str, 10)));
     const numNotes = sortedNotes.length;
     if (numNotes > 0) {
       const octaves = Math.floor(offset / numNotes);
@@ -138,6 +139,15 @@ class App extends Component {
     this.activeNotes[note] = oscillator;
   }
 
+  reset() {
+    this.stopAllNotes();
+
+    this.setState({
+      activeNotes: {},
+      selectedNotes: {},
+    });
+  }
+
   stopAllNotes() {
     Object.keys(this.activeNotes).forEach((note) => {
       this.stopNote(note);
@@ -155,29 +165,27 @@ class App extends Component {
   }
 
   onChangeMinFrequency(event) {
-    this.stopAllNotes();
+    this.reset();
     this.setState({
       minFrequency: parseFloat(event.target.value),
     });
   }
 
   onChangeNumOctaves(event) {
-    this.stopAllNotes();
+    this.reset();
     this.setState({
       numOctaves: parseInt(event.target.value, 10),
     });
   }
 
   onChangeNumSteps(event) {
-    this.stopAllNotes();
+    this.reset();
     this.setState({
       numSteps: parseInt(event.target.value, 10),
     });
   }
 
   onChangeSelectedNotes(event) {
-    this.stopAllNotes();
-
     const note = parseInt(event.target.name, 10);
     const value = event.target.checked;
 
@@ -222,14 +230,13 @@ class App extends Component {
             {
               _.range(this.state.numSteps).map((note) => {
                 return (
-                  <label className="ml-3">
+                  <label className="ml-3" key={note}>
                     <input
                       className="form-control"
                       type="checkbox"
                       name={note}
                       value={this.state.selectedNotes[note]}
                       onChange={this.onChangeSelectedNotes}
-                      key={note}
                     />
                     {note}
                   </label>
