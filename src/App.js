@@ -5,6 +5,7 @@ import './App.css';
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
+const CENTS_PER_OCTAVE = 1200;
 
 const keyRows = [
   `zxcvbnm,./`,
@@ -96,6 +97,10 @@ class App extends Component {
         activeNotes: Object.assign({}, this.state.activeNotes, { [note]: false }),
       });
     }
+  }
+
+  getCentsForNote(note) {
+    return (CENTS_PER_OCTAVE * this.state.numOctaves) / this.state.numSteps * note;
   }
 
   getNoteFromKey(key) {
@@ -269,7 +274,7 @@ class App extends Component {
                           onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
                         >
                           {note}<br />
-                          <small>{this.getFrequencyRatioForNote(note).toFixed(3)}</small><br />
+                          <small>{Math.round(this.getCentsForNote(note))}</small><br />
                           <small className="text-muted">{keyLabel}</small>
                         </button>
                       );
