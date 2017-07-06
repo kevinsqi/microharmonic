@@ -31,6 +31,7 @@ function getOffsetFromKey(key) {
   return null;
 }
 
+// TODO: fix errant notes playing when ctrl+tabbing, etc
 // TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: show cent values instead of ratios
 // TODO: nicer sounds - connect to MIDI piano/other instruments, like scala
