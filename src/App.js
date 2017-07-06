@@ -44,16 +44,17 @@ class App extends Component {
       minFrequency: 110,
       numOctaves: 1,
       numSteps: 12,
-      notes: {}, // TODO: use immutable.js?
+      activeNotes: {}, // TODO: use immutable.js?
+      selectedNotes: [],
     };
 
     this.audioContext = new window.AudioContext();
-    this.notes = {};
+    this.activeNotes = {};
     this.gainNode = this.audioContext.createGain();
     this.gainNode.gain.value = 0.1;
     this.gainNode.connect(this.audioContext.destination);
 
-    this.onChangeChord = this.onChangeChord.bind(this);
+    this.onChangeSelectedNotes = this.onChangeSelectedNotes.bind(this);
     this.onChangeMinFrequency = this.onChangeMinFrequency.bind(this);
     this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
     this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
@@ -75,29 +76,41 @@ class App extends Component {
   }
 
   onKeyDown(key) {
-    const note = getOffsetFromKey(key);
+    const note = this.getNoteFromKey(key);
     if (note !== null) {
       this.startNote(note);
 
       this.setState({
-        notes: Object.assign({}, this.state.notes, { [note]: true }),
+        activeNotes: Object.assign({}, this.state.activeNotes, { [note]: true }),
       });
     }
   }
 
   onKeyUp(key) {
-    const note = getOffsetFromKey(key);
+    const note = this.getNoteFromKey(key);
     if (note !== null) {
       this.stopNote(note);
 
       this.setState({
-        notes: Object.assign({}, this.state.notes, { [note]: false }),
+        activeNotes: Object.assign({}, this.state.activeNotes, { [note]: false }),
       });
     }
   }
 
+  getNoteFromKey(key) {
+    const offset = getOffsetFromKey(key);
+    return this.getNoteFromOffset(offset);
+  }
+
   getNoteFromOffset(offset) {
-    // TODO
+    const numNotes = this.state.selectedNotes.length;
+    if (numNotes > 0) {
+      const octaves = Math.floor(offset / numNotes);
+      const remainder = offset % numNotes;
+      return (octaves * this.state.numSteps) + this.state.selectedNotes[remainder];
+    } else {
+      return offset;
+    }
   }
 
   getFrequencyForNote(note) {
@@ -109,7 +122,7 @@ class App extends Component {
   }
 
   startNote(note) {
-    if (this.notes[note]) {
+    if (this.activeNotes[note]) {
       return;
     }
 
@@ -119,25 +132,25 @@ class App extends Component {
     oscillator.connect(this.gainNode);
     oscillator.start(0);
 
-    console.log('playing frequency: ', oscillator.frequency.value);
+    console.log('playing note', note, 'at frequency', oscillator.frequency.value);
 
-    this.notes[note] = oscillator;
+    this.activeNotes[note] = oscillator;
   }
 
   stopAllNotes() {
-    Object.keys(this.notes).forEach((note) => {
+    Object.keys(this.activeNotes).forEach((note) => {
       this.stopNote(note);
     });
   }
 
   stopNote(note) {
-    if (!this.notes[note]) {
+    if (!this.activeNotes[note]) {
       return;
     }
 
-    this.notes[note].stop(0);
-    this.notes[note].disconnect();
-    delete this.notes[note];
+    this.activeNotes[note].stop(0);
+    this.activeNotes[note].disconnect();
+    delete this.activeNotes[note];
   }
 
   onChangeMinFrequency(event) {
@@ -161,16 +174,16 @@ class App extends Component {
     });
   }
 
-  // TODO: save chord in state
-  onChangeChord(event) {
+  onChangeSelectedNotes(event) {
     this.stopAllNotes();
+
     const notes = event.target.value.trim().split(' ').map((token) => {
       return parseInt(token, 10);
     }).filter((int) => !isNaN(int));
-    console.log(notes);
 
-    notes.forEach((note) => {
-      this.startNote(note);
+    console.log(event, notes);
+    this.setState({
+      selectedNotes: notes.length > 0 ? notes : [],
     });
   }
 
@@ -193,9 +206,14 @@ class App extends Component {
               }
             </select>
           </div>
+
           <div className="form-inline">
             Frequency of lowest note:
             <input className="form-control" type="text" value={this.state.minFrequency} onChange={this.onChangeMinFrequency} /> hz
+          </div>
+
+          <div>
+            <input type="text" value={this.state.selectedNotes} onChange={this.onChangeSelectedNotes} />
           </div>
         </div>
 
@@ -210,13 +228,13 @@ class App extends Component {
                 <div className={`keyrow-${rowIndex}`} key={rowIndex}>
                   {
                     keys.split('').map((keyLabel) => {
-                      const note = getOffsetFromKey(keyLabel);
+                      const note = this.getNoteFromKey(keyLabel);
                       return (
                         <button
                           className={
                             classNames('btn btn-key', {
                               'btn-secondary': note % (this.state.numSteps / this.state.numOctaves) === 0,
-                              'btn-info': this.state.notes[note],
+                              'btn-info': this.state.activeNotes[note],
                             })
                           }
                           key={note}
@@ -236,14 +254,6 @@ class App extends Component {
             })
           }
         </div>
-
-        <div className="mt-3">
-          <h2 className="h4">Chord builder (experimental)</h2>
-
-          <input type="text" value={this.state.chord} onChange={this.onChangeChord} />
-          <button onClick={this.stopAllNotes}>Stop chord</button>
-        </div>
-
       </div>
     );
   }
