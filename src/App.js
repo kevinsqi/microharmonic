@@ -217,17 +217,22 @@ class App extends Component {
             <input className="form-control" type="text" value={this.state.minFrequency} onChange={this.onChangeMinFrequency} /> hz
           </div>
 
-          <div>
+          <div className="form-inline">
+            Notes to include:
             {
               _.range(this.state.numSteps).map((note) => {
                 return (
-                  <input
-                    type="checkbox"
-                    name={note}
-                    value={this.state.selectedNotes[note]}
-                    onChange={this.onChangeSelectedNotes}
-                    key={note}
-                  />
+                  <label className="ml-3">
+                    <input
+                      className="form-control"
+                      type="checkbox"
+                      name={note}
+                      value={this.state.selectedNotes[note]}
+                      onChange={this.onChangeSelectedNotes}
+                      key={note}
+                    />
+                    {note}
+                  </label>
                 );
               })
             }
