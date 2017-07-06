@@ -59,6 +59,7 @@ class App extends Component {
     this.onChangeMinFrequency = this.onChangeMinFrequency.bind(this);
     this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
     this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
+    this.onClickResetSelectedNotes = this.onClickResetSelectedNotes.bind(this);
     this.startNote = this.startNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
   }
@@ -140,7 +141,6 @@ class App extends Component {
 
   reset() {
     this.setState({
-      activeNotes: {},
       selectedNotes: {},
     });
   }
@@ -191,6 +191,10 @@ class App extends Component {
     });
   }
 
+  onClickResetSelectedNotes() {
+    this.reset();
+  }
+
   render() {
     return (
       <div className="m-3">
@@ -218,6 +222,8 @@ class App extends Component {
 
           <div className="form-inline">
             Notes to include:
+
+            <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
             {
               _.range(this.state.numSteps).map((note) => {
                 return (
@@ -226,7 +232,7 @@ class App extends Component {
                       className="form-control"
                       type="checkbox"
                       name={note}
-                      value={this.state.selectedNotes[note]}
+                      checked={this.state.selectedNotes[note]}
                       onChange={this.onChangeSelectedNotes}
                     />
                     {note}
