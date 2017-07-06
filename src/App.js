@@ -22,7 +22,7 @@ function getFrequency(rootFrequency, note, numOctaves, numSteps) {
   return rootFrequency * getFrequencyRatio(note, numOctaves, numSteps);
 }
 
-function getNoteFromKey(key) {
+function getOffsetFromKey(key) {
   const offset = keySequence.indexOf(key);
   if (offset !== -1) {
     return offset;
@@ -75,7 +75,7 @@ class App extends Component {
   }
 
   onKeyDown(key) {
-    const note = getNoteFromKey(key);
+    const note = getOffsetFromKey(key);
     if (note !== null) {
       this.startNote(note);
 
@@ -86,7 +86,7 @@ class App extends Component {
   }
 
   onKeyUp(key) {
-    const note = getNoteFromKey(key);
+    const note = getOffsetFromKey(key);
     if (note !== null) {
       this.stopNote(note);
 
@@ -94,6 +94,10 @@ class App extends Component {
         notes: Object.assign({}, this.state.notes, { [note]: false }),
       });
     }
+  }
+
+  getNoteFromOffset(offset) {
+    // TODO
   }
 
   getFrequencyForNote(note) {
@@ -206,7 +210,7 @@ class App extends Component {
                 <div className={`keyrow-${rowIndex}`} key={rowIndex}>
                   {
                     keys.split('').map((keyLabel) => {
-                      const note = getNoteFromKey(keyLabel);
+                      const note = getOffsetFromKey(keyLabel);
                       return (
                         <button
                           className={
