@@ -31,6 +31,7 @@ function getOffsetFromKey(key) {
   return null;
 }
 
+// TODO: allow drag gestures to work
 // TODO: mobile layout (use flexbox and width 100% on buttons?)
 // TODO: implement keyboard layout
 // TODO: fix errant notes playing when ctrl+tabbing, etc
@@ -256,30 +257,32 @@ class App extends Component {
               const keys = keyRows[rowIndex];
 
               return (
-                <div className={classNames(`keyrow-${rowIndex}`)} key={rowIndex}>
+                <div className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)} key={rowIndex}>
                   {
                     keys.split('').map((keyLabel) => {
                       const note = this.getNoteFromKey(keyLabel);
                       return (
-                        <button
-                          className={
-                            classNames('btn btn-key', {
-                              'btn-secondary': note % (this.state.numSteps / this.state.numOctaves) === 0,
-                              'btn-info': this.state.activeNotes[note],
-                            })
-                          }
-                          key={note}
-                          onMouseDown={this.onKeyDown.bind(this, keyLabel)}
-                          onMouseUp={this.onKeyUp.bind(this, keyLabel)}
-                          onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
-                          onTouchStart={this.onKeyDown.bind(this, keyLabel)}
-                          onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
-                          onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
-                        >
-                          {note}<br />
-                          <small>{Math.round(this.getCentsForNote(note))}</small><br />
-                          <small className="text-muted">{keyLabel}</small>
-                        </button>
+                        <div className="col col-sm-1">
+                          <button
+                            className={
+                              classNames('btn btn-key', {
+                                'btn-secondary': note % (this.state.numSteps / this.state.numOctaves) === 0,
+                                'btn-info': this.state.activeNotes[note],
+                              })
+                            }
+                            key={note}
+                            onMouseDown={this.onKeyDown.bind(this, keyLabel)}
+                            onMouseUp={this.onKeyUp.bind(this, keyLabel)}
+                            onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
+                            onTouchStart={this.onKeyDown.bind(this, keyLabel)}
+                            onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
+                            onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
+                          >
+                            {note}<br />
+                            <small>{Math.round(this.getCentsForNote(note))}</small><br />
+                            <small className="text-muted">{keyLabel}</small>
+                          </button>
+                        </div>
                       );
                     })
                   }

@@ -1,5 +1,5 @@
 .btn-key {
-  width: 33px;
+  width: 100%;
   margin: 1px;
   padding: 0;
 }
@@ -7,6 +7,10 @@
 @media (min-width: 576px) {
   .btn-key {
     width: 50px;
+  }
+
+  .keyrow {
+    width: 640px; /* TODO: sorta hack, fix */
   }
 
   .keyrow-0 {
