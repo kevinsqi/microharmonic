@@ -31,11 +31,12 @@ function getOffsetFromKey(key) {
   return null;
 }
 
+// TODO: mobile layout (use flexbox and width 100% on buttons?)
+// TODO: implement keyboard layout
 // TODO: fix errant notes playing when ctrl+tabbing, etc
 // TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: nicer sounds - connect to MIDI piano/other instruments, like scala
 // TODO: add filter/effect to be similar to sevish-droplet?
-// TODO: test on mobile, touch logic https://raw.githubusercontent.com/stuartmemo/qwerty-hancock/master/dist/qwerty-hancock.js
 // TODO: use immutable.js?
 class App extends Component {
   constructor(props) {
@@ -255,7 +256,7 @@ class App extends Component {
               const keys = keyRows[rowIndex];
 
               return (
-                <div className={`keyrow-${rowIndex}`} key={rowIndex}>
+                <div className={classNames(`keyrow-${rowIndex}`)} key={rowIndex}>
                   {
                     keys.split('').map((keyLabel) => {
                       const note = this.getNoteFromKey(keyLabel);
