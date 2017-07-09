@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Microtoner",
+  "name": "Microtoner - a microtone keyboard",
   "icons": [
     {
       "src": "favicon.ico",
