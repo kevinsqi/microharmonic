@@ -7,6 +7,7 @@ import './App.css';
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
 const CENTS_PER_OCTAVE = 1200;
+const GAIN_VALUE = 0.1;
 
 const keyRows = [
   `zxcvbnm,./`,
@@ -42,7 +43,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      minFrequency: 110,
+      minFrequency: 220,
       numOctaves: 1,
       numSteps: 12,
       activeNotes: {},
@@ -52,7 +53,7 @@ class App extends Component {
     this.audioContext = new window.AudioContext();
     this.activeNotes = {};
     this.gainNode = this.audioContext.createGain();
-    this.gainNode.gain.value = 0.1;
+    this.gainNode.gain.value = GAIN_VALUE;
     this.gainNode.connect(this.audioContext.destination);
 
     this.onChangeSelectedNotes = this.onChangeSelectedNotes.bind(this);
@@ -125,6 +126,13 @@ class App extends Component {
 
   getFrequencyRatioForNote(note) {
     return getFrequencyRatio(note, this.state.numOctaves, this.state.numSteps);
+  }
+
+  getStepFrequencies() {
+    return _.range(this.state.numSteps).map((offset) => {
+      const note = this.getNoteFromOffset(offset);
+      return this.getFrequencyForNote(note);
+    });
   }
 
   startNote(note) {
@@ -291,7 +299,7 @@ class App extends Component {
 
         <div className="mt-3">
           <h2 className="h4">Sequencer</h2>
-          <Sequencer numSteps={this.state.numSteps} />
+          <Sequencer frequencies={this.getStepFrequencies()} gain={GAIN_VALUE} />
         </div>
       </div>
     );

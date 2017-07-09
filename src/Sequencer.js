@@ -18,22 +18,22 @@ class Sequencer extends Component {
   }
 
   onClickPlay() {
-    console.log('onClickPlay', this.state.sequences);
-
     const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
       const activeTimeIndexes = Object.keys(this.state.sequences[offset]).filter((timeIndex) => {
         return this.state.sequences[offset][timeIndex];
       });
 
+      // TODO: noreintegrate modulo octave
+      const frequency = this.props.frequencies[offset % this.props.frequencies.length];
       return activeTimeIndexes.map((timeIndex) => {
-        return [440 + 20 * offset, timeIndex * 0.5, 0.5];
+        return [frequency, timeIndex * 0.5, 0.5];
       });
     }).filter((sequence) => {
       return sequence.length > 0
     });
 
-    console.log(normalizedSequences);
-    const audioSequencer = new AudioSequencer(new window.AudioContext(), normalizedSequences);
+    console.log('onClickPlay', normalizedSequences, this.props.frequencies);
+    const audioSequencer = new AudioSequencer(new window.AudioContext(), normalizedSequences, this.props.gain);
     audioSequencer.play();
   }
 
@@ -58,7 +58,7 @@ class Sequencer extends Component {
   }
 
   getNumDisplaySteps() {
-    return (this.props.numSteps * 2) + 1;
+    return (this.props.frequencies.length * 2) + 1;
   }
 
   getNumSequenceItems() {
