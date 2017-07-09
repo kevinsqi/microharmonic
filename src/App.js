@@ -31,12 +31,8 @@ function getOffsetFromKey(key) {
   return null;
 }
 
-// TODO: allow drag gestures to work
-// TODO: mobile layout (use flexbox and width 100% on buttons?)
-// TODO: implement keyboard layout
 // TODO: fix errant notes playing when ctrl+tabbing, etc
 // TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
-// TODO: nicer sounds - connect to MIDI piano/other instruments, like scala
 // TODO: add filter/effect to be similar to sevish-droplet?
 // TODO: use immutable.js?
 class App extends Component {
