@@ -217,8 +217,8 @@ class App extends Component {
   render() {
     return (
       <div className="m-3">
-        <h1 className="mb-3">Microtoner</h1>
-        <div className="mb-3">
+        <h1>Microtoner</h1>
+        <div className="mt-3">
           <div className="form-inline">
             Divide
             <select className="form-control" value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
@@ -262,7 +262,7 @@ class App extends Component {
           </div>
         </div>
 
-        <div>
+        <div className="mt-3">
           <h2 className="h4">Keyboard</h2>
           <p>Octave notes are highlighted</p>
           {
@@ -298,6 +298,36 @@ class App extends Component {
                       );
                     })
                   }
+                </div>
+              );
+            })
+          }
+        </div>
+
+        <div className="mt-3">
+          <h2 className="h4">Sequencer</h2>
+
+          {
+            _.range(this.state.numSteps * 2, -1, -1).map((offset) => {
+              return (
+                <div className="row no-gutters" key={offset}>
+                  <div className="col-1">
+                    {offset}
+                  </div>
+
+                  <div className="col-11">
+                    <div className="row no-gutters">
+                      {
+                        _.range(16).map((index) => {
+                          return (
+                            <div className="col sequence-item" key={index}>
+                              {index}
+                            </div>
+                          );
+                        })
+                      }
+                    </div>
+                  </div>
                 </div>
               );
             })

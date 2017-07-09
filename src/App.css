@@ -1,3 +1,7 @@
+.sequence-item {
+  border: 1px solid #ccc;
+}
+
 .btn-key {
   width: 100%;
   margin: 1px;
