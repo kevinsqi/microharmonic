@@ -2,23 +2,6 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import './App.css';
-import Sequencer from './Sequencer.js';
-
-// noreintegrate
-window.seq = new Sequencer(new window.AudioContext(), [
-  [
-    [440, 0, 1],
-    [400, 1, 1],
-    [550, 2, 1],
-    [480, 3, 1],
-  ],
-  [
-    [480, 0, 1],
-    [410, 1, 1],
-    [590, 2, 0.5],
-    [420, 5, 2],
-  ],
-]);
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;

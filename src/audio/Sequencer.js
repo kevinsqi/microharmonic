@@ -1,5 +1,22 @@
 const GAIN = 0.02;
 
+/* noreintegrate example
+window.seq = new Sequencer(new window.AudioContext(), [
+  [
+    [440, 0, 1],
+    [400, 1, 1],
+    [550, 2, 1],
+    [480, 3, 1],
+  ],
+  [
+    [480, 0, 1],
+    [410, 1, 1],
+    [590, 2, 0.5],
+    [420, 5, 2],
+  ],
+]);
+*/
+
 // TODO: refactor into objects
 class Sequencer {
   constructor(audioContext, sequences) {
