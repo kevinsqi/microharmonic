@@ -27,6 +27,22 @@ class Sequencer extends Component {
 
   onClickPlay() {
     console.log('onClickPlay', this.state.sequences);
+
+    const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
+      const activeTimeIndexes = Object.keys(this.state.sequences[offset]).filter((timeIndex) => {
+        return this.state.sequences[offset][timeIndex];
+      });
+
+      return activeTimeIndexes.map((timeIndex) => {
+        return [440 + 20 * offset, timeIndex * 0.5, 0.5];
+      });
+    }).filter((sequence) => {
+      return sequence.length > 0
+    });
+
+    console.log(normalizedSequences);
+    const audioSequencer = new AudioSequencer(new window.AudioContext(), normalizedSequences);
+    audioSequencer.play();
   }
 
   onClickSequenceItem(offset, timeIndex) {
