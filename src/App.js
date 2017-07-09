@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import './App.css';
+import Sequencer from './Sequencer.js';
+
+// noreintegrate
+window.seq = new Sequencer(new window.AudioContext(), [
+  [440, 1, 1],
+  [330, 2, 1],
+  [550, 3, 1],
+  [480, 4, 1],
+]);
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
@@ -258,7 +267,7 @@ class App extends Component {
                     keys.split('').map((keyLabel) => {
                       const note = this.getNoteFromKey(keyLabel);
                       return (
-                        <div className="col col-sm-1">
+                        <div className="col col-sm-1" key={note}>
                           <button
                             className={
                               classNames('btn btn-key', {
@@ -266,7 +275,6 @@ class App extends Component {
                                 'btn-info': this.state.activeNotes[note],
                               })
                             }
-                            key={note}
                             onMouseDown={this.onKeyDown.bind(this, keyLabel)}
                             onMouseUp={this.onKeyUp.bind(this, keyLabel)}
                             onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
