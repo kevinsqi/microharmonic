@@ -8,20 +8,12 @@ class Sequencer extends Component {
   constructor(props) {
     super(props);
 
-    // initialize data structure
-    const sequences = {};
-    _.range(this.getNumDisplaySteps()).forEach((offset) => {
-      sequences[offset] = {};
-      _.range(this.getNumSequenceItems()).forEach((timeIndex) => {
-        sequences[offset][timeIndex] = false;
-      });
-    });
-
     this.state = {
-      sequences: sequences,
+      sequences: this.getInitialSequences(),
     };
 
     this.onClickPlay = this.onClickPlay.bind(this);
+    this.onClickReset = this.onClickReset.bind(this);
     this.onClickSequenceItem = this.onClickSequenceItem.bind(this);
   }
 
@@ -43,6 +35,12 @@ class Sequencer extends Component {
     console.log(normalizedSequences);
     const audioSequencer = new AudioSequencer(new window.AudioContext(), normalizedSequences);
     audioSequencer.play();
+  }
+
+  onClickReset() {
+    this.setState({
+      sequences: this.getInitialSequences(),
+    });
   }
 
   onClickSequenceItem(offset, timeIndex) {
@@ -67,10 +65,22 @@ class Sequencer extends Component {
     return 16;
   }
 
+  getInitialSequences() {
+    const sequences = {};
+    _.range(this.getNumDisplaySteps()).forEach((offset) => {
+      sequences[offset] = {};
+      _.range(this.getNumSequenceItems()).forEach((timeIndex) => {
+        sequences[offset][timeIndex] = false;
+      });
+    });
+    return sequences;
+  }
+
   render() {
     return (
       <div>
         <button className="btn btn-secondary" onClick={this.onClickPlay}>Play</button>
+        <button className="btn btn-secondary" onClick={this.onClickReset}>Reset</button>
 
         {
           _.range(this.getNumDisplaySteps() - 1, -1, -1).map((offset) => {
