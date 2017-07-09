@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import update from 'immutability-helper';
 import AudioSequencer from './audio/Sequencer';
 
+// TODO: pass cent values to sequencer for display
 class Sequencer extends Component {
   constructor(props) {
     super(props);
@@ -87,15 +88,17 @@ class Sequencer extends Component {
   render() {
     return (
       <div>
-        <button className="btn btn-secondary" onClick={this.onClickPlay}>Play once</button>
-        <button className="btn btn-secondary" onClick={this.onClickReset}>Reset</button>
+        <div className="mb-3">
+          <button className="btn btn-secondary" onClick={this.onClickPlay}>Play once</button>
+          <button className="btn btn-secondary" onClick={this.onClickReset}>Reset</button>
+        </div>
 
         {
           _.range(this.getNumDisplaySteps() - 1, -1, -1).map((offset) => {
             return (
               <div className="row no-gutters" key={offset}>
                 <div className="col-1">
-                  <div className="text-right pr-2">{offset}</div>
+                  <div className="text-right pr-2 py-1">{offset}</div>
                 </div>
                 <div className="col">
                   <div className="row no-gutters">
@@ -103,11 +106,11 @@ class Sequencer extends Component {
                       _.range(this.getNumSequenceItems()).map((timeIndex) => {
                         return (
                           <div
-                            className={classNames('col', 'sequence-item', { 'sequence-item-active': this.state.sequences[offset][timeIndex] })}
+                            className={classNames('col', 'sequence-item', 'py-1', { 'sequence-item-active': this.state.sequences[offset][timeIndex] })}
                             key={timeIndex}
                             onClick={this.onClickSequenceItem.bind(this, offset, timeIndex)}
                           >
-                            <div className="text-center text-muted">{timeIndex}</div>
+                            <div className="text-center">{timeIndex}</div>
                           </div>
                         );
                       })
