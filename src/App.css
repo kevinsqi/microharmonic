@@ -2,6 +2,10 @@
   border: 1px solid #ccc;
 }
 
+.sequence-item-active {
+  background-color: #cda;
+}
+
 .btn-key {
   width: 100%;
   margin: 1px;
