@@ -1,32 +1,40 @@
 const GAIN = 0.02;
 
+// TODO: refactor into objects
 class Sequencer {
-  constructor(audioContext, sequence) {
+  constructor(audioContext, sequences) {
     this.context = audioContext;
-    this.gainNode = audioContext.createGain();
-    this.gainNode.gain.value = GAIN;
-    this.gainNode.connect(audioContext.destination);
-    this.sequence = sequence;
+    this.sequences = sequences;
   }
 
   play() {
+    this.sequences.forEach((sequence) => {
+      this.playSequence(sequence);
+    });
+  }
+
+  playSequence(sequence) {
     const now = this.context.currentTime;
+
+    const gainNode = this.context.createGain();
+    gainNode.gain.value = GAIN;
+    gainNode.connect(this.context.destination);
 
     const oscillator = this.context.createOscillator();
     oscillator.type = 'sine';
-    oscillator.connect(this.gainNode);
+    oscillator.connect(gainNode);
     oscillator.start(now);
 
-    this.gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.setValueAtTime(0, now);
 
-    this.sequence.forEach(([freq, offset, duration]) => {
-      this.gainNode.gain.setValueAtTime(GAIN, now + offset);
-      this.gainNode.gain.setValueAtTime(0, now + offset + duration);
+    sequence.forEach(([freq, offset, duration]) => {
+      gainNode.gain.setValueAtTime(GAIN, now + offset);
+      gainNode.gain.setValueAtTime(0, now + offset + duration);
       oscillator.frequency.setValueAtTime(freq, now + offset);
     });
 
     const endOffset = Math.max(
-      ...this.sequence.map(([freq, offset, duration]) => {
+      ...sequence.map(([freq, offset, duration]) => {
         return offset + duration;
       })
     );
@@ -34,6 +42,7 @@ class Sequencer {
 
     // noreintegrate correct?
     oscillator.onended = () => {
+      gainNode.disconnect();
       oscillator.disconnect();
     }
   }
