@@ -129,7 +129,7 @@ class App extends Component {
   }
 
   getStepFrequencies() {
-    return _.range(this.state.numSteps).map((offset) => {
+    return _.range(this.state.numSteps + 1).map((offset) => {
       const note = this.getNoteFromOffset(offset);
       return this.getFrequencyForNote(note);
     });

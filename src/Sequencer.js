@@ -32,7 +32,6 @@ class Sequencer extends Component {
         return this.state.sequences[offset][timeIndex];
       });
 
-      // TODO: noreintegrate modulo octave
       const frequency = this.props.frequencies[offset % this.props.frequencies.length];
       return activeTimeIndexes.map((timeIndex) => {
         return [frequency, timeIndex * 0.5, 0.5];
@@ -67,7 +66,7 @@ class Sequencer extends Component {
   }
 
   getNumDisplaySteps(frequencies) {
-    return ((frequencies || this.props.frequencies).length * 2) + 1;
+    return (frequencies || this.props.frequencies).length;
   }
 
   getNumSequenceItems() {
