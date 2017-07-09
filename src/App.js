@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
+import Sequencer from './Sequencer';
 import './App.css';
 
 const MAX_NUM_STEPS = 100;
@@ -31,6 +32,7 @@ function getOffsetFromKey(key) {
   return null;
 }
 
+// TODO: refactor keyboard into separate component
 // TODO: fix errant notes playing when ctrl+tabbing, etc
 // TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: add filter/effect to be similar to sevish-droplet?
@@ -289,31 +291,7 @@ class App extends Component {
 
         <div className="mt-3">
           <h2 className="h4">Sequencer</h2>
-
-          {
-            _.range(this.state.numSteps * 2, -1, -1).map((offset) => {
-              return (
-                <div className="row no-gutters" key={offset}>
-                  <div className="col-1">
-                    <div className="text-right pr-2">{offset}</div>
-                  </div>
-                  <div className="col">
-                    <div className="row no-gutters">
-                      {
-                        _.range(16).map((index) => {
-                          return (
-                            <div className="col sequence-item" key={index}>
-                              <div className="text-center text-muted">{index}</div>
-                            </div>
-                          );
-                        })
-                      }
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          }
+          <Sequencer numSteps={this.state.numSteps} />
         </div>
       </div>
     );
