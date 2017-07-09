@@ -7,7 +7,7 @@ import Sequencer from './Sequencer.js';
 // noreintegrate
 window.seq = new Sequencer(new window.AudioContext(), [
   [440, 1, 1],
-  [330, 2, 1],
+  [400, 2, 1],
   [550, 3, 1],
   [480, 4, 1],
 ]);

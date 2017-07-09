@@ -1,13 +1,10 @@
-function flattenArrays(arrays) {
-  return [].concat.apply([], arrays);
-}
+const GAIN = 0.02;
 
 class Sequencer {
-
   constructor(audioContext, sequence) {
     this.context = audioContext;
     this.gainNode = audioContext.createGain();
-    this.gainNode.gain.value = 0.02;
+    this.gainNode.gain.value = GAIN;
     this.gainNode.connect(audioContext.destination);
     this.sequence = sequence;
   }
@@ -15,38 +12,31 @@ class Sequencer {
   play() {
     const now = this.context.currentTime;
 
-    // this implement rests using 0 gain, could be better way
-    const frequencySequence = flattenArrays(
-      this.sequence.map(([freq, start, duration]) => {
-        return [
-          [freq, start],
-          //[0, start + duration],
-        ];
+    const oscillator = this.context.createOscillator();
+    oscillator.type = 'sine';
+    oscillator.connect(this.gainNode);
+    oscillator.start(now);
+
+    this.gainNode.gain.setValueAtTime(0, now);
+
+    this.sequence.forEach(([freq, offset, duration]) => {
+      this.gainNode.gain.setValueAtTime(GAIN, now + offset);
+      this.gainNode.gain.setValueAtTime(0, now + offset + duration);
+      oscillator.frequency.setValueAtTime(freq, now + offset);
+    });
+
+    const endOffset = Math.max(
+      ...this.sequence.map(([freq, offset, duration]) => {
+        return offset + duration;
       })
     );
+    oscillator.stop(now + endOffset);
 
-    // const endTime = frequencySequence[frequencySequence.length - 1][1];
-
-    console.log(frequencySequence);
-
-    this.oscillator = this.context.createOscillator();
-    this.oscillator.type = 'square';
-    this.oscillator.frequency.value = 0;
-    this.oscillator.connect(this.gainNode);
-    this.oscillator.start(now);
-
-    frequencySequence.forEach(([freq, start]) => {
-      console.log(freq, start);
-
-      this.oscillator.frequency.setValueAtTime(freq, start);
-    });
+    // noreintegrate correct?
+    oscillator.onended = () => {
+      oscillator.disconnect();
+    }
   }
-
-  stop() {
-    this.oscillator.stop(0);
-    this.oscillator.disconnect();
-  }
-
 }
 
 export default Sequencer;
