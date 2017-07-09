@@ -312,16 +312,15 @@ class App extends Component {
               return (
                 <div className="row no-gutters" key={offset}>
                   <div className="col-1">
-                    {offset}
+                    <div className="text-right pr-2">{offset}</div>
                   </div>
-
-                  <div className="col-11">
+                  <div className="col">
                     <div className="row no-gutters">
                       {
                         _.range(16).map((index) => {
                           return (
                             <div className="col sequence-item" key={index}>
-                              {index}
+                              <div className="text-center text-muted">{index}</div>
                             </div>
                           );
                         })
