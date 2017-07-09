@@ -17,6 +17,15 @@ class Sequencer extends Component {
     this.onClickSequenceItem = this.onClickSequenceItem.bind(this);
   }
 
+  // TODO: refactor, move sequences from state to props?
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props.frequencies, nextProps.frequencies)) {
+      this.setState({
+        sequences: this.getInitialSequences(nextProps.frequencies),
+      });
+    }
+  }
+
   onClickPlay() {
     const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
       const activeTimeIndexes = Object.keys(this.state.sequences[offset]).filter((timeIndex) => {
@@ -57,17 +66,17 @@ class Sequencer extends Component {
     }, () => console.log(this.state));
   }
 
-  getNumDisplaySteps() {
-    return (this.props.frequencies.length * 2) + 1;
+  getNumDisplaySteps(frequencies) {
+    return ((frequencies || this.props.frequencies).length * 2) + 1;
   }
 
   getNumSequenceItems() {
     return 16;
   }
 
-  getInitialSequences() {
+  getInitialSequences(frequencies) {
     const sequences = {};
-    _.range(this.getNumDisplaySteps()).forEach((offset) => {
+    _.range(this.getNumDisplaySteps(frequencies)).forEach((offset) => {
       sequences[offset] = {};
       _.range(this.getNumSequenceItems()).forEach((timeIndex) => {
         sequences[offset][timeIndex] = false;
