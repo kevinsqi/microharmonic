@@ -299,7 +299,7 @@ class App extends Component {
 
         <div className="mt-3">
           <h2 className="h4">Sequencer</h2>
-          <Sequencer frequencies={this.getStepFrequencies()} gain={GAIN_VALUE} />
+          <Sequencer frequencies={this.getStepFrequencies()} gain={GAIN_VALUE} audioContext={this.audioContext} />
         </div>
       </div>
     );

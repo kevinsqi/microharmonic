@@ -42,7 +42,7 @@ class Sequencer extends Component {
     });
 
     console.log('onClickPlay', normalizedSequences, this.props.frequencies);
-    const audioSequencer = new AudioSequencer(new window.AudioContext(), normalizedSequences, this.props.gain);
+    const audioSequencer = new AudioSequencer(this.props.audioContext, normalizedSequences, this.props.gain);
     audioSequencer.play();
   }
 
@@ -88,7 +88,7 @@ class Sequencer extends Component {
   render() {
     return (
       <div>
-        <button className="btn btn-secondary" onClick={this.onClickPlay}>Play</button>
+        <button className="btn btn-secondary" onClick={this.onClickPlay}>Play once</button>
         <button className="btn btn-secondary" onClick={this.onClickReset}>Reset</button>
 
         {
