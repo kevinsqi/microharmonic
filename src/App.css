@@ -1,5 +1,6 @@
 .sequence-item {
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  color: #bbb;
 }
 
 .sequence-item-active {
