@@ -1,3 +1,8 @@
+// TODO: fix errant notes playing when ctrl+tabbing, etc
+// TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
+// TODO: add filter/effect to be similar to sevish-droplet?
+// TODO: use immutable.js?
+
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Keyboard from './Keyboard';
@@ -9,10 +14,6 @@ const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
 const GAIN_VALUE = 0.1;
 
-// TODO: fix errant notes playing when ctrl+tabbing, etc
-// TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
-// TODO: add filter/effect to be similar to sevish-droplet?
-// TODO: use immutable.js?
 class App extends Component {
   constructor(props) {
     super(props);
