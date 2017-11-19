@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import classNames from 'classnames';
+import Keyboard from './Keyboard';
 import Sequencer from './Sequencer';
 import './App.css';
 
@@ -9,28 +9,12 @@ const MAX_NUM_OCTAVES = 10;
 const CENTS_PER_OCTAVE = 1200;
 const GAIN_VALUE = 0.1;
 
-const keyRows = [
-  `zxcvbnm,./`,
-  `asdfghjkl;`,
-  `qwertyuiop`,
-  `1234567890`,
-];
-const keySequence = keyRows.join('');  // keys in ascending pitch order
-
 function getFrequencyRatio(note, numOctaves, numSteps) {
   return Math.pow(2, note * (numOctaves / numSteps))
 }
 
 function getFrequency(rootFrequency, note, numOctaves, numSteps) {
   return rootFrequency * getFrequencyRatio(note, numOctaves, numSteps);
-}
-
-function getOffsetFromKey(key) {
-  const offset = keySequence.indexOf(key);
-  if (offset !== -1) {
-    return offset;
-  }
-  return null;
 }
 
 // TODO: refactor keyboard into separate component
@@ -63,6 +47,7 @@ class App extends Component {
     this.onClickResetSelectedNotes = this.onClickResetSelectedNotes.bind(this);
     this.startNote = this.startNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
+    this.getNoteFromOffset = this.getNoteFromOffset.bind(this);
   }
 
   componentDidMount() {
@@ -77,47 +62,8 @@ class App extends Component {
     });
   }
 
-  onKeyDown(key) {
-    const note = this.getNoteFromKey(key);
-    if (note !== null) {
-      this.startNote(note);
-
-      this.setState({
-        activeNotes: Object.assign({}, this.state.activeNotes, { [note]: true }),
-      });
-    }
-  }
-
-  onKeyUp(key) {
-    const note = this.getNoteFromKey(key);
-    if (note !== null) {
-      this.stopNote(note);
-
-      this.setState({
-        activeNotes: Object.assign({}, this.state.activeNotes, { [note]: false }),
-      });
-    }
-  }
-
   getCentsForNote(note) {
     return (CENTS_PER_OCTAVE * this.state.numOctaves) / this.state.numSteps * note;
-  }
-
-  getNoteFromKey(key) {
-    const offset = getOffsetFromKey(key);
-    return this.getNoteFromOffset(offset);
-  }
-
-  getNoteFromOffset(offset) {
-    const sortedNotes = _.sortBy(Object.keys(this.state.selectedNotes).map((str) => parseInt(str, 10)));
-    const numNotes = sortedNotes.length;
-    if (numNotes > 0) {
-      const octaves = Math.floor(offset / numNotes);
-      const remainder = offset % numNotes;
-      return (octaves * this.state.numSteps) + sortedNotes[remainder];
-    } else {
-      return offset;
-    }
   }
 
   getFrequencyForNote(note) {
@@ -133,6 +79,18 @@ class App extends Component {
       const note = this.getNoteFromOffset(offset);
       return this.getFrequencyForNote(note);
     });
+  }
+
+  getNoteFromOffset(offset) {
+    const sortedNotes = _.sortBy(Object.keys(this.state.selectedNotes).map((str) => parseInt(str, 10)));
+    const numNotes = sortedNotes.length;
+    if (numNotes > 0) {
+      const octaves = Math.floor(offset / numNotes);
+      const remainder = offset % numNotes;
+      return (octaves * this.state.numSteps) + sortedNotes[remainder];
+    } else {
+      return offset;
+    }
   }
 
   startNote(note) {
@@ -258,43 +216,9 @@ class App extends Component {
         <div className="mt-3">
           <h2 className="h4">Keyboard</h2>
           <p>Octave notes are highlighted</p>
-          {
-            _.range(keyRows.length - 1, -1, -1).map((rowIndex) => {
-              const keys = keyRows[rowIndex];
-
-              return (
-                <div className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)} key={rowIndex}>
-                  {
-                    keys.split('').map((keyLabel) => {
-                      const note = this.getNoteFromKey(keyLabel);
-                      return (
-                        <div className="col col-sm-1" key={note}>
-                          <button
-                            className={
-                              classNames('btn btn-key', {
-                                'btn-octave': note % (this.state.numSteps / this.state.numOctaves) === 0,
-                                'btn-active': this.state.activeNotes[note],
-                              })
-                            }
-                            onMouseDown={this.onKeyDown.bind(this, keyLabel)}
-                            onMouseUp={this.onKeyUp.bind(this, keyLabel)}
-                            onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
-                            onTouchStart={this.onKeyDown.bind(this, keyLabel)}
-                            onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
-                            onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
-                          >
-                            {note}<br />
-                            <small>{Math.round(this.getCentsForNote(note))}</small><br />
-                            <small className="text-muted">{keyLabel}</small>
-                          </button>
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
+          <Keyboard
+            getNoteFromOffset={this.getNoteFromOffset}
+          />
         </div>
 
         <div className="mt-3">
