@@ -96,7 +96,7 @@ class Settings extends React.Component {
                     className="form-control"
                     type="checkbox"
                     name={note}
-                    checked={this.props.config.selectedNotes[note]}
+                    checked={!!this.props.config.selectedNotes[note]}
                     onChange={this.onChangeSelectedNotes}
                   />
                   {note}
