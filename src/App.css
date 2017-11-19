@@ -9,9 +9,18 @@
 }
 
 .btn-key {
+  background-color: #ddd;
   width: 100%;
   margin: 1px;
   padding: 0;
+}
+
+.btn-octave {
+  background-color: #bbb;
+}
+
+.btn-active {
+  background-color: #16b8e0;
 }
 
 @media (min-width: 576px) {

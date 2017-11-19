@@ -272,8 +272,8 @@ class App extends Component {
                           <button
                             className={
                               classNames('btn btn-key', {
-                                'btn-secondary': note % (this.state.numSteps / this.state.numOctaves) === 0,
-                                'btn-info': this.state.activeNotes[note],
+                                'btn-octave': note % (this.state.numSteps / this.state.numOctaves) === 0,
+                                'btn-active': this.state.activeNotes[note],
                               })
                             }
                             onMouseDown={this.onKeyDown.bind(this, keyLabel)}
