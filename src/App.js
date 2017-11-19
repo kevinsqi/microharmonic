@@ -51,6 +51,14 @@ class App extends Component {
   }
 
   getNoteFromOffset(offset) {
+    // Notes are a numeric index into the microtone scale.
+    // For example, given a standard 12 EDO scale, note 0 corresponds to minFrequency, note 12 corresponds
+    // to 1200 cents above minFrequency, etc.
+    //
+    // Because you can select specific notes to include in the scale with state.config.selectedNotes,
+    // we have offset which is slightly different from notes.
+    // For example, if selectedNotes == {0, 3, 6}, offset 0 corresponds to note 0, offset 2 corresponds to note 6,
+    // and offset 3 corresponds to note 12.
     const sortedNotes = _.sortBy(Object.keys(this.state.config.selectedNotes).map((str) => parseInt(str, 10)));
     const numNotes = sortedNotes.length;
     if (numNotes > 0) {
