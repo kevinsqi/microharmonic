@@ -7,11 +7,10 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Keyboard from './Keyboard';
 import Sequencer from './Sequencer';
+import Settings from './Settings';
 import { getFrequency } from './noteHelpers';
 import './App.css';
 
-const MAX_NUM_STEPS = 100;
-const MAX_NUM_OCTAVES = 10;
 const GAIN_VALUE = 0.1;
 
 class App extends Component {
@@ -25,15 +24,12 @@ class App extends Component {
       selectedNotes: {},
     };
 
+    // noreintegrate put in state?
     this.audioContext = new window.AudioContext();
 
-    this.onChangeSelectedNotes = this.onChangeSelectedNotes.bind(this);
-    this.onChangeMinFrequency = this.onChangeMinFrequency.bind(this);
-    this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
-    this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
-    this.onClickResetSelectedNotes = this.onClickResetSelectedNotes.bind(this);
     this.getNoteFromOffset = this.getNoteFromOffset.bind(this);
     this.getFrequencyForNote = this.getFrequencyForNote.bind(this);
+    this.setConfig = this.setConfig.bind(this);
   }
 
   getFrequencyForNote(note) {
@@ -59,50 +55,8 @@ class App extends Component {
     }
   }
 
-  reset() {
-    this.setState({
-      selectedNotes: {},
-    });
-  }
-
-  onChangeMinFrequency(event) {
-    this.reset();
-    this.setState({
-      minFrequency: parseFloat(event.target.value),
-    });
-  }
-
-  onChangeNumOctaves(event) {
-    this.reset();
-    this.setState({
-      numOctaves: parseInt(event.target.value, 10),
-    });
-  }
-
-  onChangeNumSteps(event) {
-    this.reset();
-    this.setState({
-      numSteps: parseInt(event.target.value, 10),
-    });
-  }
-
-  onChangeSelectedNotes(event) {
-    const note = parseInt(event.target.name, 10);
-    const value = event.target.checked;
-
-    const selectedNotes = value ? (
-      Object.assign({}, this.state.selectedNotes, { [note]: true })
-    ) : (
-      _.omit(this.state.selectedNotes, note)
-    );
-
-    this.setState({
-      selectedNotes: selectedNotes,
-    });
-  }
-
-  onClickResetSelectedNotes() {
-    this.reset();
+  setConfig(config) {
+    this.setState(config);
   }
 
   render() {
@@ -110,47 +64,10 @@ class App extends Component {
       <div className="m-3">
         <h1>Microtoner</h1>
         <div className="mt-3">
-          <div className="form-inline">
-            Divide
-            <select className="form-control" value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
-              {
-                _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
-              }
-            </select>
-            into
-            <select className="form-control" value={this.state.numSteps} onChange={this.onChangeNumSteps}>
-              {
-                _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
-              }
-            </select>
-          </div>
-
-          <div className="form-inline">
-            Frequency of lowest note:
-            <input className="form-control" type="text" value={this.state.minFrequency} onChange={this.onChangeMinFrequency} /> hz
-          </div>
-
-          <div className="form-inline">
-            Notes to include:
-
-            <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
-            {
-              _.range(this.state.numSteps).map((note) => {
-                return (
-                  <label className="ml-3" key={note}>
-                    <input
-                      className="form-control"
-                      type="checkbox"
-                      name={note}
-                      checked={this.state.selectedNotes[note]}
-                      onChange={this.onChangeSelectedNotes}
-                    />
-                    {note}
-                  </label>
-                );
-              })
-            }
-          </div>
+          <Settings
+            config={this.state}
+            setConfig={this.setConfig}
+          />
         </div>
 
         <div className="mt-3">
