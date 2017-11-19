@@ -6,7 +6,6 @@ import './App.css';
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
-const CENTS_PER_OCTAVE = 1200;
 const GAIN_VALUE = 0.1;
 
 function getFrequencyRatio(note, numOctaves, numSteps) {
@@ -30,12 +29,10 @@ class App extends Component {
       minFrequency: 220,
       numOctaves: 1,
       numSteps: 12,
-      activeNotes: {},
       selectedNotes: {},
     };
 
     this.audioContext = new window.AudioContext();
-    this.activeNotes = {};
     this.gainNode = this.audioContext.createGain();
     this.gainNode.gain.value = GAIN_VALUE;
     this.gainNode.connect(this.audioContext.destination);
@@ -45,8 +42,6 @@ class App extends Component {
     this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
     this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
     this.onClickResetSelectedNotes = this.onClickResetSelectedNotes.bind(this);
-    this.startNote = this.startNote.bind(this);
-    this.stopNote = this.stopNote.bind(this);
     this.getNoteFromOffset = this.getNoteFromOffset.bind(this);
   }
 
@@ -60,10 +55,6 @@ class App extends Component {
     window.addEventListener('keyup', (event) => {
       this.onKeyUp(event.key);
     });
-  }
-
-  getCentsForNote(note) {
-    return (CENTS_PER_OCTAVE * this.state.numOctaves) / this.state.numSteps * note;
   }
 
   getFrequencyForNote(note) {
@@ -93,36 +84,10 @@ class App extends Component {
     }
   }
 
-  startNote(note) {
-    if (this.activeNotes[note]) {
-      return;
-    }
-
-    let oscillator = this.audioContext.createOscillator();
-    oscillator.type = 'sine';
-    oscillator.frequency.value = this.getFrequencyForNote(note);
-    oscillator.connect(this.gainNode);
-    oscillator.start(0);
-
-    console.log('playing note', note, 'at frequency', oscillator.frequency.value);
-
-    this.activeNotes[note] = oscillator;
-  }
-
   reset() {
     this.setState({
       selectedNotes: {},
     });
-  }
-
-  stopNote(note) {
-    if (!this.activeNotes[note]) {
-      return;
-    }
-
-    this.activeNotes[note].stop(0);
-    this.activeNotes[note].disconnect();
-    delete this.activeNotes[note];
   }
 
   onChangeMinFrequency(event) {
