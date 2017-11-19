@@ -1,7 +1,4 @@
-// TODO: fix errant notes playing when ctrl+tabbing, etc
-// TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: add filter/effect to be similar to sevish-droplet?
-// TODO: use immutable.js?
 
 import React, { Component } from 'react';
 import _ from 'lodash';
@@ -26,7 +23,6 @@ class App extends Component {
       },
     };
 
-    // noreintegrate put in state?
     this.audioContext = new window.AudioContext();
 
     this.getNoteFromOffset = this.getNoteFromOffset.bind(this);

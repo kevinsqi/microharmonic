@@ -1,3 +1,6 @@
+// TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
+// TODO: fix errant notes playing when ctrl+tabbing, etc
+
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
