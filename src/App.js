@@ -1,43 +1,18 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
-import classNames from 'classnames';
-import Sequencer from './Sequencer';
-import './App.css';
-
-const MAX_NUM_STEPS = 100;
-const MAX_NUM_OCTAVES = 10;
-const CENTS_PER_OCTAVE = 1200;
-const GAIN_VALUE = 0.1;
-
-const keyRows = [
-  `zxcvbnm,./`,
-  `asdfghjkl;`,
-  `qwertyuiop`,
-  `1234567890`,
-];
-const keySequence = keyRows.join('');  // keys in ascending pitch order
-
-function getFrequencyRatio(note, numOctaves, numSteps) {
-  return Math.pow(2, note * (numOctaves / numSteps))
-}
-
-function getFrequency(rootFrequency, note, numOctaves, numSteps) {
-  return rootFrequency * getFrequencyRatio(note, numOctaves, numSteps);
-}
-
-function getOffsetFromKey(key) {
-  const offset = keySequence.indexOf(key);
-  if (offset !== -1) {
-    return offset;
-  }
-  return null;
-}
-
-// TODO: refactor keyboard into separate component
 // TODO: fix errant notes playing when ctrl+tabbing, etc
 // TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: add filter/effect to be similar to sevish-droplet?
 // TODO: use immutable.js?
+
+import React, { Component } from 'react';
+import _ from 'lodash';
+import Keyboard from './Keyboard';
+import Sequencer from './Sequencer';
+import Settings from './Settings';
+import { getFrequency } from './noteHelpers';
+import './App.css';
+
+const GAIN_VALUE = 0.1;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -46,66 +21,26 @@ class App extends Component {
       minFrequency: 220,
       numOctaves: 1,
       numSteps: 12,
-      activeNotes: {},
       selectedNotes: {},
     };
 
+    // noreintegrate put in state?
     this.audioContext = new window.AudioContext();
-    this.activeNotes = {};
-    this.gainNode = this.audioContext.createGain();
-    this.gainNode.gain.value = GAIN_VALUE;
-    this.gainNode.connect(this.audioContext.destination);
 
-    this.onChangeSelectedNotes = this.onChangeSelectedNotes.bind(this);
-    this.onChangeMinFrequency = this.onChangeMinFrequency.bind(this);
-    this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
-    this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
-    this.onClickResetSelectedNotes = this.onClickResetSelectedNotes.bind(this);
-    this.startNote = this.startNote.bind(this);
-    this.stopNote = this.stopNote.bind(this);
+    this.getNoteFromOffset = this.getNoteFromOffset.bind(this);
+    this.getFrequencyForNote = this.getFrequencyForNote.bind(this);
+    this.setConfig = this.setConfig.bind(this);
   }
 
-  componentDidMount() {
-    // TODO: unbind this on unmount
+  getFrequencyForNote(note) {
+    return getFrequency(this.state.minFrequency, note, this.state.numOctaves, this.state.numSteps);
+  }
 
-    window.addEventListener('keydown', (event) => {
-      this.onKeyDown(event.key);
+  getStepFrequencies() {
+    return _.range(this.state.numSteps + 1).map((offset) => {
+      const note = this.getNoteFromOffset(offset);
+      return this.getFrequencyForNote(note);
     });
-
-    window.addEventListener('keyup', (event) => {
-      this.onKeyUp(event.key);
-    });
-  }
-
-  onKeyDown(key) {
-    const note = this.getNoteFromKey(key);
-    if (note !== null) {
-      this.startNote(note);
-
-      this.setState({
-        activeNotes: Object.assign({}, this.state.activeNotes, { [note]: true }),
-      });
-    }
-  }
-
-  onKeyUp(key) {
-    const note = this.getNoteFromKey(key);
-    if (note !== null) {
-      this.stopNote(note);
-
-      this.setState({
-        activeNotes: Object.assign({}, this.state.activeNotes, { [note]: false }),
-      });
-    }
-  }
-
-  getCentsForNote(note) {
-    return (CENTS_PER_OCTAVE * this.state.numOctaves) / this.state.numSteps * note;
-  }
-
-  getNoteFromKey(key) {
-    const offset = getOffsetFromKey(key);
-    return this.getNoteFromOffset(offset);
   }
 
   getNoteFromOffset(offset) {
@@ -120,91 +55,8 @@ class App extends Component {
     }
   }
 
-  getFrequencyForNote(note) {
-    return getFrequency(this.state.minFrequency, note, this.state.numOctaves, this.state.numSteps);
-  }
-
-  getFrequencyRatioForNote(note) {
-    return getFrequencyRatio(note, this.state.numOctaves, this.state.numSteps);
-  }
-
-  getStepFrequencies() {
-    return _.range(this.state.numSteps + 1).map((offset) => {
-      const note = this.getNoteFromOffset(offset);
-      return this.getFrequencyForNote(note);
-    });
-  }
-
-  startNote(note) {
-    if (this.activeNotes[note]) {
-      return;
-    }
-
-    let oscillator = this.audioContext.createOscillator();
-    oscillator.type = 'sine';
-    oscillator.frequency.value = this.getFrequencyForNote(note);
-    oscillator.connect(this.gainNode);
-    oscillator.start(0);
-
-    console.log('playing note', note, 'at frequency', oscillator.frequency.value);
-
-    this.activeNotes[note] = oscillator;
-  }
-
-  reset() {
-    this.setState({
-      selectedNotes: {},
-    });
-  }
-
-  stopNote(note) {
-    if (!this.activeNotes[note]) {
-      return;
-    }
-
-    this.activeNotes[note].stop(0);
-    this.activeNotes[note].disconnect();
-    delete this.activeNotes[note];
-  }
-
-  onChangeMinFrequency(event) {
-    this.reset();
-    this.setState({
-      minFrequency: parseFloat(event.target.value),
-    });
-  }
-
-  onChangeNumOctaves(event) {
-    this.reset();
-    this.setState({
-      numOctaves: parseInt(event.target.value, 10),
-    });
-  }
-
-  onChangeNumSteps(event) {
-    this.reset();
-    this.setState({
-      numSteps: parseInt(event.target.value, 10),
-    });
-  }
-
-  onChangeSelectedNotes(event) {
-    const note = parseInt(event.target.name, 10);
-    const value = event.target.checked;
-
-    const selectedNotes = value ? (
-      Object.assign({}, this.state.selectedNotes, { [note]: true })
-    ) : (
-      _.omit(this.state.selectedNotes, note)
-    );
-
-    this.setState({
-      selectedNotes: selectedNotes,
-    });
-  }
-
-  onClickResetSelectedNotes() {
-    this.reset();
+  setConfig(config) {
+    this.setState(config);
   }
 
   render() {
@@ -212,94 +64,31 @@ class App extends Component {
       <div className="m-3">
         <h1>Microtoner</h1>
         <div className="mt-3">
-          <div className="form-inline">
-            Divide
-            <select className="form-control" value={this.state.numOctaves} onChange={this.onChangeNumOctaves}>
-              {
-                _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
-              }
-            </select>
-            into
-            <select className="form-control" value={this.state.numSteps} onChange={this.onChangeNumSteps}>
-              {
-                _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
-              }
-            </select>
-          </div>
-
-          <div className="form-inline">
-            Frequency of lowest note:
-            <input className="form-control" type="text" value={this.state.minFrequency} onChange={this.onChangeMinFrequency} /> hz
-          </div>
-
-          <div className="form-inline">
-            Notes to include:
-
-            <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
-            {
-              _.range(this.state.numSteps).map((note) => {
-                return (
-                  <label className="ml-3" key={note}>
-                    <input
-                      className="form-control"
-                      type="checkbox"
-                      name={note}
-                      checked={this.state.selectedNotes[note]}
-                      onChange={this.onChangeSelectedNotes}
-                    />
-                    {note}
-                  </label>
-                );
-              })
-            }
-          </div>
+          <Settings
+            config={this.state}
+            setConfig={this.setConfig}
+          />
         </div>
 
         <div className="mt-3">
           <h2 className="h4">Keyboard</h2>
           <p>Octave notes are highlighted</p>
-          {
-            _.range(keyRows.length - 1, -1, -1).map((rowIndex) => {
-              const keys = keyRows[rowIndex];
-
-              return (
-                <div className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)} key={rowIndex}>
-                  {
-                    keys.split('').map((keyLabel) => {
-                      const note = this.getNoteFromKey(keyLabel);
-                      return (
-                        <div className="col col-sm-1" key={note}>
-                          <button
-                            className={
-                              classNames('btn btn-key', {
-                                'btn-octave': note % (this.state.numSteps / this.state.numOctaves) === 0,
-                                'btn-active': this.state.activeNotes[note],
-                              })
-                            }
-                            onMouseDown={this.onKeyDown.bind(this, keyLabel)}
-                            onMouseUp={this.onKeyUp.bind(this, keyLabel)}
-                            onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
-                            onTouchStart={this.onKeyDown.bind(this, keyLabel)}
-                            onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
-                            onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
-                          >
-                            {note}<br />
-                            <small>{Math.round(this.getCentsForNote(note))}</small><br />
-                            <small className="text-muted">{keyLabel}</small>
-                          </button>
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
+          <Keyboard
+            getNoteFromOffset={this.getNoteFromOffset}
+            getFrequencyForNote={this.getFrequencyForNote}
+            config={this.state}
+            audioContext={this.audioContext}
+            gain={GAIN_VALUE}
+          />
         </div>
 
         <div className="mt-3">
           <h2 className="h4">Sequencer</h2>
-          <Sequencer frequencies={this.getStepFrequencies()} gain={GAIN_VALUE} audioContext={this.audioContext} />
+          <Sequencer
+            frequencies={this.getStepFrequencies()}
+            gain={GAIN_VALUE}
+            audioContext={this.audioContext}
+          />
         </div>
       </div>
     );
