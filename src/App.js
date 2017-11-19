@@ -2,21 +2,13 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Keyboard from './Keyboard';
 import Sequencer from './Sequencer';
+import { getFrequency } from './noteHelpers';
 import './App.css';
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
 const GAIN_VALUE = 0.1;
 
-function getFrequencyRatio(note, numOctaves, numSteps) {
-  return Math.pow(2, note * (numOctaves / numSteps))
-}
-
-function getFrequency(rootFrequency, note, numOctaves, numSteps) {
-  return rootFrequency * getFrequencyRatio(note, numOctaves, numSteps);
-}
-
-// TODO: refactor keyboard into separate component
 // TODO: fix errant notes playing when ctrl+tabbing, etc
 // TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: add filter/effect to be similar to sevish-droplet?
@@ -45,10 +37,6 @@ class App extends Component {
 
   getFrequencyForNote(note) {
     return getFrequency(this.state.minFrequency, note, this.state.numOctaves, this.state.numSteps);
-  }
-
-  getFrequencyRatioForNote(note) {
-    return getFrequencyRatio(note, this.state.numOctaves, this.state.numSteps);
   }
 
   getStepFrequencies() {
