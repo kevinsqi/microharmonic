@@ -18,10 +18,12 @@ class App extends Component {
     super(props);
 
     this.state = {
-      minFrequency: 220,
-      numOctaves: 1,
-      numSteps: 12,
-      selectedNotes: {},
+      config: {
+        minFrequency: 220,
+        numOctaves: 1,
+        numSteps: 12,
+        selectedNotes: {},
+      },
     };
 
     // noreintegrate put in state?
@@ -33,39 +35,47 @@ class App extends Component {
   }
 
   getFrequencyForNote(note) {
-    return getFrequency(this.state.minFrequency, note, this.state.numOctaves, this.state.numSteps);
+    return getFrequency(
+      this.state.config.minFrequency,
+      note,
+      this.state.config.numOctaves,
+      this.state.config.numSteps,
+    );
   }
 
   getStepFrequencies() {
-    return _.range(this.state.numSteps + 1).map((offset) => {
+    return _.range(this.state.config.numSteps + 1).map((offset) => {
       const note = this.getNoteFromOffset(offset);
       return this.getFrequencyForNote(note);
     });
   }
 
   getNoteFromOffset(offset) {
-    const sortedNotes = _.sortBy(Object.keys(this.state.selectedNotes).map((str) => parseInt(str, 10)));
+    const sortedNotes = _.sortBy(Object.keys(this.state.config.selectedNotes).map((str) => parseInt(str, 10)));
     const numNotes = sortedNotes.length;
     if (numNotes > 0) {
       const octaves = Math.floor(offset / numNotes);
       const remainder = offset % numNotes;
-      return (octaves * this.state.numSteps) + sortedNotes[remainder];
+      return (octaves * this.state.config.numSteps) + sortedNotes[remainder];
     } else {
       return offset;
     }
   }
 
   setConfig(config) {
-    this.setState(config);
+    this.setState({
+      config: Object.assign({}, this.state.config, config),
+    });
   }
 
   render() {
     return (
       <div className="m-3">
         <h1>Microtoner</h1>
+
         <div className="mt-3">
           <Settings
-            config={this.state}
+            config={this.state.config}
             setConfig={this.setConfig}
           />
         </div>
@@ -76,7 +86,7 @@ class App extends Component {
           <Keyboard
             getNoteFromOffset={this.getNoteFromOffset}
             getFrequencyForNote={this.getFrequencyForNote}
-            config={this.state}
+            config={this.state.config}
             audioContext={this.audioContext}
             gain={GAIN_VALUE}
           />
