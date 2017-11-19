@@ -29,9 +29,24 @@ class Keyboard extends React.Component {
     };
 
     this.activeNotes = {};
+    this.gainNode = props.audioContext.createGain();
+    this.gainNode.gain.value = props.gain;
+    this.gainNode.connect(props.audioContext.destination);
 
     this.startNote = this.startNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
+  }
+
+  componentDidMount() {
+    // TODO: unbind this on unmount
+
+    window.addEventListener('keydown', (event) => {
+      this.onKeyDown(event.key);
+    });
+
+    window.addEventListener('keyup', (event) => {
+      this.onKeyUp(event.key);
+    });
   }
 
   onKeyDown(key) {
@@ -57,7 +72,7 @@ class Keyboard extends React.Component {
   }
 
   getCentsForNote(note) {
-    return (CENTS_PER_OCTAVE * this.state.numOctaves) / this.state.numSteps * note;
+    return (CENTS_PER_OCTAVE * this.props.config.numOctaves) / this.props.config.numSteps * note;
   }
 
   getNoteFromKey(key) {
@@ -70,9 +85,9 @@ class Keyboard extends React.Component {
       return;
     }
 
-    let oscillator = this.audioContext.createOscillator();
+    let oscillator = this.props.audioContext.createOscillator();
     oscillator.type = 'sine';
-    oscillator.frequency.value = this.getFrequencyForNote(note);
+    oscillator.frequency.value = this.props.getFrequencyForNote(note);
     oscillator.connect(this.gainNode);
     oscillator.start(0);
 
@@ -108,7 +123,7 @@ class Keyboard extends React.Component {
                         <button
                           className={
                             classNames('btn btn-key', {
-                              'btn-octave': note % (this.state.numSteps / this.state.numOctaves) === 0,
+                              'btn-octave': note % (this.props.config.numSteps / this.props.config.numOctaves) === 0,
                               'btn-active': this.state.activeNotes[note],
                             })
                           }

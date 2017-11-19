@@ -33,9 +33,6 @@ class App extends Component {
     };
 
     this.audioContext = new window.AudioContext();
-    this.gainNode = this.audioContext.createGain();
-    this.gainNode.gain.value = GAIN_VALUE;
-    this.gainNode.connect(this.audioContext.destination);
 
     this.onChangeSelectedNotes = this.onChangeSelectedNotes.bind(this);
     this.onChangeMinFrequency = this.onChangeMinFrequency.bind(this);
@@ -43,18 +40,7 @@ class App extends Component {
     this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
     this.onClickResetSelectedNotes = this.onClickResetSelectedNotes.bind(this);
     this.getNoteFromOffset = this.getNoteFromOffset.bind(this);
-  }
-
-  componentDidMount() {
-    // TODO: unbind this on unmount
-
-    window.addEventListener('keydown', (event) => {
-      this.onKeyDown(event.key);
-    });
-
-    window.addEventListener('keyup', (event) => {
-      this.onKeyUp(event.key);
-    });
+    this.getFrequencyForNote = this.getFrequencyForNote.bind(this);
   }
 
   getFrequencyForNote(note) {
@@ -183,12 +169,20 @@ class App extends Component {
           <p>Octave notes are highlighted</p>
           <Keyboard
             getNoteFromOffset={this.getNoteFromOffset}
+            getFrequencyForNote={this.getFrequencyForNote}
+            config={this.state}
+            audioContext={this.audioContext}
+            gain={GAIN_VALUE}
           />
         </div>
 
         <div className="mt-3">
           <h2 className="h4">Sequencer</h2>
-          <Sequencer frequencies={this.getStepFrequencies()} gain={GAIN_VALUE} audioContext={this.audioContext} />
+          <Sequencer
+            frequencies={this.getStepFrequencies()}
+            gain={GAIN_VALUE}
+            audioContext={this.audioContext}
+          />
         </div>
       </div>
     );
