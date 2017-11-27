@@ -5,19 +5,17 @@ import _ from 'lodash';
 import classNames from 'classnames';
 import Oscillator from './audio/Oscillator';
 
-// TODO: rename KEY_ROWS, KEY_SEQUENCE
-const keyRows = [
+const KEY_LABELS_IN_ROWS = [
   `zxcvbnm,./`,
   `asdfghjkl;`,
   `qwertyuiop`,
   `1234567890`,
 ];
-const keySequence = keyRows.join('');  // keys in ascending pitch order
-
+const KEY_LABELS = KEY_LABELS_IN_ROWS.join('');  // keys in ascending pitch order
 const CENTS_PER_OCTAVE = 1200;
 
 function getOffsetFromKeyLabel(keyLabel) {
-  const offset = keySequence.indexOf(keyLabel);
+  const offset = KEY_LABELS.indexOf(keyLabel);
   if (offset !== -1) {
     return offset;
   }
@@ -121,11 +119,19 @@ class Keyboard extends React.Component {
     return (
       <div>
         {
-          _.range(keyRows.length - 1, -1, -1).map((rowIndex) => {
-            const keyLabels = keyRows[rowIndex].split('');
+          _.range(KEY_LABELS_IN_ROWS.length - 1, -1, -1).map((rowIndex) => {
+            const keyLabels = KEY_LABELS_IN_ROWS[rowIndex].split('');
 
             return (
-              <div className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)} key={rowIndex}>
+              <div
+                className={classNames(
+                  'row',
+                  'no-gutters',
+                  'keyrow',
+                  `keyrow-${rowIndex}`
+                )}
+                key={rowIndex}
+              >
                 {keyLabels.map((keyLabel) => this.renderKey(keyLabel))}
               </div>
             );
