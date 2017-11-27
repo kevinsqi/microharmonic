@@ -1,10 +1,11 @@
-// TODO: separate audio stuff into another file, separate from component - see https://github.com/jxnblk/bumpkit/blob/master/demo/bumpkit.js for ex
 // TODO: fix errant notes playing when ctrl+tabbing, etc
 
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
+import Oscillator from './audio/Oscillator';
 
+// TODO: rename KEY_ROWS, KEY_SEQUENCE
 const keyRows = [
   `zxcvbnm,./`,
   `asdfghjkl;`,
@@ -31,10 +32,10 @@ class Keyboard extends React.Component {
       activeNotes: {},
     };
 
-    this.activeNotes = {};
-    this.gainNode = props.audioContext.createGain();
-    this.gainNode.gain.value = props.gain;
-    this.gainNode.connect(props.audioContext.destination);
+    this.oscillator = new Oscillator({
+      audioContext: props.audioContext,
+      gain: props.gain,
+    });
   }
 
   componentDidMount() {
@@ -48,6 +49,16 @@ class Keyboard extends React.Component {
       this.onKeyUp(event.key);
     });
   }
+
+  startNote = (note) => {
+    const freq = this.props.getFrequencyForNote(note);
+    this.oscillator.start(freq);
+  };
+
+  stopNote = (note) => {
+    const freq = this.props.getFrequencyForNote(note);
+    this.oscillator.stop(freq);
+  };
 
   onKeyDown(key) {
     const note = this.getNoteFromKey(key);
@@ -79,32 +90,6 @@ class Keyboard extends React.Component {
     const offset = getOffsetFromKey(key);
     return this.props.getNoteFromOffset(offset);
   }
-
-  startNote = (note) => {
-    if (this.activeNotes[note]) {
-      return;
-    }
-
-    let oscillator = this.props.audioContext.createOscillator();
-    oscillator.type = 'sine';
-    oscillator.frequency.value = this.props.getFrequencyForNote(note);
-    oscillator.connect(this.gainNode);
-    oscillator.start(0);
-
-    console.log('playing note', note, 'at frequency', oscillator.frequency.value);
-
-    this.activeNotes[note] = oscillator;
-  };
-
-  stopNote = (note) => {
-    if (!this.activeNotes[note]) {
-      return;
-    }
-
-    this.activeNotes[note].stop(0);
-    this.activeNotes[note].disconnect();
-    delete this.activeNotes[note];
-  };
 
   render() {
     return (
