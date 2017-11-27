@@ -16,8 +16,8 @@ const keySequence = keyRows.join('');  // keys in ascending pitch order
 
 const CENTS_PER_OCTAVE = 1200;
 
-function getOffsetFromKey(key) {
-  const offset = keySequence.indexOf(key);
+function getOffsetFromKeyLabel(keyLabel) {
+  const offset = keySequence.indexOf(keyLabel);
   if (offset !== -1) {
     return offset;
   }
@@ -60,8 +60,8 @@ class Keyboard extends React.Component {
     this.oscillator.stop(freq);
   };
 
-  onKeyDown(key) {
-    const note = this.getNoteFromKey(key);
+  onKeyDown(keyLabel) {
+    const note = this.getNoteFromKeyLabel(keyLabel);
     if (note !== null) {
       this.startNote(note);
 
@@ -71,8 +71,8 @@ class Keyboard extends React.Component {
     }
   }
 
-  onKeyUp(key) {
-    const note = this.getNoteFromKey(key);
+  onKeyUp(keyLabel) {
+    const note = this.getNoteFromKeyLabel(keyLabel);
     if (note !== null) {
       this.stopNote(note);
 
@@ -86,13 +86,13 @@ class Keyboard extends React.Component {
     return (CENTS_PER_OCTAVE * this.props.config.numOctaves) / this.props.config.numSteps * note;
   }
 
-  getNoteFromKey(key) {
-    const offset = getOffsetFromKey(key);
+  getNoteFromKeyLabel(keyLabel) {
+    const offset = getOffsetFromKeyLabel(keyLabel);
     return this.props.getNoteFromOffset(offset);
   }
 
   renderKey(keyLabel) {
-    const note = this.getNoteFromKey(keyLabel);
+    const note = this.getNoteFromKeyLabel(keyLabel);
     return (
       <div className="col col-sm-1" key={note}>
         <button
