@@ -7,44 +7,34 @@ const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
 
 class Settings extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onChangeSelectedNotes = this.onChangeSelectedNotes.bind(this);
-    this.onChangeMinFrequency = this.onChangeMinFrequency.bind(this);
-    this.onChangeNumOctaves = this.onChangeNumOctaves.bind(this);
-    this.onChangeNumSteps = this.onChangeNumSteps.bind(this);
-    this.onClickResetSelectedNotes = this.onClickResetSelectedNotes.bind(this);
-  }
-
   reset() {
     this.props.setConfig({
       selectedNotes: {},
     });
   }
 
-  onChangeMinFrequency(event) {
+  onChangeMinFrequency = (event) => {
     this.reset();
     this.props.setConfig({
       minFrequency: parseFloat(event.target.value),
     });
-  }
+  };
 
-  onChangeNumOctaves(event) {
+  onChangeNumOctaves = (event) => {
     this.reset();
     this.props.setConfig({
       numOctaves: parseInt(event.target.value, 10),
     });
-  }
+  };
 
-  onChangeNumSteps(event) {
+  onChangeNumSteps = (event) => {
     this.reset();
     this.props.setConfig({
       numSteps: parseInt(event.target.value, 10),
     });
-  }
+  };
 
-  onChangeSelectedNotes(event) {
+  onChangeSelectedNotes = (event) => {
     const note = parseInt(event.target.name, 10);
     const value = event.target.checked;
 
@@ -57,11 +47,11 @@ class Settings extends React.Component {
     this.props.setConfig({
       selectedNotes: selectedNotes,
     });
-  }
+  };
 
-  onClickResetSelectedNotes() {
+  onClickResetSelectedNotes = () => {
     this.reset();
-  }
+  };
 
   render() {
     return (

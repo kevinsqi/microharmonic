@@ -12,10 +12,6 @@ class Sequencer extends Component {
     this.state = {
       sequences: this.getInitialSequences(),
     };
-
-    this.onClickPlay = this.onClickPlay.bind(this);
-    this.onClickReset = this.onClickReset.bind(this);
-    this.onClickSequenceItem = this.onClickSequenceItem.bind(this);
   }
 
   // TODO: refactor, move sequences from state to props?
@@ -27,7 +23,7 @@ class Sequencer extends Component {
     }
   }
 
-  onClickPlay() {
+  onClickPlay = () => {
     const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
       const activeTimeIndexes = Object.keys(this.state.sequences[offset]).filter((timeIndex) => {
         return this.state.sequences[offset][timeIndex];
@@ -44,15 +40,15 @@ class Sequencer extends Component {
     console.log('onClickPlay', normalizedSequences, this.props.frequencies);
     const audioSequencer = new AudioSequencer(this.props.audioContext, normalizedSequences, this.props.gain);
     audioSequencer.play();
-  }
+  };
 
-  onClickReset() {
+  onClickReset = () => {
     this.setState({
       sequences: this.getInitialSequences(),
     });
-  }
+  };
 
-  onClickSequenceItem(offset, timeIndex) {
+  onClickSequenceItem = (offset, timeIndex) => {
     console.log('onClickSequenceItem', offset, timeIndex);
 
     const currentlyActive = this.state.sequences[offset][timeIndex];
@@ -64,7 +60,7 @@ class Sequencer extends Component {
         }
       }),
     }, () => console.log(this.state));
-  }
+  };
 
   getNumDisplaySteps(frequencies) {
     return (frequencies || this.props.frequencies).length;

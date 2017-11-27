@@ -35,9 +35,6 @@ class Keyboard extends React.Component {
     this.gainNode = props.audioContext.createGain();
     this.gainNode.gain.value = props.gain;
     this.gainNode.connect(props.audioContext.destination);
-
-    this.startNote = this.startNote.bind(this);
-    this.stopNote = this.stopNote.bind(this);
   }
 
   componentDidMount() {
@@ -83,7 +80,7 @@ class Keyboard extends React.Component {
     return this.props.getNoteFromOffset(offset);
   }
 
-  startNote(note) {
+  startNote = (note) => {
     if (this.activeNotes[note]) {
       return;
     }
@@ -97,9 +94,9 @@ class Keyboard extends React.Component {
     console.log('playing note', note, 'at frequency', oscillator.frequency.value);
 
     this.activeNotes[note] = oscillator;
-  }
+  };
 
-  stopNote(note) {
+  stopNote = (note) => {
     if (!this.activeNotes[note]) {
       return;
     }
@@ -107,7 +104,7 @@ class Keyboard extends React.Component {
     this.activeNotes[note].stop(0);
     this.activeNotes[note].disconnect();
     delete this.activeNotes[note];
-  }
+  };
 
   render() {
     return (

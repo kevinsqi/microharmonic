@@ -24,20 +24,16 @@ class App extends Component {
     };
 
     this.audioContext = new window.AudioContext();
-
-    this.getNoteFromOffset = this.getNoteFromOffset.bind(this);
-    this.getFrequencyForNote = this.getFrequencyForNote.bind(this);
-    this.setConfig = this.setConfig.bind(this);
   }
 
-  getFrequencyForNote(note) {
+  getFrequencyForNote = (note) => {
     return getFrequency(
       this.state.config.minFrequency,
       note,
       this.state.config.numOctaves,
       this.state.config.numSteps,
     );
-  }
+  };
 
   getStepFrequencies() {
     return _.range(this.state.config.numSteps + 1).map((offset) => {
@@ -46,7 +42,7 @@ class App extends Component {
     });
   }
 
-  getNoteFromOffset(offset) {
+  getNoteFromOffset = (offset) => {
     // Notes are a numeric index into the microtone scale.
     // For example, given a standard 12 EDO scale, note 0 corresponds to minFrequency, note 12 corresponds
     // to 1200 cents above minFrequency, etc.
@@ -64,13 +60,13 @@ class App extends Component {
     } else {
       return offset;
     }
-  }
+  };
 
-  setConfig(config) {
+  setConfig = (config) => {
     this.setState({
       config: Object.assign({}, this.state.config, config),
     });
-  }
+  };
 
   render() {
     return (
