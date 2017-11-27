@@ -3,7 +3,7 @@
 ## Setup
 
 ```
-npm install
+yarn install
 ```
 
 ## Running the server
@@ -18,4 +18,10 @@ Open the app at `localhost:3000`.
 
 ```
 npm test
+```
+
+## Publishing changes
+
+```
+npm run deploy
 ```
