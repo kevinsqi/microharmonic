@@ -1,4 +1,4 @@
-# Microtoner
+# Microtonal
 
 ## Setup
 

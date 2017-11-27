@@ -71,7 +71,7 @@ class App extends Component {
   render() {
     return (
       <div className="m-3">
-        <h1>Microtoner</h1>
+        <h1>Microtonal</h1>
 
         <div className="mt-3">
           <Settings
