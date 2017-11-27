@@ -91,42 +91,42 @@ class Keyboard extends React.Component {
     return this.props.getNoteFromOffset(offset);
   }
 
+  renderKey(keyLabel) {
+    const note = this.getNoteFromKey(keyLabel);
+    return (
+      <div className="col col-sm-1" key={note}>
+        <button
+          className={
+            classNames('btn btn-key', {
+              'btn-octave': note % (this.props.config.numSteps / this.props.config.numOctaves) === 0,
+              'btn-active': this.state.activeNotes[note],
+            })
+          }
+          onMouseDown={this.onKeyDown.bind(this, keyLabel)}
+          onMouseUp={this.onKeyUp.bind(this, keyLabel)}
+          onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
+          onTouchStart={this.onKeyDown.bind(this, keyLabel)}
+          onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
+          onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
+        >
+          {note}<br />
+          <small>{Math.round(this.getCentsForNote(note))}</small><br />
+          <small className="text-muted">{keyLabel}</small>
+        </button>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
         {
           _.range(keyRows.length - 1, -1, -1).map((rowIndex) => {
-            const keys = keyRows[rowIndex];
+            const keyLabels = keyRows[rowIndex].split('');
 
             return (
               <div className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)} key={rowIndex}>
-                {
-                  keys.split('').map((keyLabel) => {
-                    const note = this.getNoteFromKey(keyLabel);
-                    return (
-                      <div className="col col-sm-1" key={note}>
-                        <button
-                          className={
-                            classNames('btn btn-key', {
-                              'btn-octave': note % (this.props.config.numSteps / this.props.config.numOctaves) === 0,
-                              'btn-active': this.state.activeNotes[note],
-                            })
-                          }
-                          onMouseDown={this.onKeyDown.bind(this, keyLabel)}
-                          onMouseUp={this.onKeyUp.bind(this, keyLabel)}
-                          onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
-                          onTouchStart={this.onKeyDown.bind(this, keyLabel)}
-                          onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
-                          onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
-                        >
-                          {note}<br />
-                          <small>{Math.round(this.getCentsForNote(note))}</small><br />
-                          <small className="text-muted">{keyLabel}</small>
-                        </button>
-                      </div>
-                    );
-                  })
-                }
+                {keyLabels.map((keyLabel) => this.renderKey(keyLabel))}
               </div>
             );
           })
