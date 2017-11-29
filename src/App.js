@@ -72,6 +72,7 @@ class App extends Component {
     return (
       <div className="m-3">
         <h1>Microtonal</h1>
+        <div>A web microtone keyboard</div>
 
         <div className="mt-3">
           <Settings
@@ -79,6 +80,15 @@ class App extends Component {
             setConfig={this.setConfig}
           />
         </div>
+
+        <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <a className="nav-link active">Keyboard</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link">Sequencer</a>
+          </li>
+        </ul>
 
         <div className="mt-3">
           <h2 className="h4">Keyboard</h2>
