@@ -1,5 +1,3 @@
-// TODO: use formik for forms?
-
 import React from 'react';
 import _ from 'lodash';
 

@@ -38,7 +38,11 @@ class Sequencer extends Component {
     });
 
     console.log('onClickPlay', normalizedSequences, this.props.frequencies);
-    const audioSequencer = new AudioSequencer(this.props.audioContext, normalizedSequences, this.props.gain);
+    const audioSequencer = new AudioSequencer({
+      audioContext: this.props.audioContext,
+      sequences: normalizedSequences,
+      gain: this.props.gain
+    });
     audioSequencer.play();
   };
 

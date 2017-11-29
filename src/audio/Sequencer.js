@@ -1,4 +1,5 @@
-/* noreintegrate example
+/*
+//TODO cleanup docs
 window.seq = new Sequencer(new window.AudioContext(), [
   [
     [440, 0, 1],
@@ -15,9 +16,13 @@ window.seq = new Sequencer(new window.AudioContext(), [
 ]);
 */
 
-// TODO: refactor into objects
+// TODO: refactor into objects instead of arrays
 class Sequencer {
-  constructor(audioContext, sequences, gain) {
+  constructor({
+    audioContext,
+    sequences,
+    gain
+  } = {}) {
     this.context = audioContext;
     this.gain = gain;
     this.sequences = sequences;
@@ -56,7 +61,7 @@ class Sequencer {
     );
     oscillator.stop(now + endOffset);
 
-    // noreintegrate correct?
+    // TODO correct?
     oscillator.onended = () => {
       gainNode.disconnect();
       oscillator.disconnect();
