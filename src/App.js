@@ -22,6 +22,7 @@ class App extends Component {
 
     this.state = {
       config: {
+        customCentValues: [],
         minFrequency: 220,
         numOctaves: 1,
         numSteps: 12,
@@ -81,7 +82,7 @@ class App extends Component {
           <h1>Microtonal</h1>
           <div>A web microtone keyboard</div>
 
-          <div className="mt-3">
+          <div className="my-3">
             <Settings
               config={this.state.config}
               setConfig={this.setConfig}
