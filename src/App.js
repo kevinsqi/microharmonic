@@ -2,6 +2,12 @@
 
 import React, { Component } from 'react';
 import _ from 'lodash';
+import {
+  BrowserRouter as Router,
+  NavLink,
+  Route,
+} from 'react-router-dom';
+
 import Keyboard from './Keyboard';
 import Sequencer from './Sequencer';
 import Settings from './Settings';
@@ -70,37 +76,68 @@ class App extends Component {
 
   render() {
     return (
-      <div className="m-3">
-        <h1>Microtonal</h1>
+      <Router>
+        <div className="m-3">
+          <h1>Microtonal</h1>
+          <div>A web microtone keyboard</div>
 
-        <div className="mt-3">
-          <Settings
-            config={this.state.config}
-            setConfig={this.setConfig}
-          />
-        </div>
+          <div className="mt-3">
+            <Settings
+              config={this.state.config}
+              setConfig={this.setConfig}
+            />
+          </div>
 
-        <div className="mt-3">
-          <h2 className="h4">Keyboard</h2>
-          <p>Octave notes are highlighted</p>
-          <Keyboard
-            getNoteFromOffset={this.getNoteFromOffset}
-            getFrequencyForNote={this.getFrequencyForNote}
-            config={this.state.config}
-            audioContext={this.audioContext}
-            gain={GAIN_VALUE}
-          />
-        </div>
+          <ul className="nav nav-tabs">
+            <li className="nav-item">
+              <NavLink
+                to="/"
+                className="nav-link"
+                activeClassName="active"
+                exact
+              >
+                Keyboard
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/sequencer"
+                className="nav-link"
+                activeClassName="active"
+                exact
+              >
+                Sequencer
+              </NavLink>
+            </li>
+          </ul>
 
-        <div className="mt-3">
-          <h2 className="h4">Sequencer</h2>
-          <Sequencer
-            frequencies={this.getStepFrequencies()}
-            gain={GAIN_VALUE}
-            audioContext={this.audioContext}
-          />
+          <div className="mt-3">
+            <Route exact path="/" render={() => (
+              <div>
+                <h2 className="h4">Keyboard</h2>
+                <p>Octave notes are highlighted</p>
+                <Keyboard
+                  getNoteFromOffset={this.getNoteFromOffset}
+                  getFrequencyForNote={this.getFrequencyForNote}
+                  config={this.state.config}
+                  audioContext={this.audioContext}
+                  gain={GAIN_VALUE}
+                />
+              </div>
+            )} />
+            <Route exact path="/sequencer" render={() => (
+              <div>
+                <h2 className="h4">Sequencer</h2>
+                <Sequencer
+                  frequencies={this.getStepFrequencies()}
+                  gain={GAIN_VALUE}
+                  audioContext={this.audioContext}
+                />
+              </div>
+            )} />
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
