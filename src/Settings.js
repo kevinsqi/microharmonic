@@ -140,7 +140,21 @@ class Settings extends React.Component {
   render() {
     return (
       <div className="card">
-        <div className="card-header">Scale settings</div>
+        <div className="card-header">
+          <div className="float-left">
+            Scale settings
+          </div>
+          <div className="float-right">
+            <div className="btn-group">
+              <button className="btn btn-sm btn-outline-primary">
+                Equal temperament
+              </button>
+              <button className="btn btn-sm btn-outline-secondary">
+                Custom
+              </button>
+            </div>
+          </div>
+        </div>
         <div className="card-body">
           <div className="row">
             <div className="col-3">
