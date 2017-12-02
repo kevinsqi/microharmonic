@@ -5,6 +5,13 @@ const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
 
 class Settings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showCustomSettings: false,
+    };
+  }
+
   reset() {
     this.props.setConfig({
       selectedNotes: {},
@@ -137,6 +144,28 @@ class Settings extends React.Component {
     );
   }
 
+  renderEqualTemperamentSettings() {
+    return (
+      <div className="row">
+        <div className="col-3">
+          {this.renderStepSettings()}
+        </div>
+        <div className="col-3">
+          {this.renderMinFrequencySetting()}
+        </div>
+        <div className="col-6">
+          {this.renderNotePicker()}
+        </div>
+      </div>
+    );
+  }
+
+  renderCustomSettings() {
+    return (
+      <div>Custom</div>
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -146,27 +175,29 @@ class Settings extends React.Component {
           </div>
           <div className="float-right">
             <div className="btn-group">
-              <button className="btn btn-sm btn-outline-primary">
+              <button
+                className="btn btn-sm btn-outline-primary"
+                onClick={() => this.setState({ showCustomSettings: false })}
+              >
                 Equal temperament
               </button>
-              <button className="btn btn-sm btn-outline-secondary">
+              <button
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => this.setState({ showCustomSettings: true })}
+              >
                 Custom
               </button>
             </div>
           </div>
         </div>
         <div className="card-body">
-          <div className="row">
-            <div className="col-3">
-              {this.renderStepSettings()}
-            </div>
-            <div className="col-3">
-              {this.renderMinFrequencySetting()}
-            </div>
-            <div className="col-6">
-              {this.renderNotePicker()}
-            </div>
-          </div>
+          {
+            this.state.showCustomSettings ? (
+              this.renderCustomSettings()
+            ) : (
+              this.renderEqualTemperamentSettings()
+            )
+          }
         </div>
       </div>
     );
