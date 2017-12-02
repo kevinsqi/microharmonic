@@ -51,51 +51,107 @@ class Settings extends React.Component {
     this.reset();
   };
 
+  renderStepSettings() {
+    return (
+      <div>
+        <div>
+          <label>
+            <small className="font-weight-bold text-muted">
+              Octave division
+            </small>
+          </label>
+        </div>
+
+        <div className="form-inline">
+          <select
+            className="form-control form-control-sm"
+            value={this.props.config.numOctaves}
+            onChange={this.onChangeNumOctaves}
+          >
+            {
+              _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
+            }
+          </select>
+          into{' '}
+          <select className="form-control form-control-sm" value={this.props.config.numSteps} onChange={this.onChangeNumSteps}>
+            {
+              _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
+            }
+          </select>
+        </div>
+      </div>
+    );
+  }
+
+  renderNotePicker() {
+    return (
+      <div>
+        <div>
+          <label>
+            <small className="font-weight-bold text-muted">
+              Notes to include
+            </small>
+          </label>
+        </div>
+
+        <div>
+          <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
+          {
+            _.range(this.props.config.numSteps).map((note) => {
+              return (
+                <label className="ml-3" key={note}>
+                  <input
+                    className="form-control form-control-sm"
+                    type="checkbox"
+                    name={note}
+                    checked={!!this.props.config.selectedNotes[note]}
+                    onChange={this.onChangeSelectedNotes}
+                  />
+                  {note}
+                </label>
+              );
+            })
+          }
+        </div>
+      </div>
+    );
+  }
+
+  renderMinFrequencySetting() {
+    return (
+      <div>
+        <div>
+          <label className="text-muted">
+            <small className="font-weight-bold text-muted">Frequency of lowest note</small>
+          </label>
+        </div>
+        <div className="form-inline">
+          <input
+            className="form-control form-control-sm"
+            type="text"
+            value={this.props.config.minFrequency}
+            onChange={this.onChangeMinFrequency}
+          /> hz
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="card">
-        <div className="card-header">Scale config</div>
+        <div className="card-header">Scale settings</div>
         <div className="card-body">
-          <div className="form-inline">
-            Divide
-            <select className="form-control" value={this.props.config.numOctaves} onChange={this.onChangeNumOctaves}>
-              {
-                _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
-              }
-            </select>
-            into
-            <select className="form-control" value={this.props.config.numSteps} onChange={this.onChangeNumSteps}>
-              {
-                _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
-              }
-            </select>
-          </div>
-
-          <div className="form-inline">
-            Frequency of lowest note:
-            <input className="form-control" type="text" value={this.props.config.minFrequency} onChange={this.onChangeMinFrequency} /> hz
-          </div>
-
-          <div className="form-inline">
-            Notes to include:
-
-            <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
-            {
-              _.range(this.props.config.numSteps).map((note) => {
-                return (
-                  <label className="ml-3" key={note}>
-                    <input
-                      className="form-control"
-                      type="checkbox"
-                      name={note}
-                      checked={!!this.props.config.selectedNotes[note]}
-                      onChange={this.onChangeSelectedNotes}
-                    />
-                    {note}
-                  </label>
-                );
-              })
-            }
+          <div className="row">
+            <div className="col-3">
+              {this.renderStepSettings()}
+            </div>
+            <div className="col-3">
+              {this.renderMinFrequencySetting()}
+            </div>
+            <div className="col-6">
+              {this.renderNotePicker()}
+            </div>
           </div>
         </div>
       </div>
