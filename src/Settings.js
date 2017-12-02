@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
@@ -167,6 +168,9 @@ class Settings extends React.Component {
   }
 
   render() {
+    const activeClass = 'btn-outline-primary';
+    const inactiveClass = 'btn-outline-secondary';
+
     return (
       <div className="card">
         <div className="card-header">
@@ -176,13 +180,13 @@ class Settings extends React.Component {
           <div className="float-right">
             <div className="btn-group">
               <button
-                className="btn btn-sm btn-outline-primary"
+                className={classNames('btn btn-sm', this.state.showCustomSettings ? inactiveClass : activeClass)}
                 onClick={() => this.setState({ showCustomSettings: false })}
               >
                 Equal temperament
               </button>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className={classNames('btn btn-sm', this.state.showCustomSettings ? activeClass : inactiveClass)}
                 onClick={() => this.setState({ showCustomSettings: true })}
               >
                 Custom
