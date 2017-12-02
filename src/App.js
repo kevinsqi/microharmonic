@@ -114,27 +114,20 @@ class App extends Component {
 
           <div className="mt-3">
             <Route exact path="/" render={() => (
-              <div>
-                <h2 className="h4">Keyboard</h2>
-                <p>Octave notes are highlighted</p>
-                <Keyboard
-                  getNoteFromOffset={this.getNoteFromOffset}
-                  getFrequencyForNote={this.getFrequencyForNote}
-                  config={this.state.config}
-                  audioContext={this.audioContext}
-                  gain={GAIN_VALUE}
-                />
-              </div>
+              <Keyboard
+                getNoteFromOffset={this.getNoteFromOffset}
+                getFrequencyForNote={this.getFrequencyForNote}
+                config={this.state.config}
+                audioContext={this.audioContext}
+                gain={GAIN_VALUE}
+              />
             )} />
             <Route exact path="/sequencer" render={() => (
-              <div>
-                <h2 className="h4">Sequencer</h2>
-                <Sequencer
-                  frequencies={this.getStepFrequencies()}
-                  gain={GAIN_VALUE}
-                  audioContext={this.audioContext}
-                />
-              </div>
+              <Sequencer
+                frequencies={this.getStepFrequencies()}
+                gain={GAIN_VALUE}
+                audioContext={this.audioContext}
+              />
             )} />
           </div>
         </div>
