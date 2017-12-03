@@ -1,5 +1,3 @@
-// TODO: fix errant notes playing when ctrl+tabbing, etc
-
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
@@ -41,10 +39,20 @@ class Keyboard extends React.Component {
     // TODO: unbind this on unmount
 
     window.addEventListener('keydown', (event) => {
+      // TODO: extract logic from onKeyDown to onKeyActive,
+      // then move logic to onKeyDown
+      if (event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
       this.onKeyDown(event.key);
     });
 
     window.addEventListener('keyup', (event) => {
+      // TODO: extract logic from onKeyUp to onKeyInactive,
+      // then move logic to onKeyUp
+      if (event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
       this.onKeyUp(event.key);
     });
   }
