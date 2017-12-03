@@ -12,6 +12,7 @@ const KEY_LABELS_IN_ROWS = [
   `qwertyuiop`,
   `1234567890`,
 ];
+
 const KEY_LABELS = KEY_LABELS_IN_ROWS.join('');  // keys in ascending pitch order
 
 function getOffsetFromKeyLabel(keyLabel) {
@@ -95,12 +96,13 @@ class Keyboard extends React.Component {
 
   renderKey(keyLabel) {
     const note = this.getNoteFromKeyLabel(keyLabel);
+    const cents = this.getCentsForNote(note);
     return (
       <div className="col col-sm-1" key={note}>
         <button
           className={
             classNames('btn btn-key', {
-              'btn-octave': note % (this.props.config.numSteps / this.props.config.numOctaves) === 0,
+              'btn-octave': cents % CENTS_IN_OCTAVE === 0,
               'btn-active': this.state.activeNotes[note],
             })
           }
@@ -112,7 +114,7 @@ class Keyboard extends React.Component {
           onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
         >
           {note}<br />
-          <small>{Math.round(this.getCentsForNote(note))}</small><br />
+          <small>{Math.round(cents)}</small><br />
           <small className="text-muted">{keyLabel}</small>
         </button>
       </div>
