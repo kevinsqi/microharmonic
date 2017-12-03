@@ -11,7 +11,12 @@ import {
 import Keyboard from './Keyboard';
 import Sequencer from './Sequencer';
 import Settings from './Settings';
-import { getFrequency } from './noteHelpers';
+import {
+  getCustomCentsForNote,
+  getFrequency,
+  getFrequencyFromCents,
+  CENTS_IN_OCTAVE
+} from './noteHelpers';
 import './App.css';
 
 const GAIN_VALUE = 0.1;
@@ -23,7 +28,7 @@ class App extends Component {
     this.state = {
       config: {
         useCustomCentValues: false,
-        customCentValues: _.range(0, 1200, 100),
+        customCentValues: _.range(0, CENTS_IN_OCTAVE, 100),
         minFrequency: 220,
         numOctaves: 1,
         numSteps: 12,
@@ -35,12 +40,17 @@ class App extends Component {
   }
 
   getFrequencyForNote = (note) => {
-    return getFrequency(
-      this.state.config.minFrequency,
-      note,
-      this.state.config.numOctaves,
-      this.state.config.numSteps,
-    );
+    if (this.state.config.useCustomCentValues) {
+      const centValue = getCustomCentsForNote(note, this.state.config.customCentValues);
+      return getFrequencyFromCents(this.state.config.minFrequency, centValue);
+    } else {
+      return getFrequency(
+        this.state.config.minFrequency,
+        note,
+        this.state.config.numOctaves,
+        this.state.config.numSteps,
+      );
+    }
   };
 
   getStepFrequencies() {

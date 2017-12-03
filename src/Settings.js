@@ -69,6 +69,7 @@ class Settings extends React.Component {
     this.reset();
   };
 
+  // TODO: sort
   // TODO: add validation
   onChangeCustomCentValues = (event) => {
     const centValues = event.target.value.split(/\s/).map((value) => parseInt(value, 10));

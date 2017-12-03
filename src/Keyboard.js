@@ -4,6 +4,7 @@ import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import Oscillator from './audio/Oscillator';
+import { getCustomCentsForNote, CENTS_IN_OCTAVE } from './noteHelpers';
 
 const KEY_LABELS_IN_ROWS = [
   `zxcvbnm,./`,
@@ -12,7 +13,6 @@ const KEY_LABELS_IN_ROWS = [
   `1234567890`,
 ];
 const KEY_LABELS = KEY_LABELS_IN_ROWS.join('');  // keys in ascending pitch order
-const CENTS_PER_OCTAVE = 1200;
 
 function getOffsetFromKeyLabel(keyLabel) {
   const offset = KEY_LABELS.indexOf(keyLabel);
@@ -81,7 +81,11 @@ class Keyboard extends React.Component {
   }
 
   getCentsForNote(note) {
-    return (CENTS_PER_OCTAVE * this.props.config.numOctaves) / this.props.config.numSteps * note;
+    if (this.props.config.useCustomCentValues) {
+      return getCustomCentsForNote(note, this.props.config.customCentValues);
+    } else {
+      return (CENTS_IN_OCTAVE * this.props.config.numOctaves) / this.props.config.numSteps * note;
+    }
   }
 
   getNoteFromKeyLabel(keyLabel) {
