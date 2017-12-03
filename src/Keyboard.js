@@ -1,9 +1,8 @@
-// TODO: fix errant notes playing when ctrl+tabbing, etc
-
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import Oscillator from './audio/Oscillator';
+import { getCustomCentsForNote, CENTS_IN_OCTAVE } from './noteHelpers';
 
 const KEY_LABELS_IN_ROWS = [
   `zxcvbnm,./`,
@@ -11,8 +10,8 @@ const KEY_LABELS_IN_ROWS = [
   `qwertyuiop`,
   `1234567890`,
 ];
+
 const KEY_LABELS = KEY_LABELS_IN_ROWS.join('');  // keys in ascending pitch order
-const CENTS_PER_OCTAVE = 1200;
 
 function getOffsetFromKeyLabel(keyLabel) {
   const offset = KEY_LABELS.indexOf(keyLabel);
@@ -40,10 +39,20 @@ class Keyboard extends React.Component {
     // TODO: unbind this on unmount
 
     window.addEventListener('keydown', (event) => {
+      // TODO: extract logic from onKeyDown to onKeyActive,
+      // then move logic to onKeyDown
+      if (event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
       this.onKeyDown(event.key);
     });
 
     window.addEventListener('keyup', (event) => {
+      // TODO: extract logic from onKeyUp to onKeyInactive,
+      // then move logic to onKeyUp
+      if (event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
       this.onKeyUp(event.key);
     });
   }
@@ -81,7 +90,11 @@ class Keyboard extends React.Component {
   }
 
   getCentsForNote(note) {
-    return (CENTS_PER_OCTAVE * this.props.config.numOctaves) / this.props.config.numSteps * note;
+    if (this.props.config.useCustomCentValues) {
+      return getCustomCentsForNote(note, this.props.config.customCentValues);
+    } else {
+      return (CENTS_IN_OCTAVE * this.props.config.numOctaves) / this.props.config.numSteps * note;
+    }
   }
 
   getNoteFromKeyLabel(keyLabel) {
@@ -91,12 +104,13 @@ class Keyboard extends React.Component {
 
   renderKey(keyLabel) {
     const note = this.getNoteFromKeyLabel(keyLabel);
+    const cents = this.getCentsForNote(note);
     return (
       <div className="col col-sm-1" key={note}>
         <button
           className={
             classNames('btn btn-key', {
-              'btn-octave': note % (this.props.config.numSteps / this.props.config.numOctaves) === 0,
+              'btn-octave': cents % CENTS_IN_OCTAVE === 0,
               'btn-active': this.state.activeNotes[note],
             })
           }
@@ -108,7 +122,7 @@ class Keyboard extends React.Component {
           onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
         >
           {note}<br />
-          <small>{Math.round(this.getCentsForNote(note))}</small><br />
+          <small>{Math.round(cents)}</small><br />
           <small className="text-muted">{keyLabel}</small>
         </button>
       </div>

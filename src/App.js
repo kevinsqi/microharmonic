@@ -11,7 +11,12 @@ import {
 import Keyboard from './Keyboard';
 import Sequencer from './Sequencer';
 import Settings from './Settings';
-import { getFrequency } from './noteHelpers';
+import {
+  getCustomCentsForNote,
+  getFrequency,
+  getFrequencyFromCents,
+  CENTS_IN_OCTAVE
+} from './noteHelpers';
 import './App.css';
 
 const GAIN_VALUE = 0.1;
@@ -22,6 +27,8 @@ class App extends Component {
 
     this.state = {
       config: {
+        useCustomCentValues: false,
+        customCentValues: _.range(0, CENTS_IN_OCTAVE, 100),
         minFrequency: 220,
         numOctaves: 1,
         numSteps: 12,
@@ -33,12 +40,17 @@ class App extends Component {
   }
 
   getFrequencyForNote = (note) => {
-    return getFrequency(
-      this.state.config.minFrequency,
-      note,
-      this.state.config.numOctaves,
-      this.state.config.numSteps,
-    );
+    if (this.state.config.useCustomCentValues) {
+      const centValue = getCustomCentsForNote(note, this.state.config.customCentValues);
+      return getFrequencyFromCents(this.state.config.minFrequency, centValue);
+    } else {
+      return getFrequency(
+        this.state.config.minFrequency,
+        note,
+        this.state.config.numOctaves,
+        this.state.config.numSteps,
+      );
+    }
   };
 
   getStepFrequencies() {
@@ -81,7 +93,7 @@ class App extends Component {
           <h1>Microtonal</h1>
           <div>A web microtone keyboard</div>
 
-          <div className="mt-3">
+          <div className="my-3">
             <Settings
               config={this.state.config}
               setConfig={this.setConfig}
@@ -113,27 +125,20 @@ class App extends Component {
 
           <div className="mt-3">
             <Route exact path="/" render={() => (
-              <div>
-                <h2 className="h4">Keyboard</h2>
-                <p>Octave notes are highlighted</p>
-                <Keyboard
-                  getNoteFromOffset={this.getNoteFromOffset}
-                  getFrequencyForNote={this.getFrequencyForNote}
-                  config={this.state.config}
-                  audioContext={this.audioContext}
-                  gain={GAIN_VALUE}
-                />
-              </div>
+              <Keyboard
+                getNoteFromOffset={this.getNoteFromOffset}
+                getFrequencyForNote={this.getFrequencyForNote}
+                config={this.state.config}
+                audioContext={this.audioContext}
+                gain={GAIN_VALUE}
+              />
             )} />
             <Route exact path="/sequencer" render={() => (
-              <div>
-                <h2 className="h4">Sequencer</h2>
-                <Sequencer
-                  frequencies={this.getStepFrequencies()}
-                  gain={GAIN_VALUE}
-                  audioContext={this.audioContext}
-                />
-              </div>
+              <Sequencer
+                frequencies={this.getStepFrequencies()}
+                gain={GAIN_VALUE}
+                audioContext={this.audioContext}
+              />
             )} />
           </div>
         </div>
