@@ -70,7 +70,7 @@ class Settings extends React.Component {
   };
 
   // TODO: sort
-  // TODO: add validation
+  // TODO: add validation of NaN, <1200, etc
   onChangeCustomCentValues = (event) => {
     const centValues = event.target.value.split(/\s/).map((value) => parseInt(value, 10));
     this.props.setConfig({
@@ -218,7 +218,7 @@ class Settings extends React.Component {
                 className={classNames('btn btn-sm', this.state.showCustomSettings ? activeClass : inactiveClass)}
                 onClick={() => this.toggleCustomSettings(true)}
               >
-                Custom
+                Custom tuning
               </button>
             </div>
           </div>
