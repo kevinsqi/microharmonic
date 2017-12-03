@@ -5,6 +5,16 @@ import classNames from 'classnames';
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
 
+function Label(props) {
+  return (
+    <label>
+      <small className="font-weight-bold text-muted">
+        {props.children}
+      </small>
+    </label>
+  );
+}
+
 class Settings extends React.Component {
   constructor(props) {
     super(props);
@@ -63,11 +73,7 @@ class Settings extends React.Component {
     return (
       <div>
         <div>
-          <label>
-            <small className="font-weight-bold text-muted">
-              Octave division
-            </small>
-          </label>
+          <Label>Octave division</Label>
         </div>
 
         <div className="form-inline">
@@ -95,11 +101,7 @@ class Settings extends React.Component {
     return (
       <div>
         <div>
-          <label>
-            <small className="font-weight-bold text-muted">
-              Notes to include
-            </small>
-          </label>
+          <Label>Notes to include</Label>
         </div>
 
         <div>
@@ -129,9 +131,7 @@ class Settings extends React.Component {
     return (
       <div>
         <div>
-          <label className="text-muted">
-            <small className="font-weight-bold text-muted">Frequency of lowest note</small>
-          </label>
+          <Label>Frequency of lowest note</Label>
         </div>
         <div className="form-inline">
           <input
@@ -163,8 +163,27 @@ class Settings extends React.Component {
 
   renderCustomSettings() {
     return (
-      <div>Custom</div>
+      <div>
+        <div>
+          <Label>Custom scale tuning</Label>
+        </div>
+        <small className="text-muted">Enter cent values between 0 and 1200, separated by line breaks or spaces</small>
+        <textarea
+          className="form-control"
+          rows="10"
+          value={this.props.config.customCentValues.join('\n')}
+        />
+      </div>
     );
+  }
+
+  toggleCustomSettings(useCustom) {
+    this.setState({
+      showCustomSettings: useCustom,
+    });
+    this.props.setConfig({
+      useCustomCentValues: useCustom,
+    });
   }
 
   render() {
@@ -181,13 +200,13 @@ class Settings extends React.Component {
             <div className="btn-group">
               <button
                 className={classNames('btn btn-sm', this.state.showCustomSettings ? inactiveClass : activeClass)}
-                onClick={() => this.setState({ showCustomSettings: false })}
+                onClick={() => this.toggleCustomSettings(false)}
               >
                 Equal temperament
               </button>
               <button
                 className={classNames('btn btn-sm', this.state.showCustomSettings ? activeClass : inactiveClass)}
-                onClick={() => this.setState({ showCustomSettings: true })}
+                onClick={() => this.toggleCustomSettings(true)}
               >
                 Custom
               </button>

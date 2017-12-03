@@ -22,7 +22,8 @@ class App extends Component {
 
     this.state = {
       config: {
-        customCentValues: [],
+        useCustomCentValues: false,
+        customCentValues: _.range(0, 1200, 100),
         minFrequency: 220,
         numOctaves: 1,
         numSteps: 12,
