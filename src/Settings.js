@@ -69,6 +69,14 @@ class Settings extends React.Component {
     this.reset();
   };
 
+  // TODO: add validation
+  onChangeCustomCentValues = (event) => {
+    const centValues = event.target.value.split(/\s/).map((value) => parseInt(value, 10));
+    this.props.setConfig({
+      customCentValues: centValues,
+    });
+  };
+
   renderStepSettings() {
     return (
       <div>
@@ -172,6 +180,7 @@ class Settings extends React.Component {
           className="form-control"
           rows="10"
           value={this.props.config.customCentValues.join('\n')}
+          onChange={this.onChangeCustomCentValues}
         />
       </div>
     );
