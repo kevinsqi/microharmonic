@@ -21,7 +21,7 @@ function Label(props) {
 }
 
 function parseCustomCentValuesStr(str) {
-  const values = str.trim().split(/\s+/).map((value) => parseInt(value, 10)).sort((a, b) => a - b);
+  const values = str.trim().split(/\s+/).map((value) => parseFloat(value)).sort((a, b) => a - b);
 
   if (values.some((value) => isNaN(value))) {
     throw new Error('Has invalid value which is not a number');
