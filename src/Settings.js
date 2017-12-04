@@ -205,13 +205,13 @@ class Settings extends React.Component {
   renderEqualTemperamentSettings() {
     return (
       <div className="row">
-        <div className="col-3">
+        <div className="col-sm-3">
           {this.renderStepSettings()}
         </div>
-        <div className="col-3">
+        <div className="col-sm-3">
           {this.renderMinFrequencySetting()}
         </div>
-        <div className="col-6">
+        <div className="col-sm-6">
           {this.renderNotePicker()}
         </div>
       </div>
