@@ -12,7 +12,7 @@ const MAX_NUM_OCTAVES = 10;
 function Label(props) {
   return (
     <label>
-      <small className="font-weight-bold text-muted">
+      <small className="font-weight-bold text-muted uppercase">
         {props.children}
       </small>
     </label>
@@ -124,7 +124,7 @@ class Settings extends React.Component {
 
         <div className="form-inline">
           <select
-            className="form-control form-control-sm"
+            className="form-control"
             value={this.props.config.numOctaves}
             onChange={this.onChangeNumOctaves}
           >
@@ -132,8 +132,10 @@ class Settings extends React.Component {
               _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
             }
           </select>
-          into{' '}
-          <select className="form-control form-control-sm" value={this.props.config.numSteps} onChange={this.onChangeNumSteps}>
+          <span className="mx-2">
+            into
+          </span>
+          <select className="form-control" value={this.props.config.numSteps} onChange={this.onChangeNumSteps}>
             {
               _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
             }
@@ -151,13 +153,12 @@ class Settings extends React.Component {
         </div>
 
         <div>
-          <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
           {
             _.range(this.props.config.numSteps).map((note) => {
               return (
-                <label className="ml-3" key={note}>
+                <label className="mr-3" key={note}>
                   <input
-                    className="form-control form-control-sm"
+                    className="form-control"
                     type="checkbox"
                     name={note}
                     checked={!!this.props.config.selectedNotes[note]}
@@ -168,6 +169,7 @@ class Settings extends React.Component {
               );
             })
           }
+          <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
         </div>
       </div>
     );
@@ -181,11 +183,13 @@ class Settings extends React.Component {
         </div>
         <div className="form-inline">
           <input
-            className="form-control form-control-sm"
+            className="form-control"
             type="text"
             value={this.props.config.minFrequency}
             onChange={this.onChangeMinFrequency}
-          /> hz
+            style={{ width: '60px' }}
+          />
+          <span className="ml-2">hz</span>
         </div>
       </div>
     );
