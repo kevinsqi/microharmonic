@@ -28,6 +28,7 @@ class App extends Component {
     this.state = {
       config: {
         useCustomCentValues: false,
+        // TODO: make this be in sync with CustomSettings preset
         customCentValues: _.range(0, CENTS_IN_OCTAVE, 100),
         minFrequency: 220,
         numOctaves: 1,
