@@ -3,6 +3,7 @@
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
+import pluralize from 'pluralize';
 
 import { CENTS_IN_OCTAVE } from './noteHelpers';
 
@@ -129,7 +130,10 @@ class Settings extends React.Component {
             onChange={this.onChangeNumOctaves}
           >
             {
-              _.range(MAX_NUM_OCTAVES).map((index) => <option value={index + 1} key={index}>{index + 1} octave</option>)
+              _.range(MAX_NUM_OCTAVES).map((index) => {
+                const label = pluralize('octave', index + 1, true);
+                return <option value={index + 1} key={index}>{label}</option>;
+              })
             }
           </select>
           <span className="mx-2">
@@ -137,7 +141,10 @@ class Settings extends React.Component {
           </span>
           <select className="form-control" value={this.props.config.numSteps} onChange={this.onChangeNumSteps}>
             {
-              _.range(MAX_NUM_STEPS).map((index) => <option value={index + 1} key={index}>{index + 1} steps</option>)
+              _.range(MAX_NUM_STEPS).map((index) => {
+                const label = pluralize('step', index + 1, true);
+                return <option value={index + 1} key={index}>{label}</option>;
+              })
             }
           </select>
         </div>
