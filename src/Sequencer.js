@@ -88,8 +88,10 @@ class Sequencer extends Component {
   render() {
     return (
       <div>
-        <div className="mb-3">
-          <button className="btn btn-secondary" onClick={this.onClickPlay}>Play once</button>
+        <p><strong>This is a work in progress!</strong></p>
+
+        <div className="btn-group mb-3">
+          <button className="btn btn-primary" onClick={this.onClickPlay}>Play once</button>
           <button className="btn btn-secondary" onClick={this.onClickReset}>Reset</button>
         </div>
 
