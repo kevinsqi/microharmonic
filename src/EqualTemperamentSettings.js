@@ -124,7 +124,7 @@ class EqualTemperamentSettings extends React.Component {
     return (
       <div>
         <div>
-          <Label>Frequency of lowest note</Label>
+          <Label>Frequency of low note</Label>
         </div>
         <div className="form-inline">
           <input
@@ -143,13 +143,13 @@ class EqualTemperamentSettings extends React.Component {
   render() {
     return (
       <div className="row">
-        <div className="col-sm-3">
+        <div className="col-sm-4">
           {this.renderStepSettings()}
         </div>
         <div className="col-sm-3">
           {this.renderMinFrequencySetting()}
         </div>
-        <div className="col-sm-6">
+        <div className="col-sm-5">
           {this.renderNotePicker()}
         </div>
       </div>
