@@ -1,4 +1,4 @@
-# Microtonal
+# Microharmonic
 
 ## Setup
 

@@ -88,11 +88,10 @@ class App extends Component {
   };
 
   render() {
-    // TODO: make localhost use /microtonal basename too, or make basename conditional
     return (
-      <Router basename="/microtonal/">
+      <Router>
         <div className="m-3">
-          <h1>Microtonal</h1>
+          <h1>Microharmonic</h1>
           <div>A web microtone keyboard</div>
 
           <div className="my-3">

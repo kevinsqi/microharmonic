@@ -1,8 +1,8 @@
 {
-  "name": "microtonal",
+  "name": "microharmonic",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://kevinqi.com/microtonal",
+  "homepage": "http://www.microharmonic.com",
   "dependencies": {
     "classnames": "^2.2.5",
     "gh-pages": "^1.0.0",
