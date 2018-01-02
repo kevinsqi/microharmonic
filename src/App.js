@@ -8,6 +8,8 @@ import {
   Route,
 } from 'react-router-dom';
 
+import Footer from './Footer';
+import Header from './Header';
 import Keyboard from './Keyboard';
 import Sequencer from './Sequencer';
 import Settings from './Settings';
@@ -91,8 +93,7 @@ class App extends Component {
     return (
       <Router>
         <div className="m-3">
-          <h1>Microharmonic</h1>
-          <div>A web microtone keyboard</div>
+          <Header />
 
           <div className="my-3">
             <Settings
@@ -142,6 +143,8 @@ class App extends Component {
               />
             )} />
           </div>
+
+          <Footer className="mt-3" />
         </div>
       </Router>
     );
