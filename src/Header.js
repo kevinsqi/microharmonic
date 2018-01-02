@@ -14,7 +14,7 @@ class Header extends React.Component {
       >
         <div className="container">
           <div className="flex-1">
-            <a className="navbar-brand" href="/">Microharmonic</a>
+            <NavLink className="navbar-brand" to="/">Microharmonic</NavLink>
             <small className="text-light">A web microtone keyboard</small>
           </div>
           <ul className="navbar-nav">
