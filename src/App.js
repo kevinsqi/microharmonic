@@ -92,58 +92,59 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="m-3">
+        <div>
           <Header />
 
-          <div className="my-3">
-            <Settings
-              config={this.state.config}
-              setConfig={this.setConfig}
-            />
-          </div>
-
-          <ul className="nav nav-tabs">
-            <li className="nav-item">
-              <NavLink
-                to="/"
-                className="nav-link"
-                activeClassName="active"
-                exact
-              >
-                Keyboard
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                to="/sequencer"
-                className="nav-link"
-                activeClassName="active"
-                exact
-              >
-                Sequencer
-              </NavLink>
-            </li>
-          </ul>
-
-          <div className="mt-3">
-            <Route exact path="/" render={() => (
-              <Keyboard
-                getNoteFromOffset={this.getNoteFromOffset}
-                getFrequencyForNote={this.getFrequencyForNote}
+          <div className="container">
+            <div className="my-3">
+              <Settings
                 config={this.state.config}
-                audioContext={this.audioContext}
-                gain={GAIN_VALUE}
+                setConfig={this.setConfig}
               />
-            )} />
-            <Route exact path="/sequencer" render={() => (
-              <Sequencer
-                frequencies={this.getStepFrequencies()}
-                gain={GAIN_VALUE}
-                audioContext={this.audioContext}
-              />
-            )} />
-          </div>
+            </div>
 
+            <ul className="nav nav-tabs">
+              <li className="nav-item">
+                <NavLink
+                  to="/"
+                  className="nav-link"
+                  activeClassName="active"
+                  exact
+                >
+                  Keyboard
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  to="/sequencer"
+                  className="nav-link"
+                  activeClassName="active"
+                  exact
+                >
+                  Sequencer
+                </NavLink>
+              </li>
+            </ul>
+
+            <div className="mt-3">
+              <Route exact path="/" render={() => (
+                <Keyboard
+                  getNoteFromOffset={this.getNoteFromOffset}
+                  getFrequencyForNote={this.getFrequencyForNote}
+                  config={this.state.config}
+                  audioContext={this.audioContext}
+                  gain={GAIN_VALUE}
+                />
+              )} />
+              <Route exact path="/sequencer" render={() => (
+                <Sequencer
+                  frequencies={this.getStepFrequencies()}
+                  gain={GAIN_VALUE}
+                  audioContext={this.audioContext}
+                />
+              )} />
+            </div>
+          </div>
           <Footer className="mt-3" />
         </div>
       </Router>
