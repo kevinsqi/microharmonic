@@ -9,7 +9,7 @@ yarn install
 ## Running the server
 
 ```
-npm start
+yarn start
 ```
 
 Open the app at `localhost:3000`.
@@ -17,11 +17,11 @@ Open the app at `localhost:3000`.
 ## Running tests
 
 ```
-npm test
+yarn test
 ```
 
 ## Publishing changes
 
 ```
-npm run deploy
+yarn run deploy
 ```
