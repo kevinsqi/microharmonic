@@ -2,6 +2,26 @@ body {
   font-family: Arimo;
 }
 
+.opacity-60 {
+  opacity: 0.6;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.mb1 {
+  margin-bottom: 10px;
+}
+
+.mt4 {
+  margin-top: 40px;
+}
+
+.mt5 {
+  margin-top: 50px;
+}
+
 .line-height-1 {
   line-height: 1;
 }
@@ -11,6 +31,10 @@ body {
 }
 .text-5 {
   font-size: 30px;
+}
+
+.bg-gray {
+  background-color: #888;
 }
 
 .bg-blue {

@@ -1,6 +1,19 @@
 import React from 'react';
-import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
+
+function NavButton(props) {
+  return (
+    <NavLink
+      className="btn btn-outline-light btn-lg text-left line-height-1 opacity-60"
+      activeClassName="opacity-100"
+      to={props.to}
+      exact
+    >
+      <div className="text-1">{props.subtitle}</div>
+      <div className="mt-1">{props.title}</div>
+    </NavLink>
+  );
+}
 
 class Header extends React.Component {
   render() {
@@ -21,15 +34,27 @@ class Header extends React.Component {
                 </small>
               </div>
             </div>
-            <ul className="list-unstyled m-0">
-              <li>
-                <NavLink
-                  className="btn btn-outline-light btn-lg text-left line-height-1"
+            <ul className="list-inline list-unstyled m-0">
+              <li className="list-inline-item">
+                <NavButton
                   to="/tutorial"
-                >
-                  <div className="text-1">New to microtones?</div>
-                  <div className="mt-1">Tutorial</div>
-                </NavLink>
+                  title="Tutorial"
+                  subtitle="New to microtones?"
+                />
+              </li>
+              <li className="list-inline-item">
+                <NavButton
+                  to="/"
+                  title="Keyboard"
+                  subtitle="Explore"
+                />
+              </li>
+              <li className="list-inline-item">
+                <NavButton
+                  to="/composer"
+                  title="Composer"
+                  subtitle="Write"
+                />
               </li>
             </ul>
           </div>
