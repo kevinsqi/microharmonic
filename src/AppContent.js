@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import Keyboard from './Keyboard';
-import Sequencer from './Sequencer';
+import Composer from './Composer';
 import Settings from './Settings';
 import {
   getCustomCentsForNote,
@@ -108,12 +108,12 @@ class AppContent extends React.Component {
             </li>
             <li className="nav-item">
               <NavLink
-                to="/sequencer"
+                to="/composer"
                 className="nav-link"
                 activeClassName="active"
                 exact
               >
-                Sequencer
+                Composer
               </NavLink>
             </li>
           </ul>
@@ -128,8 +128,8 @@ class AppContent extends React.Component {
                 gain={GAIN_VALUE}
               />
             )} />
-            <Route exact path="/sequencer" render={() => (
-              <Sequencer
+            <Route exact path="/composer" render={() => (
+              <Composer
                 frequencies={this.getStepFrequencies()}
                 gain={GAIN_VALUE}
                 audioContext={this.audioContext}

@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import update from 'immutability-helper';
 import AudioSequencer from './audio/Sequencer';
 
-// TODO: pass cent values to sequencer for display
-class Sequencer extends Component {
+// TODO: pass cent values to composer for display
+class Composer extends Component {
   constructor(props) {
     super(props);
 
@@ -128,4 +128,4 @@ class Sequencer extends Component {
   }
 }
 
-export default Sequencer;
+export default Composer;
