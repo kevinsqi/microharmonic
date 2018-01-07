@@ -6,15 +6,12 @@ class Footer extends React.Component {
     return (
       <footer
         className={classNames(
-          'd-flex align-items-end bg-blue py-3',
+          'd-flex align-items-end bg-gray',
           this.props.className,
         )}
-        style={{
-          height: '80px',
-        }}
       >
         <div className="container">
-          <div className="d-flex text-light">
+          <div className="d-flex text-light mt4 mb1">
             <div className="mr-auto">
               Built by <a className="text-light" href="http://www.kevinqi.com/">Kevin Qi</a>
             </div>
