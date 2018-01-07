@@ -94,29 +94,6 @@ class AppContent extends React.Component {
           />
         </div>
 
-        <ul className="nav nav-tabs">
-          <li className="nav-item">
-            <NavLink
-              to="/"
-              className="nav-link"
-              activeClassName="active"
-              exact
-            >
-              Keyboard
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              to="/composer"
-              className="nav-link"
-              activeClassName="active"
-              exact
-            >
-              Composer
-            </NavLink>
-          </li>
-        </ul>
-
         <div className="mt-3">
           <Route exact path={this.props.match.url} render={() => (
             <Keyboard

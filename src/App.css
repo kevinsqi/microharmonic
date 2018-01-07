@@ -2,6 +2,14 @@ body {
   font-family: Arimo;
 }
 
+.opacity-60 {
+  opacity: 0.6;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
 .mb1 {
   margin-bottom: 10px;
 }
