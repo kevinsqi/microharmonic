@@ -1,9 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import AppContent from './AppContent';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+} from 'react-router-dom';
+import './App.css';
+import AppContent from './AppContent'; // noreintegrate rename Keyboard, Composer
 import Footer from './Footer';
 import Header from './Header';
-import './App.css';
+import Tutorial from './Tutorial';
 
 class App extends React.Component {
   render() {
@@ -11,7 +16,8 @@ class App extends React.Component {
       <Router>
         <div>
           <Header />
-          <AppContent />
+          <Route exact path="/" component={AppContent} />
+          <Route exact path="/tutorial" component={Tutorial} />
           <Footer className="mt-3" />
         </div>
       </Router>

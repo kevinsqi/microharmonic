@@ -86,58 +86,56 @@ class AppContent extends React.Component {
 
   render() {
     return (
-      <Route>
-        <div className="container">
-          <div className="my-3">
-            <Settings
-              config={this.state.config}
-              setConfig={this.setConfig}
-            />
-          </div>
-
-          <ul className="nav nav-tabs">
-            <li className="nav-item">
-              <NavLink
-                to="/"
-                className="nav-link"
-                activeClassName="active"
-                exact
-              >
-                Keyboard
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                to="/composer"
-                className="nav-link"
-                activeClassName="active"
-                exact
-              >
-                Composer
-              </NavLink>
-            </li>
-          </ul>
-
-          <div className="mt-3">
-            <Route exact path="/" render={() => (
-              <Keyboard
-                getNoteFromOffset={this.getNoteFromOffset}
-                getFrequencyForNote={this.getFrequencyForNote}
-                config={this.state.config}
-                audioContext={this.audioContext}
-                gain={GAIN_VALUE}
-              />
-            )} />
-            <Route exact path="/composer" render={() => (
-              <Composer
-                frequencies={this.getStepFrequencies()}
-                gain={GAIN_VALUE}
-                audioContext={this.audioContext}
-              />
-            )} />
-          </div>
+      <div className="container">
+        <div className="my-3">
+          <Settings
+            config={this.state.config}
+            setConfig={this.setConfig}
+          />
         </div>
-      </Route>
+
+        <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <NavLink
+              to="/"
+              className="nav-link"
+              activeClassName="active"
+              exact
+            >
+              Keyboard
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              to="/composer"
+              className="nav-link"
+              activeClassName="active"
+              exact
+            >
+              Composer
+            </NavLink>
+          </li>
+        </ul>
+
+        <div className="mt-3">
+          <Route exact path={this.props.match.url} render={() => (
+            <Keyboard
+              getNoteFromOffset={this.getNoteFromOffset}
+              getFrequencyForNote={this.getFrequencyForNote}
+              config={this.state.config}
+              audioContext={this.audioContext}
+              gain={GAIN_VALUE}
+            />
+          )} />
+          <Route exact path={`${this.props.match.url}/composer`} render={() => (
+            <Composer
+              frequencies={this.getStepFrequencies()}
+              gain={GAIN_VALUE}
+              audioContext={this.audioContext}
+            />
+          )} />
+        </div>
+      </div>
     );
   }
 }
