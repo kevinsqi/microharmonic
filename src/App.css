@@ -1,3 +1,22 @@
+body {
+  font-family: Arimo;
+}
+
+.line-height-1 {
+  line-height: 1;
+}
+
+.text-1 {
+  font-size: 12px;
+}
+.text-5 {
+  font-size: 30px;
+}
+
+.bg-blue {
+  background-color: #0076ae;
+}
+
 .uppercase {
   text-transform: uppercase;
   letter-spacing: 0.8px;

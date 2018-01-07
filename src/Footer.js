@@ -1,13 +1,28 @@
 import React from 'react';
+import classNames from 'classnames';
 
 class Footer extends React.Component {
   render() {
     return (
-      <footer className={`bg-dark py-3 ${this.props.className}`}>
+      <footer
+        className={classNames(
+          'd-flex align-items-end bg-blue py-3',
+          this.props.className,
+        )}
+        style={{
+          height: '80px',
+        }}
+      >
         <div className="container">
-          <div className="text-light">
-            <div>Built by <a href="http://www.kevinqi.com/">Kevin Qi</a></div>
-            <div><a href="https://github.com/iqnivek/microharmonic/">View source on Github</a></div>
+          <div className="d-flex text-light">
+            <div className="mr-auto">
+              Built by <a className="text-light" href="http://www.kevinqi.com/">Kevin Qi</a>
+            </div>
+            <div>
+              <a className="text-light" href="https://github.com/iqnivek/microharmonic/">
+                View source on Github
+              </a>
+            </div>
           </div>
         </div>
       </footer>
