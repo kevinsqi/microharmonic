@@ -2,7 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import {
   BrowserRouter as Router,
-  Redirect,
   Route,
 } from 'react-router-dom';
 import './App.css';
