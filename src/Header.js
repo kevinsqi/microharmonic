@@ -30,7 +30,7 @@ class Header extends React.Component {
               <NavLink className="text-5 text-white font-weight-bold" to="/">Microharmonic</NavLink>
               <div className="mt-1">
                 <small className="text-light">
-                  A web microtone keyboard
+                  A web microtone keyboard and composer
                 </small>
               </div>
             </div>
