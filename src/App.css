@@ -2,6 +2,10 @@ body {
   font-family: Arimo;
 }
 
+input[type=checkbox] {
+  width: 1em;
+}
+
 .opacity-60 {
   opacity: 0.6;
 }
