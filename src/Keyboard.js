@@ -30,7 +30,7 @@ class Keyboard extends React.Component {
     };
 
     this.oscillator = new Oscillator({
-      audioContext: props.audioContext,
+      audioContext: new window.AudioContext(),
       gain: props.gain,
     });
   }

@@ -52,8 +52,6 @@ class App extends React.Component {
         selectedNotes: {},
       },
     };
-
-    this.audioContext = new window.AudioContext();
   }
 
   getFrequencyForNote = (note) => {
@@ -114,7 +112,6 @@ class App extends React.Component {
                 getNoteFromOffset={this.getNoteFromOffset}
                 getFrequencyForNote={this.getFrequencyForNote}
                 config={this.state.config}
-                audioContext={this.audioContext}
                 gain={GAIN_VALUE}
               />
             </SettingsWrapper>
@@ -124,7 +121,6 @@ class App extends React.Component {
               <Composer
                 frequencies={this.getStepFrequencies()}
                 gain={GAIN_VALUE}
-                audioContext={this.audioContext}
               />
             </SettingsWrapper>
           )} />

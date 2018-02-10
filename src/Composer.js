@@ -39,7 +39,7 @@ class Composer extends Component {
 
     console.log('onClickPlay', normalizedSequences, this.props.frequencies);
     const audioSequencer = new AudioSequencer({
-      audioContext: this.props.audioContext,
+      audioContext: new window.AudioContext(),
       sequences: normalizedSequences,
       gain: this.props.gain
     });
