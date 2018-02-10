@@ -30,8 +30,38 @@ function Tutorial(props) {
           <p>
             You might know of them as C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, and B.
             From these 12 notes we can play pretty much any song that we know of.
+            The approach of dividing an octave equally is known as "equal temperament".
             You can try it out with a 12EDO keyboard here.
           </p>
+          <div>
+            {/* noreintegrate
+            <Keyboard
+              getNoteFromOffset={this.getNoteFromOffset}
+              getFrequencyForNote={this.getFrequencyForNote}
+              config={this.state.config}
+              audioContext={this.audioContext}
+              gain={GAIN_VALUE}
+            />
+            */}
+          </div>
+          <p>
+            This 12 tone scale originates back to 1584, when Zhu Zaiyu
+            developed the mathematical basis for dividing the octave equally into 12 parts.
+
+            Zhu Zaiyu was a prince of the Ming court in China, and spent thirty years
+            researching equal temperament.
+
+            He demonstrated this 12 note division by constructing a set of bamboo pipes
+            over three octaves, and increasing the length of the each pipe by a factor of
+            the twelfth root of 2.
+          </p>
+          <div className="w-50 py-3">
+            <img
+              className="w-100"
+              src="https://upload.wikimedia.org/wikipedia/commons/f/f2/%E4%B9%90%E5%BE%8B%E5%85%A8%E4%B9%A6%E5%85%A8-1154.jpg"
+              alt="bamboo pipes"
+            />
+          </div>
           <p>
             The "distance", or "interval", between any two notes is the same in 12EDO.
           </p>
