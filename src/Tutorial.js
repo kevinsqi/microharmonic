@@ -45,6 +45,7 @@ function Tutorial(props) {
                 selectedNotes: {},
               }}
               gain={props.gain}
+              bindEvents={false}
             />
           </div>
           <p>

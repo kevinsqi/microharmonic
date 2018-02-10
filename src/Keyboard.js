@@ -27,6 +27,10 @@ function getOffsetFromKeyLabel(keyLabel) {
 }
 
 class Keyboard extends React.Component {
+  static defaultProps = {
+    bindEvents: true,
+  };
+
   constructor(props) {
     super(props);
 
@@ -43,23 +47,25 @@ class Keyboard extends React.Component {
   componentDidMount() {
     // TODO: unbind this on unmount
 
-    window.addEventListener('keydown', (event) => {
-      // TODO: extract logic from onKeyDown to onKeyActive,
-      // then move logic to onKeyDown
-      if (event.ctrlKey || event.metaKey || event.shiftKey) {
-        return;
-      }
-      this.onKeyDown(event.key);
-    });
+    if (this.props.bindEvents) {
+      window.addEventListener('keydown', (event) => {
+        // TODO: extract logic from onKeyDown to onKeyActive,
+        // then move logic to onKeyDown
+        if (event.ctrlKey || event.metaKey || event.shiftKey) {
+          return;
+        }
+        this.onKeyDown(event.key);
+      });
 
-    window.addEventListener('keyup', (event) => {
-      // TODO: extract logic from onKeyUp to onKeyInactive,
-      // then move logic to onKeyUp
-      if (event.ctrlKey || event.metaKey || event.shiftKey) {
-        return;
-      }
-      this.onKeyUp(event.key);
-    });
+      window.addEventListener('keyup', (event) => {
+        // TODO: extract logic from onKeyUp to onKeyInactive,
+        // then move logic to onKeyUp
+        if (event.ctrlKey || event.metaKey || event.shiftKey) {
+          return;
+        }
+        this.onKeyUp(event.key);
+      });
+    }
   }
 
   startNote = (note) => {
