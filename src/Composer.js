@@ -2,23 +2,29 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import update from 'immutability-helper';
+
 import AudioSequencer from './audio/Sequencer';
+import { getStepFrequencies } from './noteHelpers';
 
 // TODO: pass cent values to composer for display
 class Composer extends Component {
   constructor(props) {
     super(props);
 
+    const frequencies = getStepFrequencies(props.config);
     this.state = {
-      sequences: this.getInitialSequences(),
+      frequencies,
+      sequences: this.getInitialSequences(frequencies),
     };
   }
 
   // TODO: refactor, move sequences from state to props?
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.frequencies, nextProps.frequencies)) {
+    if (!_.isEqual(this.props.config, nextProps.config)) {
+      const frequencies = getStepFrequencies(nextProps.config);
       this.setState({
-        sequences: this.getInitialSequences(nextProps.frequencies),
+        frequencies,
+        sequences: this.getInitialSequences(frequencies),
       });
     }
   }
@@ -29,7 +35,7 @@ class Composer extends Component {
         return this.state.sequences[offset][timeIndex];
       });
 
-      const frequency = this.props.frequencies[offset % this.props.frequencies.length];
+      const frequency = this.state.frequencies[offset % this.state.frequencies.length];
       return activeTimeIndexes.map((timeIndex) => {
         return [frequency, timeIndex * 0.5, 0.5];
       });
@@ -37,7 +43,7 @@ class Composer extends Component {
       return sequence.length > 0
     });
 
-    console.log('onClickPlay', normalizedSequences, this.props.frequencies);
+    console.log('onClickPlay', normalizedSequences, this.state.frequencies);
     const audioSequencer = new AudioSequencer({
       audioContext: new window.AudioContext(),
       sequences: normalizedSequences,
@@ -48,7 +54,7 @@ class Composer extends Component {
 
   onClickReset = () => {
     this.setState({
-      sequences: this.getInitialSequences(),
+      sequences: this.getInitialSequences(this.state.frequencies),
     });
   };
 
@@ -63,11 +69,11 @@ class Composer extends Component {
           [timeIndex]: { $set: !currentlyActive }
         }
       }),
-    }, () => console.log(this.state));
+    }, () => console.log('onClickSequenceItem setState', this.state));
   };
 
   getNumDisplaySteps(frequencies) {
-    return (frequencies || this.props.frequencies).length;
+    return frequencies.length;
   }
 
   getNumSequenceItems() {
@@ -96,7 +102,7 @@ class Composer extends Component {
         </div>
 
         {
-          _.range(this.getNumDisplaySteps() - 1, -1, -1).map((offset) => {
+          _.range(this.getNumDisplaySteps(this.state.frequencies) - 1, -1, -1).map((offset) => {
             return (
               <div className="row no-gutters" key={offset}>
                 <div className="col-1">

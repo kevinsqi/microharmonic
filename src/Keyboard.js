@@ -2,7 +2,12 @@ import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import Oscillator from './audio/Oscillator';
-import { getCustomCentsForNote, CENTS_IN_OCTAVE } from './noteHelpers';
+import {
+  getCustomCentsForNote,
+  getFrequencyForNote,
+  getNoteFromOffset,
+  CENTS_IN_OCTAVE,
+} from './noteHelpers';
 
 const KEY_LABELS_IN_ROWS = [
   `zxcvbnm,./`,
@@ -58,12 +63,12 @@ class Keyboard extends React.Component {
   }
 
   startNote = (note) => {
-    const freq = this.props.getFrequencyForNote(note);
+    const freq = getFrequencyForNote(this.props.config, note);
     this.oscillator.start(freq);
   };
 
   stopNote = (note) => {
-    const freq = this.props.getFrequencyForNote(note);
+    const freq = getFrequencyForNote(this.props.config, note);
     this.oscillator.stop(freq);
   };
 
@@ -99,7 +104,7 @@ class Keyboard extends React.Component {
 
   getNoteFromKeyLabel(keyLabel) {
     const offset = getOffsetFromKeyLabel(keyLabel);
-    return this.props.getNoteFromOffset(offset);
+    return getNoteFromOffset(this.props.config, offset);
   }
 
   renderKey(keyLabel) {
