@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
+
 import './App.css';
 import Composer from './Composer';
 import Footer from './Footer';
@@ -63,8 +64,6 @@ class App extends React.Component {
           <Route exact path="/" render={() => (
             <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
               <Keyboard
-                getNoteFromOffset={this.getNoteFromOffset}
-                getFrequencyForNote={this.getFrequencyForNote}
                 config={this.state.config}
                 gain={GAIN_VALUE}
               />
@@ -78,7 +77,9 @@ class App extends React.Component {
               />
             </SettingsWrapper>
           )} />
-          <Route exact path="/tutorial" component={Tutorial} />
+          <Route exact path="/tutorial" render={() => (
+            <Tutorial gain={GAIN_VALUE} />
+          )} />
           <Footer className="mt-3" />
         </div>
       </Router>

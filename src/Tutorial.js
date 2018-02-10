@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Keyboard from './Keyboard';
+
 function Tutorial(props) {
   // TODO: swap in photos with own illustrations
   // TODO: show weird physical microtone keyboards
@@ -34,15 +36,16 @@ function Tutorial(props) {
             You can try it out with a 12EDO keyboard here.
           </p>
           <div>
-            {/* noreintegrate
             <Keyboard
-              getNoteFromOffset={this.getNoteFromOffset}
-              getFrequencyForNote={this.getFrequencyForNote}
-              config={this.state.config}
-              audioContext={this.audioContext}
-              gain={GAIN_VALUE}
+              config={{
+                useCustomCentValues: false,
+                minFrequency: 220,
+                numOctaves: 1,
+                numSteps: 12,
+                selectedNotes: {},
+              }}
+              gain={props.gain}
             />
-            */}
           </div>
           <p>
             This 12 tone scale originates back to 1584, when Zhu Zaiyu
