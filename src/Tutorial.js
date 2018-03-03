@@ -84,7 +84,6 @@ function Tutorial(props) {
               <img
                 height="150"
                 src="http://media.guitarcenter.com/is/image/MMGS7/Prelude-Series-Violin-Outfit-1-8-Size/J05662000001000-00-500x500.jpg"
-                alt="violin"
               />
             </div>
           </div>
@@ -108,6 +107,19 @@ function Tutorial(props) {
             You can play around with 19EDO here.
             {/* TODO: use Composer to actually transcribe The Juggler */}
           </p>
+          <div>
+            <Keyboard
+              config={{
+                useCustomCentValues: false,
+                minFrequency: 220,
+                numOctaves: 1,
+                numSteps: 19,
+                selectedNotes: {},
+              }}
+              gain={props.gain}
+              bindEvents={false}
+            />
+          </div>
           <p>
             Microtonal music can also sound quite strange and wonderful.
             This song by Sevish uses a 53EDO scale:

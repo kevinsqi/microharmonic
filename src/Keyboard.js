@@ -26,6 +26,8 @@ function getOffsetFromKeyLabel(keyLabel) {
   return null;
 }
 
+// TODO: rename bindEvents => enableKeyboard, and don't show
+// keyboard letters if disabled. or remove the prop
 class Keyboard extends React.Component {
   static defaultProps = {
     bindEvents: true,
