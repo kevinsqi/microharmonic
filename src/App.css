@@ -66,6 +66,7 @@ input[type=checkbox] {
 }
 
 .btn-key {
+  cursor: pointer;
   background-color: #ddd;
   width: 100%;
   margin: 1px;

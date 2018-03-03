@@ -10,27 +10,18 @@ function Tutorial(props) {
       <div className="row">
         <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <h1 className="text-muted">01. An introduction to microtones</h1>
-          <div>
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/taCNT81k1v8?rel=0"
-              frameborder="0"
-              gesture="media"
-              allow="encrypted-media"
-              allowfullscreen
-            />
-          </div>
           <h2 className="h4 font-weight-bold mt4">What’s common to practically all contemporary music?</h2>
-          <div className="w-50 py-3">
-            <img
-              className="w-100"
-              src="http://www.agnes-bruckner.com/apronus_images/facepiano.gif"
-              alt="piano keyboard"
-            />
+          <div className="row py-3">
+            <div className="col-12 col-md-10 offset-md-1">
+              <img
+                className="w-100"
+                src="http://www.agnes-bruckner.com/apronus_images/facepiano.gif"
+                alt="piano keyboard"
+              />
+            </div>
           </div>
           <p>
-            You might know of them as C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, and B.
+            C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, and B.
             From these 12 notes we can play pretty much any song that we know of.
             The approach of dividing an octave equally is known as "equal temperament".
             You can try it out with a 12EDO keyboard here.
@@ -48,7 +39,7 @@ function Tutorial(props) {
               bindEvents={false}
             />
           </div>
-          <p>
+          <p className="mt-3">
             This 12 tone scale originates back to 1584, when Zhu Zaiyu
             developed the mathematical basis for dividing the octave equally into 12 parts.
 
@@ -59,12 +50,14 @@ function Tutorial(props) {
             over three octaves, and increasing the length of the each pipe by a factor of
             the twelfth root of 2.
           </p>
-          <div className="w-50 py-3">
-            <img
-              className="w-100"
-              src="https://upload.wikimedia.org/wikipedia/commons/f/f2/%E4%B9%90%E5%BE%8B%E5%85%A8%E4%B9%A6%E5%85%A8-1154.jpg"
-              alt="bamboo pipes"
-            />
+          <div className="row py-3">
+            <div className="col-md-6 offset-md-3">
+              <img
+                className="w-100"
+                src="https://upload.wikimedia.org/wikipedia/commons/f/f2/%E4%B9%90%E5%BE%8B%E5%85%A8%E4%B9%A6%E5%85%A8-1154.jpg"
+                alt="bamboo pipes"
+              />
+            </div>
           </div>
           <p>
             The "distance", or "interval", between any two notes is the same in 12EDO.
@@ -77,22 +70,21 @@ function Tutorial(props) {
             traverse between notes:
           </p>
           <div className="row my-3">
-            <div className="col-3">
+            <div className="col-12 text-center">
               <img
+                height="150"
                 src="https://static1.squarespace.com/static/57d2f09a6b8f5b98b30057f4/t/58cb1879414fb534eec71f43/1492026344786/"
-                className="w-100"
+                alt="trombone"
               />
-            </div>
-            <div className="col-2">
               <img
+                height="150"
                 src="https://images-na.ssl-images-amazon.com/images/I/61NJglqoJVL._SL1500_.jpg"
-                className="w-100"
+                alt="otomatone"
               />
-            </div>
-            <div className="col-3">
               <img
+                height="150"
                 src="http://media.guitarcenter.com/is/image/MMGS7/Prelude-Series-Violin-Outfit-1-8-Size/J05662000001000-00-500x500.jpg"
-                className="w-100"
+                alt="violin"
               />
             </div>
           </div>
@@ -101,8 +93,9 @@ function Tutorial(props) {
             ubiquitous 12 tone structure.
             Listen to this microtonal song:
           </p>
-          <div className="w-50">
+          <div>
             <iframe
+              title="soundcloud_the_juggler"
               width="100%"
               height="150"
               scrolling="no"
@@ -119,8 +112,9 @@ function Tutorial(props) {
             Microtonal music can also sound quite strange and wonderful.
             This song by Sevish uses a 53EDO scale:
           </p>
-          <div className="w-50">
+          <div>
             <iframe
+              title="soundcloud_sevish_droplet"
               width="100%"
               height="150"
               scrolling="no"
@@ -134,6 +128,18 @@ function Tutorial(props) {
             Middle C is 440hz. Go up an octave to 880hz.
             Being logarithmic isn’t super convenient relative to our perception, which is linear. So we can use cents instead, which is defined as:
           </p>
+          <div>
+            <iframe
+              title="binky_doesnt_understand"
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/taCNT81k1v8?rel=0"
+              frameborder="0"
+              gesture="media"
+              allow="encrypted-media"
+              allowfullscreen
+            />
+          </div>
         </div>
       </div>
     </div>
