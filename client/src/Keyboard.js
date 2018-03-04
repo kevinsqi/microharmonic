@@ -49,26 +49,16 @@ class Keyboard extends React.Component {
   }
 
   componentDidMount() {
-    // TODO: unbind this on unmount
-
     if (this.props.bindEvents) {
-      window.addEventListener('keydown', (event) => {
-        // TODO: extract logic from onKeyDown to onKeyActive,
-        // then move logic to onKeyDown
-        if (event.ctrlKey || event.metaKey || event.shiftKey) {
-          return;
-        }
-        this.onKeyDown(event.key);
-      });
+      window.addEventListener('keydown', this.onKeyDown);
+      window.addEventListener('keyup', this.onKeyUp);
+    }
+  }
 
-      window.addEventListener('keyup', (event) => {
-        // TODO: extract logic from onKeyUp to onKeyInactive,
-        // then move logic to onKeyUp
-        if (event.ctrlKey || event.metaKey || event.shiftKey) {
-          return;
-        }
-        this.onKeyUp(event.key);
-      });
+  componentWillUnmount() {
+    if (this.props.bindEvents) {
+      window.removeEventListener('keydown', this.onKeyDown);
+      window.removeEventListener('keyup', this.onKeyUp);
     }
   }
 
@@ -82,7 +72,21 @@ class Keyboard extends React.Component {
     this.oscillator.stop(freq);
   };
 
-  onKeyDown(keyLabel) {
+  onKeyDown = (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    this.onKeyActive(event.key);
+  };
+
+  onKeyUp = (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    this.onKeyInactive(event.key);
+  };
+
+  onKeyActive(keyLabel) {
     const note = this.getNoteFromKeyLabel(keyLabel);
     if (note !== null) {
       this.startNote(note);
@@ -93,7 +97,7 @@ class Keyboard extends React.Component {
     }
   }
 
-  onKeyUp(keyLabel) {
+  onKeyInactive(keyLabel) {
     const note = this.getNoteFromKeyLabel(keyLabel);
     if (note !== null) {
       this.stopNote(note);
@@ -129,12 +133,12 @@ class Keyboard extends React.Component {
               'btn-active': this.state.activeNotes[note],
             })
           }
-          onMouseDown={this.onKeyDown.bind(this, keyLabel)}
-          onMouseUp={this.onKeyUp.bind(this, keyLabel)}
-          onMouseLeave={this.onKeyUp.bind(this, keyLabel)}
-          onTouchStart={this.onKeyDown.bind(this, keyLabel)}
-          onTouchCancel={this.onKeyUp.bind(this, keyLabel)}
-          onTouchEnd={this.onKeyUp.bind(this, keyLabel)}
+          onMouseDown={this.onKeyActive.bind(this, keyLabel)}
+          onMouseUp={this.onKeyInactive.bind(this, keyLabel)}
+          onMouseLeave={this.onKeyInactive.bind(this, keyLabel)}
+          onTouchStart={this.onKeyActive.bind(this, keyLabel)}
+          onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
+          onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
         >
           {note}<br />
           <small>{Math.round(cents)}</small><br />
