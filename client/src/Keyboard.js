@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
+
+import audioContext from './audioContext';
 import Oscillator from './audio/Oscillator';
 import {
   getCustomCentsForNote,
@@ -41,7 +43,7 @@ class Keyboard extends React.Component {
     };
 
     this.oscillator = new Oscillator({
-      audioContext: new window.AudioContext(),
+      audioContext: audioContext,
       gain: props.gain,
     });
   }

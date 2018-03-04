@@ -3,6 +3,7 @@ import _ from 'lodash';
 import classNames from 'classnames';
 import update from 'immutability-helper';
 
+import audioContext from './audioContext';
 import AudioSequencer from './audio/Sequencer';
 import { getStepFrequencies } from './noteHelpers';
 
@@ -45,9 +46,9 @@ class Composer extends Component {
 
     console.log('onClickPlay', normalizedSequences, this.state.frequencies);
     const audioSequencer = new AudioSequencer({
-      audioContext: new window.AudioContext(),
+      audioContext: audioContext,
       sequences: normalizedSequences,
-      gain: this.props.gain
+      gain: this.props.gain,
     });
     audioSequencer.play();
   };
