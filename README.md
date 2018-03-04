@@ -32,3 +32,15 @@ Login:
 ```
 heroku auth:login
 ```
+
+Initialize heroku project in root dir:
+
+```
+heroku create
+```
+
+Pushing new code:
+
+```
+git push heroku master
+```
