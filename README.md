@@ -44,3 +44,7 @@ Pushing new code:
 ```
 git push heroku master
 ```
+
+## Contributing
+
+See the [public trello board](https://trello.com/b/NAr6ByNU/tasks) for stories and tickets.
