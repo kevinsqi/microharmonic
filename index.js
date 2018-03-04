@@ -6,12 +6,6 @@ const app = express();
 // Serve static files from react app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.get('/api/foo', (request, response) => {
-  response.json({
-    hello: 'hi',
-  });
-});
-
 // Catchall to serve react index file
 app.get('*', (request, response) => {
   response.sendFile(path.join(__dirname, '/client/build/index.html'));
