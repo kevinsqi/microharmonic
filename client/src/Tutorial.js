@@ -99,7 +99,7 @@ function Tutorial(props) {
               width="100%"
               height="150"
               scrolling="no"
-              frameborder="no"
+              frameBorder="no"
               src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/146753233&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true"
             />
           </div>
@@ -131,7 +131,7 @@ function Tutorial(props) {
               width="100%"
               height="150"
               scrolling="no"
-              frameborder="no"
+              frameBorder="no"
               src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/212652160&amp;color=%23b89890&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true"
             />
           </div>
@@ -147,10 +147,8 @@ function Tutorial(props) {
               width="560"
               height="315"
               src="https://www.youtube.com/embed/taCNT81k1v8?rel=0"
-              frameborder="0"
-              gesture="media"
-              allow="encrypted-media"
-              allowfullscreen
+              frameBorder="0"
+              allowFullScreen
             />
           </div>
         </div>
