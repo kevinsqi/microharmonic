@@ -11,5 +11,12 @@
   "scripts": {
     "start": "node index.js",
     "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-plugin-node": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=7.0.0"
   }
 }
