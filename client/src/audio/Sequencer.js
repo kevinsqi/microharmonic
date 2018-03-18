@@ -26,6 +26,7 @@ class Sequencer {
     this.context = audioContext;
     this.gain = gain;
     this.sequences = sequences;
+    this.oscillator = null;
   }
 
   play() {
@@ -33,6 +34,14 @@ class Sequencer {
       this.playSequence(sequence);
     });
   }
+
+  // noreintegrate not working yet
+  stop = () => {
+    console.log('stop', this.oscillator);
+    if (this.oscillator) {
+      this.oscillator.stop(0);
+    }
+  };
 
   playSequence(sequence) {
     const now = this.context.currentTime;
@@ -59,13 +68,15 @@ class Sequencer {
         return offset + duration;
       })
     );
-    oscillator.stop(now + endOffset);
+    // oscillator.stop(now + endOffset);
 
     // TODO correct?
     oscillator.onended = () => {
       gainNode.disconnect();
       oscillator.disconnect();
-    }
+    };
+
+    this.oscillator = oscillator;
   }
 }
 

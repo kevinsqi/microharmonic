@@ -16,7 +16,11 @@ class Composer extends Component {
     this.state = {
       frequencies,
       sequences: this.getInitialSequences(frequencies),
+      currentStep: 0,
     };
+
+    this.updateCurrentStepInterval = null;
+    this.currentAudioSequencer = null;
   }
 
   // TODO: refactor, move sequences from state to props?
@@ -26,11 +30,14 @@ class Composer extends Component {
       this.setState({
         frequencies,
         sequences: this.getInitialSequences(frequencies),
+        currentStep: 0,
       });
     }
   }
 
   onClickPlay = () => {
+    const stepDuration = this.getStepDuration();
+    const numSequenceItems = this.getNumSequenceItems();
     const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
       const activeTimeIndexes = Object.keys(this.state.sequences[offset]).filter((timeIndex) => {
         return this.state.sequences[offset][timeIndex];
@@ -38,25 +45,41 @@ class Composer extends Component {
 
       const frequency = this.state.frequencies[offset % this.state.frequencies.length];
       return activeTimeIndexes.map((timeIndex) => {
-        return [frequency, timeIndex * 0.5, 0.5];
+        return [frequency, timeIndex * stepDuration, stepDuration];
       });
     }).filter((sequence) => {
       return sequence.length > 0
     });
 
     console.log('onClickPlay', normalizedSequences, this.state.frequencies);
-    const audioSequencer = new AudioSequencer({
+    this.currentAudioSequencer = new AudioSequencer({
       audioContext: audioContext,
       sequences: normalizedSequences,
       gain: this.props.gain,
     });
-    audioSequencer.play();
+    // noreintegrate loop
+    this.currentAudioSequencer.play();
+
+    this.updateCurrentStepInterval = setInterval(() => {
+      this.setState({
+        currentStep: (this.state.currentStep + 1) % numSequenceItems,
+      });
+    }, stepDuration * 1000);
   };
 
-  onClickReset = () => {
+  onClickClear = () => {
+    this.onClickStop();
     this.setState({
       sequences: this.getInitialSequences(this.state.frequencies),
     });
+  };
+
+  onClickStop = () => {
+    this.setState({
+      currentStep: 0,
+    });
+    clearInterval(this.updateCurrentStepInterval);
+    this.currentAudioSequencer.stop();
   };
 
   onClickSequenceItem = (offset, timeIndex) => {
@@ -81,6 +104,10 @@ class Composer extends Component {
     return 16;
   }
 
+  getStepDuration() {
+    return 0.5;
+  }
+
   getInitialSequences(frequencies) {
     const sequences = {};
     _.range(this.getNumDisplaySteps(frequencies)).forEach((offset) => {
@@ -98,8 +125,9 @@ class Composer extends Component {
         <p><strong>This is a work in progress!</strong></p>
 
         <div className="btn-group mb-3">
-          <button className="btn btn-primary" onClick={this.onClickPlay}>Play once</button>
-          <button className="btn btn-secondary" onClick={this.onClickReset}>Reset</button>
+          <button className="btn btn-primary" onClick={this.onClickPlay}>Play</button>
+          <button className="btn btn-secondary" onClick={this.onClickStop}>Stop</button>
+          <button className="btn btn-outline-secondary" onClick={this.onClickClear}>Clear</button>
         </div>
 
         {
@@ -115,7 +143,12 @@ class Composer extends Component {
                       _.range(this.getNumSequenceItems()).map((timeIndex) => {
                         return (
                           <div
-                            className={classNames('col', 'sequence-item', 'py-1', { 'sequence-item-active': this.state.sequences[offset][timeIndex] })}
+                            className={
+                              classNames('col sequence-item py-1', {
+                                'sequence-item-active': this.state.sequences[offset][timeIndex],
+                                'sequence-item-current': timeIndex === this.state.currentStep,
+                              })
+                            }
                             key={timeIndex}
                             onClick={this.onClickSequenceItem.bind(this, offset, timeIndex)}
                           >

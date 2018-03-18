@@ -65,6 +65,10 @@ input[type=checkbox] {
   color: #fff;
 }
 
+.sequence-item-current {
+  background-color: #f00;
+}
+
 .btn-key {
   cursor: pointer;
   background-color: #ddd;
