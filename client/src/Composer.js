@@ -5,7 +5,10 @@ import update from 'immutability-helper';
 
 import audioContext from './audioContext';
 import AudioSequencer from './audio/Sequencer';
-import { getStepFrequencies } from './noteHelpers';
+import {
+  getNoteFromOffset,
+  getStepFrequencies,
+} from './noteHelpers';
 
 // TODO: pass cent values to composer for display
 class Composer extends Component {
@@ -138,7 +141,7 @@ class Composer extends Component {
             return (
               <div className="row no-gutters" key={offset}>
                 <div className="col-1">
-                  <div className="text-right pr-2 py-1">{offset}</div>
+                  <div className="text-right pr-2 py-1">{getNoteFromOffset(this.props.config, offset)}</div>
                 </div>
                 <div className="col">
                   <div className="row no-gutters">
