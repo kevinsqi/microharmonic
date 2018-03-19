@@ -6,6 +6,7 @@ import update from 'immutability-helper';
 import audioContext from './audioContext';
 import AudioSequencer from './audio/Sequencer';
 import {
+  getCentsForNote,
   getNoteFromOffset,
   getStepFrequencies,
 } from './noteHelpers';
@@ -138,10 +139,15 @@ class Composer extends Component {
 
         {
           _.range(this.getNumDisplaySteps(this.state.frequencies) - 1, -1, -1).map((offset) => {
+            const note = getNoteFromOffset(this.props.config, offset);
+            const cents = getCentsForNote(this.props.config, note);
             return (
               <div className="row no-gutters" key={offset}>
                 <div className="col-1">
-                  <div className="text-right pr-2 py-1">{getNoteFromOffset(this.props.config, offset)}</div>
+                  <div className="text-right pr-2 py-1">
+                    {note}<br />
+                    <small>{Math.round(cents)}</small>
+                  </div>
                 </div>
                 <div className="col">
                   <div className="row no-gutters">
