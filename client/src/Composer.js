@@ -154,9 +154,7 @@ class Composer extends Component {
                             }
                             key={timeIndex}
                             onClick={this.onClickSequenceItem.bind(this, offset, timeIndex)}
-                          >
-                            <div className="text-center">{timeIndex}</div>
-                          </div>
+                          />
                         );
                       })
                     }
