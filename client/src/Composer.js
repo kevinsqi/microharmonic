@@ -51,13 +51,12 @@ class Composer extends Component {
       return sequence.length > 0
     });
 
-    console.log('onClickPlay', normalizedSequences, this.state.frequencies);
     this.currentAudioSequencer = new AudioSequencer({
       audioContext: audioContext,
       sequences: normalizedSequences,
+      totalDuration: numSequenceItems * stepDuration,
       gain: this.props.gain,
     });
-    // noreintegrate loop
     this.currentAudioSequencer.play();
 
     this.updateCurrentStepInterval = setInterval(() => {
@@ -83,8 +82,6 @@ class Composer extends Component {
   };
 
   onClickSequenceItem = (offset, timeIndex) => {
-    console.log('onClickSequenceItem', offset, timeIndex);
-
     const currentlyActive = this.state.sequences[offset][timeIndex];
 
     this.setState({
@@ -105,7 +102,7 @@ class Composer extends Component {
   }
 
   getStepDuration() {
-    return 0.5;
+    return 0.2;
   }
 
   getInitialSequences(frequencies) {
@@ -126,7 +123,13 @@ class Composer extends Component {
 
         <div className="btn-group mb-3">
           <button className="btn btn-primary" onClick={this.onClickPlay}>Play</button>
-          <button className="btn btn-secondary" onClick={this.onClickStop}>Stop</button>
+          <button
+            className="btn btn-secondary"
+            disabled={!this.currentAudioSequencer}
+            onClick={this.onClickStop}
+          >
+            Stop
+          </button>
           <button className="btn btn-outline-secondary" onClick={this.onClickClear}>Clear</button>
         </div>
 
