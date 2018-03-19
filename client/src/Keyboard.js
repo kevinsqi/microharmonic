@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import audioContext from './audioContext';
 import Oscillator from './audio/Oscillator';
 import {
-  getCustomCentsForNote,
+  getCentsForNote,
   getFrequencyForNote,
   getNoteFromOffset,
   CENTS_IN_OCTAVE,
@@ -108,14 +108,6 @@ class Keyboard extends React.Component {
     }
   }
 
-  getCentsForNote(note) {
-    if (this.props.config.useCustomCentValues) {
-      return getCustomCentsForNote(note, this.props.config.customCentValues);
-    } else {
-      return (CENTS_IN_OCTAVE * this.props.config.numOctaves) / this.props.config.numSteps * note;
-    }
-  }
-
   getNoteFromKeyLabel(keyLabel) {
     const offset = getOffsetFromKeyLabel(keyLabel);
     return getNoteFromOffset(this.props.config, offset);
@@ -123,7 +115,7 @@ class Keyboard extends React.Component {
 
   renderKey(keyLabel) {
     const note = this.getNoteFromKeyLabel(keyLabel);
-    const cents = this.getCentsForNote(note);
+    const cents = getCentsForNote(this.props.config, note);
     return (
       <div className="col col-sm-1" key={note}>
         <button

@@ -16,23 +16,50 @@ window.seq = new Sequencer(new window.AudioContext(), [
 ]);
 */
 
+function getEndTime(sequence) {
+  return Math.max(
+    ...sequence.map(([freq, offset, duration]) => {
+      return offset + duration;
+    })
+  );
+}
+
 // TODO: refactor into objects instead of arrays
 class Sequencer {
   constructor({
     audioContext,
     sequences,
+    totalDuration,
     gain
   } = {}) {
     this.context = audioContext;
     this.gain = gain;
     this.sequences = sequences;
+    this.totalDuration = totalDuration;
+    this.oscillators = [];
+    this.playSequencesInterval = null;
   }
 
-  play() {
-    this.sequences.forEach((sequence) => {
-      this.playSequence(sequence);
+  play = () => {
+    this.playSequences();
+    this.playSequencesInterval = setInterval(this.playSequences, this.totalDuration * 1000);
+  };
+
+  stop = () => {
+    clearInterval(this.playSequencesInterval);
+
+    this.oscillators.forEach((oscillator) => {
+      oscillator.stop();
     });
-  }
+    this.oscillators = [];
+  };
+
+  playSequences = () => {
+    this.sequences.forEach((sequence) => {
+      const oscillator = this.playSequence(sequence);
+      this.oscillators.push(oscillator);
+    });
+  };
 
   playSequence(sequence) {
     const now = this.context.currentTime;
@@ -54,18 +81,8 @@ class Sequencer {
       oscillator.frequency.setValueAtTime(freq, now + offset);
     });
 
-    const endOffset = Math.max(
-      ...sequence.map(([freq, offset, duration]) => {
-        return offset + duration;
-      })
-    );
-    oscillator.stop(now + endOffset);
-
-    // TODO correct?
-    oscillator.onended = () => {
-      gainNode.disconnect();
-      oscillator.disconnect();
-    }
+    oscillator.stop(now + getEndTime(sequence));
+    return oscillator;
   }
 }
 

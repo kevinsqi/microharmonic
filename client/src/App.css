@@ -56,13 +56,23 @@ input[type=checkbox] {
 }
 
 .sequence-item {
-  border: 1px solid #ddd;
-  color: #bbb;
+  height: 40px;
+  border: 1px solid #abb;
+  margin: 1px;
+  border-radius: 1px;
 }
 
 .sequence-item-active {
-  background-color: #5bc0de;
-  color: #fff;
+  background-color: #0076ae;
+}
+
+.sequence-item-current {
+  opacity: 0.5;
+  background-color: #ff4916;
+}
+
+.sequence-item-active.sequence-item-current {
+  opacity: 1;
 }
 
 .btn-key {
