@@ -12,15 +12,20 @@ import {
 } from './noteHelpers';
 
 function SequenceItem(props) {
+  const onClick = props.selected ? props.onDeselect : props.onSelect;
+  // noreintegrate implement with onMouseDown instead?
   return (
     <div
       className={
         classNames('col sequence-item py-1', {
-          'sequence-item-active': props.active,
+          'sequence-item-selected': props.selected,
           'sequence-item-current': props.current,
         })
       }
-      onClick={props.onClick}
+      draggable
+      onClick={onClick}
+      onDragEnter={props.onSelect}
+      onDragStart={props.onSelect}
     />
   );
 }
@@ -99,13 +104,11 @@ class Composer extends Component {
     this.currentAudioSequencer.stop();
   };
 
-  onClickSequenceItem = (offset, timeIndex) => {
-    const currentlyActive = this.state.sequences[offset][timeIndex];
-
+  onSelectItem = (offset, timeIndex, value) => {
     this.setState({
       sequences: update(this.state.sequences, {
         [offset]: {
-          [timeIndex]: { $set: !currentlyActive }
+          [timeIndex]: { $set: value }
         }
       }),
     });
@@ -166,11 +169,13 @@ class Composer extends Component {
                   <div className="row no-gutters">
                     {
                       _.range(this.getNumSequenceItems()).map((timeIndex) => {
+                        const isSelected = this.state.sequences[offset][timeIndex];
                         return (
                           <SequenceItem
-                            active={this.state.sequences[offset][timeIndex]}
+                            selected={isSelected}
                             current={timeIndex === this.state.currentStep}
-                            onClick={this.onClickSequenceItem.bind(this, offset, timeIndex)}
+                            onSelect={this.onSelectItem.bind(this, offset, timeIndex, true)}
+                            onDeselect={this.onSelectItem.bind(this, offset, timeIndex, false)}
                             key={timeIndex}
                           />
                         );

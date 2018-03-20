@@ -66,7 +66,7 @@ input[type=checkbox] {
   border-radius: 1px;
 }
 
-.sequence-item-active {
+.sequence-item-selected {
   background-color: #0076ae;
 }
 
@@ -75,7 +75,7 @@ input[type=checkbox] {
   background-color: #ff4916;
 }
 
-.sequence-item-active.sequence-item-current {
+.sequence-item-selected.sequence-item-current {
   opacity: 1;
 }
 
