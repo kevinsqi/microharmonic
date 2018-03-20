@@ -11,7 +11,20 @@ import {
   getStepFrequencies,
 } from './noteHelpers';
 
-// TODO: pass cent values to composer for display
+function SequenceItem(props) {
+  return (
+    <div
+      className={
+        classNames('col sequence-item py-1', {
+          'sequence-item-active': props.active,
+          'sequence-item-current': props.current,
+        })
+      }
+      onClick={props.onClick}
+    />
+  );
+}
+
 class Composer extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +52,7 @@ class Composer extends Component {
     }
   }
 
+  // TODO: refactor
   onClickPlay = () => {
     const stepDuration = this.getStepDuration();
     const numSequenceItems = this.getNumSequenceItems();
@@ -94,7 +108,7 @@ class Composer extends Component {
           [timeIndex]: { $set: !currentlyActive }
         }
       }),
-    }, () => console.log('onClickSequenceItem setState', this.state));
+    });
   };
 
   getNumDisplaySteps(frequencies) {
@@ -120,11 +134,10 @@ class Composer extends Component {
     return sequences;
   }
 
+  // TODO refactor subcomponents
   render() {
     return (
       <div>
-        <p><strong>This is a work in progress!</strong></p>
-
         <div className="btn-group mb-3">
           <button className="btn btn-primary" onClick={this.onClickPlay}>Play</button>
           <button
@@ -144,7 +157,7 @@ class Composer extends Component {
             return (
               <div className="row no-gutters" key={offset}>
                 <div className="col-1">
-                  <div className="text-right pr-2 py-1">
+                  <div className="text-right pr-2 py-1 line-height-1">
                     {note}<br />
                     <small>{Math.round(cents)}</small>
                   </div>
@@ -154,15 +167,11 @@ class Composer extends Component {
                     {
                       _.range(this.getNumSequenceItems()).map((timeIndex) => {
                         return (
-                          <div
-                            className={
-                              classNames('col sequence-item py-1', {
-                                'sequence-item-active': this.state.sequences[offset][timeIndex],
-                                'sequence-item-current': timeIndex === this.state.currentStep,
-                              })
-                            }
-                            key={timeIndex}
+                          <SequenceItem
+                            active={this.state.sequences[offset][timeIndex]}
+                            current={timeIndex === this.state.currentStep}
                             onClick={this.onClickSequenceItem.bind(this, offset, timeIndex)}
+                            key={timeIndex}
                           />
                         );
                       })
