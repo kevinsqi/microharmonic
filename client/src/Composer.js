@@ -11,18 +11,17 @@ import {
   getStepFrequencies,
 } from './noteHelpers';
 
-function buildSequenceArrays({
+function buildSequences({
   selectedSteps,
   frequencies,
   stepDuration,
 }) {
   return Object.keys(selectedSteps).map((offset) => {
-    const activeTimeIndexes = Object.keys(selectedSteps[offset]).filter((timeIndex) => {
+    const selectedStepIndexes = Object.keys(selectedSteps[offset]).filter((timeIndex) => {
       return selectedSteps[offset][timeIndex];
     });
-
     const frequency = frequencies[offset % frequencies.length];
-    return activeTimeIndexes.map((timeIndex) => {
+    return selectedStepIndexes.map((timeIndex) => {
       return [frequency, timeIndex * stepDuration, stepDuration];
     });
   }).filter((sequence) => {
@@ -30,7 +29,7 @@ function buildSequenceArrays({
   });
 }
 
-function SequenceItem(props) {
+function Step(props) {
   const onClick = props.selected ? props.onDeselect : props.onSelect;
   // TODO: implement with onMouseDown instead? would change a flag on mouseDown so mouseEnter selects
   return (
@@ -79,23 +78,23 @@ class Composer extends Component {
   onPlay = () => {
     this.onStop();
     const stepDuration = this.getStepDuration();
-    const numSequenceItems = this.getNumSequenceItems();
-    const sequenceArrays = buildSequenceArrays({
+    const numSteps = this.getNumSteps();
+    const sequences = buildSequences({
       selectedSteps: this.state.selectedSteps,
       frequencies: this.state.frequencies,
       stepDuration,
     });
     this.currentAudioSequencer = new AudioSequencer({
       audioContext: audioContext,
-      sequences: sequenceArrays,
-      totalDuration: numSequenceItems * stepDuration,
+      sequences: sequences,
+      totalDuration: numSteps * stepDuration,
       gain: this.props.gain,
     });
     this.currentAudioSequencer.play();
 
     this.updateCurrentStepInterval = setInterval(() => {
       this.setState({
-        currentStep: (this.state.currentStep + 1) % numSequenceItems,
+        currentStep: (this.state.currentStep + 1) % numSteps,
       });
     }, stepDuration * 1000);
   };
@@ -132,11 +131,11 @@ class Composer extends Component {
     });
   };
 
-  getNumDisplaySteps(frequencies) {
+  getNumNotes(frequencies) {
     return frequencies.length;
   }
 
-  getNumSequenceItems() {
+  getNumSteps() {
     return 16;
   }
 
@@ -146,9 +145,9 @@ class Composer extends Component {
 
   getInitialSelectedSteps(frequencies) {
     const selectedSteps = {};
-    _.range(this.getNumDisplaySteps(frequencies)).forEach((offset) => {
+    _.range(this.getNumNotes(frequencies)).forEach((offset) => {
       selectedSteps[offset] = {};
-      _.range(this.getNumSequenceItems()).forEach((timeIndex) => {
+      _.range(this.getNumSteps()).forEach((timeIndex) => {
         selectedSteps[offset][timeIndex] = false;
       });
     });
@@ -172,7 +171,7 @@ class Composer extends Component {
         </div>
 
         {
-          _.range(this.getNumDisplaySteps(this.state.frequencies) - 1, -1, -1).map((offset) => {
+          _.range(this.getNumNotes(this.state.frequencies) - 1, -1, -1).map((offset) => {
             const note = getNoteFromOffset(this.props.config, offset);
             const cents = getCentsForNote(this.props.config, note);
             return (
@@ -186,10 +185,10 @@ class Composer extends Component {
                 <div className="col">
                   <div className="row no-gutters">
                     {
-                      _.range(this.getNumSequenceItems()).map((timeIndex) => {
+                      _.range(this.getNumSteps()).map((timeIndex) => {
                         const isSelected = this.state.selectedSteps[offset][timeIndex];
                         return (
-                          <SequenceItem
+                          <Step
                             selected={isSelected}
                             current={timeIndex === this.state.currentStep}
                             onSelect={this.onSelectItem.bind(this, offset, timeIndex, true)}
