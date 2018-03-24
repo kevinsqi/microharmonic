@@ -13,7 +13,7 @@ import {
 
 function SequenceItem(props) {
   const onClick = props.selected ? props.onDeselect : props.onSelect;
-  // noreintegrate implement with onMouseDown instead?
+  // TODO: implement with onMouseDown instead? would change a flag on mouseDown so mouseEnter selects
   return (
     <div
       className={
@@ -60,6 +60,7 @@ class Composer extends Component {
 
   // TODO: refactor
   onClickPlay = () => {
+    this.onStop();
     const stepDuration = this.getStepDuration();
     const numSequenceItems = this.getNumSequenceItems();
     const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
@@ -106,7 +107,10 @@ class Composer extends Component {
       currentStep: 0,
     });
     clearInterval(this.updateCurrentStepInterval);
-    this.currentAudioSequencer.stop();
+
+    if (this.currentAudioSequencer) {
+      this.currentAudioSequencer.stop();
+    }
   };
 
   onSelectItem = (offset, timeIndex, value) => {
