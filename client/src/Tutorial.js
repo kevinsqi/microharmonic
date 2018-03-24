@@ -10,7 +10,6 @@ function Tutorial(props) {
       <div className="row">
         <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <h1 className="text-muted">01. An introduction to microtones</h1>
-          <h2 className="h4 font-weight-bold mt4">What’s common to practically all contemporary music?</h2>
           <div className="row py-3">
             <div className="col-12 col-md-10 offset-md-1">
               <img
@@ -22,7 +21,7 @@ function Tutorial(props) {
           </div>
           <p>
             C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, and B.
-            From these 12 notes we can play pretty much any song that we know of.
+            From these 12 notes we can play pretty much any song that we know of in modern music.
             The approach of dividing an octave equally is known as "equal temperament".
             You can try it out with a 12EDO keyboard here.
           </p>

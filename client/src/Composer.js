@@ -36,7 +36,9 @@ class Composer extends Component {
 
     const frequencies = getStepFrequencies(props.config);
     this.state = {
+      // TODO: move out of state?
       frequencies,
+      // TODO: rename selectedSteps
       sequences: this.getInitialSequences(frequencies),
       currentStep: 0,
     };
@@ -45,14 +47,13 @@ class Composer extends Component {
     this.currentAudioSequencer = null;
   }
 
-  // TODO: refactor, move sequences from state to props?
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.config, nextProps.config)) {
+      this.onStop();
       const frequencies = getStepFrequencies(nextProps.config);
       this.setState({
         frequencies,
         sequences: this.getInitialSequences(frequencies),
-        currentStep: 0,
       });
     }
   }
@@ -89,14 +90,18 @@ class Composer extends Component {
     }, stepDuration * 1000);
   };
 
-  onClickClear = () => {
-    this.onClickStop();
+  onClear = (frequencies) => {
     this.setState({
-      sequences: this.getInitialSequences(this.state.frequencies),
+      sequences: this.getInitialSequences(frequencies),
     });
   };
 
-  onClickStop = () => {
+  onClickClear = () => {
+    this.onStop();
+    this.onClear(this.state.frequencies);
+  };
+
+  onStop = () => {
     this.setState({
       currentStep: 0,
     });
@@ -146,7 +151,7 @@ class Composer extends Component {
           <button
             className="btn btn-secondary"
             disabled={!this.currentAudioSequencer}
-            onClick={this.onClickStop}
+            onClick={this.onStop}
           >
             Stop
           </button>
