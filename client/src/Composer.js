@@ -11,6 +11,25 @@ import {
   getStepFrequencies,
 } from './noteHelpers';
 
+function buildSequenceArrays({
+  sequences,
+  frequencies,
+  stepDuration,
+}) {
+  return Object.keys(sequences).map((offset) => {
+    const activeTimeIndexes = Object.keys(sequences[offset]).filter((timeIndex) => {
+      return sequences[offset][timeIndex];
+    });
+
+    const frequency = frequencies[offset % frequencies.length];
+    return activeTimeIndexes.map((timeIndex) => {
+      return [frequency, timeIndex * stepDuration, stepDuration];
+    });
+  }).filter((sequence) => {
+    return sequence.length > 0
+  });
+}
+
 function SequenceItem(props) {
   const onClick = props.selected ? props.onDeselect : props.onSelect;
   // TODO: implement with onMouseDown instead? would change a flag on mouseDown so mouseEnter selects
@@ -36,9 +55,8 @@ class Composer extends Component {
 
     const frequencies = getStepFrequencies(props.config);
     this.state = {
-      // TODO: move out of state?
+      // TODO: move out of state? create higher order component that generates sequences
       frequencies,
-      // TODO: rename selectedSteps
       sequences: this.getInitialSequences(frequencies),
       currentStep: 0,
     };
@@ -58,27 +76,18 @@ class Composer extends Component {
     }
   }
 
-  // TODO: refactor
-  onClickPlay = () => {
+  onPlay = () => {
     this.onStop();
     const stepDuration = this.getStepDuration();
     const numSequenceItems = this.getNumSequenceItems();
-    const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
-      const activeTimeIndexes = Object.keys(this.state.sequences[offset]).filter((timeIndex) => {
-        return this.state.sequences[offset][timeIndex];
-      });
-
-      const frequency = this.state.frequencies[offset % this.state.frequencies.length];
-      return activeTimeIndexes.map((timeIndex) => {
-        return [frequency, timeIndex * stepDuration, stepDuration];
-      });
-    }).filter((sequence) => {
-      return sequence.length > 0
+    const sequenceArrays = buildSequenceArrays({
+      sequences: this.state.sequences,
+      frequencies: this.state.frequencies,
+      stepDuration,
     });
-
     this.currentAudioSequencer = new AudioSequencer({
       audioContext: audioContext,
-      sequences: normalizedSequences,
+      sequences: sequenceArrays,
       totalDuration: numSequenceItems * stepDuration,
       gain: this.props.gain,
     });
@@ -151,7 +160,7 @@ class Composer extends Component {
     return (
       <div>
         <div className="btn-group mb-3">
-          <button className="btn btn-primary" onClick={this.onClickPlay}>Play</button>
+          <button className="btn btn-primary" onClick={this.onPlay}>Play</button>
           <button
             className="btn btn-secondary"
             disabled={!this.currentAudioSequencer}
