@@ -11,14 +11,34 @@ import {
   getStepFrequencies,
 } from './noteHelpers';
 
-// TODO: pass cent values to composer for display
+function SequenceItem(props) {
+  const onClick = props.selected ? props.onDeselect : props.onSelect;
+  // TODO: implement with onMouseDown instead? would change a flag on mouseDown so mouseEnter selects
+  return (
+    <div
+      className={
+        classNames('col sequence-item py-1', {
+          'sequence-item-selected': props.selected,
+          'sequence-item-current': props.current,
+        })
+      }
+      draggable
+      onClick={onClick}
+      onDragEnter={props.onSelect}
+      onDragStart={props.onSelect}
+    />
+  );
+}
+
 class Composer extends Component {
   constructor(props) {
     super(props);
 
     const frequencies = getStepFrequencies(props.config);
     this.state = {
+      // TODO: move out of state?
       frequencies,
+      // TODO: rename selectedSteps
       sequences: this.getInitialSequences(frequencies),
       currentStep: 0,
     };
@@ -27,19 +47,20 @@ class Composer extends Component {
     this.currentAudioSequencer = null;
   }
 
-  // TODO: refactor, move sequences from state to props?
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.config, nextProps.config)) {
+      this.onStop();
       const frequencies = getStepFrequencies(nextProps.config);
       this.setState({
         frequencies,
         sequences: this.getInitialSequences(frequencies),
-        currentStep: 0,
       });
     }
   }
 
+  // TODO: refactor
   onClickPlay = () => {
+    this.onStop();
     const stepDuration = this.getStepDuration();
     const numSequenceItems = this.getNumSequenceItems();
     const normalizedSequences = Object.keys(this.state.sequences).map((offset) => {
@@ -70,31 +91,36 @@ class Composer extends Component {
     }, stepDuration * 1000);
   };
 
-  onClickClear = () => {
-    this.onClickStop();
+  onClear = (frequencies) => {
     this.setState({
-      sequences: this.getInitialSequences(this.state.frequencies),
+      sequences: this.getInitialSequences(frequencies),
     });
   };
 
-  onClickStop = () => {
+  onClickClear = () => {
+    this.onStop();
+    this.onClear(this.state.frequencies);
+  };
+
+  onStop = () => {
     this.setState({
       currentStep: 0,
     });
     clearInterval(this.updateCurrentStepInterval);
-    this.currentAudioSequencer.stop();
+
+    if (this.currentAudioSequencer) {
+      this.currentAudioSequencer.stop();
+    }
   };
 
-  onClickSequenceItem = (offset, timeIndex) => {
-    const currentlyActive = this.state.sequences[offset][timeIndex];
-
+  onSelectItem = (offset, timeIndex, value) => {
     this.setState({
       sequences: update(this.state.sequences, {
         [offset]: {
-          [timeIndex]: { $set: !currentlyActive }
+          [timeIndex]: { $set: value }
         }
       }),
-    }, () => console.log('onClickSequenceItem setState', this.state));
+    });
   };
 
   getNumDisplaySteps(frequencies) {
@@ -120,17 +146,16 @@ class Composer extends Component {
     return sequences;
   }
 
+  // TODO refactor subcomponents
   render() {
     return (
       <div>
-        <p><strong>This is a work in progress!</strong></p>
-
         <div className="btn-group mb-3">
           <button className="btn btn-primary" onClick={this.onClickPlay}>Play</button>
           <button
             className="btn btn-secondary"
             disabled={!this.currentAudioSequencer}
-            onClick={this.onClickStop}
+            onClick={this.onStop}
           >
             Stop
           </button>
@@ -144,7 +169,7 @@ class Composer extends Component {
             return (
               <div className="row no-gutters" key={offset}>
                 <div className="col-1">
-                  <div className="text-right pr-2 py-1">
+                  <div className="text-right pr-2 py-1 line-height-1">
                     {note}<br />
                     <small>{Math.round(cents)}</small>
                   </div>
@@ -153,16 +178,14 @@ class Composer extends Component {
                   <div className="row no-gutters">
                     {
                       _.range(this.getNumSequenceItems()).map((timeIndex) => {
+                        const isSelected = this.state.sequences[offset][timeIndex];
                         return (
-                          <div
-                            className={
-                              classNames('col sequence-item py-1', {
-                                'sequence-item-active': this.state.sequences[offset][timeIndex],
-                                'sequence-item-current': timeIndex === this.state.currentStep,
-                              })
-                            }
+                          <SequenceItem
+                            selected={isSelected}
+                            current={timeIndex === this.state.currentStep}
+                            onSelect={this.onSelectItem.bind(this, offset, timeIndex, true)}
+                            onDeselect={this.onSelectItem.bind(this, offset, timeIndex, false)}
                             key={timeIndex}
-                            onClick={this.onClickSequenceItem.bind(this, offset, timeIndex)}
                           />
                         );
                       })
