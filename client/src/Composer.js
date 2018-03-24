@@ -12,13 +12,13 @@ import {
 } from './noteHelpers';
 
 function buildSequenceArrays({
-  sequences,
+  selectedSteps,
   frequencies,
   stepDuration,
 }) {
-  return Object.keys(sequences).map((offset) => {
-    const activeTimeIndexes = Object.keys(sequences[offset]).filter((timeIndex) => {
-      return sequences[offset][timeIndex];
+  return Object.keys(selectedSteps).map((offset) => {
+    const activeTimeIndexes = Object.keys(selectedSteps[offset]).filter((timeIndex) => {
+      return selectedSteps[offset][timeIndex];
     });
 
     const frequency = frequencies[offset % frequencies.length];
@@ -55,9 +55,9 @@ class Composer extends Component {
 
     const frequencies = getStepFrequencies(props.config);
     this.state = {
-      // TODO: move out of state? create higher order component that generates sequences
+      // TODO: move out of state? create higher order component
       frequencies,
-      sequences: this.getInitialSequences(frequencies),
+      selectedSteps: this.getInitialSelectedSteps(frequencies),
       currentStep: 0,
     };
 
@@ -71,7 +71,7 @@ class Composer extends Component {
       const frequencies = getStepFrequencies(nextProps.config);
       this.setState({
         frequencies,
-        sequences: this.getInitialSequences(frequencies),
+        selectedSteps: this.getInitialSelectedSteps(frequencies),
       });
     }
   }
@@ -81,7 +81,7 @@ class Composer extends Component {
     const stepDuration = this.getStepDuration();
     const numSequenceItems = this.getNumSequenceItems();
     const sequenceArrays = buildSequenceArrays({
-      sequences: this.state.sequences,
+      selectedSteps: this.state.selectedSteps,
       frequencies: this.state.frequencies,
       stepDuration,
     });
@@ -102,7 +102,7 @@ class Composer extends Component {
 
   onClear = (frequencies) => {
     this.setState({
-      sequences: this.getInitialSequences(frequencies),
+      selectedSteps: this.getInitialSelectedSteps(frequencies),
     });
   };
 
@@ -124,7 +124,7 @@ class Composer extends Component {
 
   onSelectItem = (offset, timeIndex, value) => {
     this.setState({
-      sequences: update(this.state.sequences, {
+      selectedSteps: update(this.state.selectedSteps, {
         [offset]: {
           [timeIndex]: { $set: value }
         }
@@ -144,15 +144,15 @@ class Composer extends Component {
     return 0.2;
   }
 
-  getInitialSequences(frequencies) {
-    const sequences = {};
+  getInitialSelectedSteps(frequencies) {
+    const selectedSteps = {};
     _.range(this.getNumDisplaySteps(frequencies)).forEach((offset) => {
-      sequences[offset] = {};
+      selectedSteps[offset] = {};
       _.range(this.getNumSequenceItems()).forEach((timeIndex) => {
-        sequences[offset][timeIndex] = false;
+        selectedSteps[offset][timeIndex] = false;
       });
     });
-    return sequences;
+    return selectedSteps;
   }
 
   // TODO refactor subcomponents
@@ -187,7 +187,7 @@ class Composer extends Component {
                   <div className="row no-gutters">
                     {
                       _.range(this.getNumSequenceItems()).map((timeIndex) => {
-                        const isSelected = this.state.sequences[offset][timeIndex];
+                        const isSelected = this.state.selectedSteps[offset][timeIndex];
                         return (
                           <SequenceItem
                             selected={isSelected}
