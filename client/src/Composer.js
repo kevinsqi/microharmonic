@@ -51,15 +51,20 @@ function Step(props) {
 
 function ComposerSettings(props) {
   return (
-    <div className="btn-group mb-3">
-      <button className="btn btn-primary" onClick={props.onPlay}>Play</button>
-      <button
-        className="btn btn-secondary"
-        onClick={props.onStop}
-      >
-        Stop
-      </button>
-      <button className="btn btn-outline-secondary" onClick={props.onClear}>Clear</button>
+    <div className="d-flex flex-row mb-3">
+      <div className="btn-group flex-1">
+        <button className="btn btn-primary" onClick={props.onPlay}>Play</button>
+        <button
+          className="btn btn-secondary"
+          onClick={props.onStop}
+        >
+          Stop
+        </button>
+        <button className="btn btn-outline-secondary" onClick={props.onClear}>Clear</button>
+      </div>
+      <div>
+        <button className="btn btn-outline-secondary" onClick={props.onExport}>Export as JSON</button>
+      </div>
     </div>
   );
 }
@@ -233,11 +238,9 @@ class Composer extends React.Component {
           onPlay={this.onPlay}
           onStop={this.onStop}
           onClear={this.onClear}
+          onExport={this.onExport}
         />
-
         {descendingNoteOffsets.map((offset) => this.renderRow(offset))}
-
-        <button className="btn btn-outline-secondary" onClick={this.onExport}>Export as JSON</button>
       </div>
     );
   }

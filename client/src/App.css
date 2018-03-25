@@ -18,6 +18,10 @@ input[type=checkbox] {
   line-height: 1;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
 .mb1 {
   margin-bottom: 10px;
 }
