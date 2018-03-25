@@ -11,6 +11,7 @@ import {
   getStepFrequencies,
 } from './noteHelpers';
 
+// TODO: rename timeIndex => stepIndex
 function buildSequences({
   selectedSteps,
   frequencies,
@@ -146,6 +147,22 @@ class Composer extends React.Component {
     });
   };
 
+  onExport = () => {
+    const steps = _.range(this.getNumSteps()).map((stepIndex) => {
+      return Object.keys(this.state.selectedSteps).map((offset) => {
+        return this.state.selectedSteps[offset][stepIndex] ? offset : null;
+      }).filter((offset) => offset);
+    });
+
+    console.log('Export composer');
+    console.log(JSON.stringify({
+      scaleConfig: this.props.config,
+      bpm: this.getBeatsPerMinute(),
+      // steps[0] contains an array of the notes at step 0
+      steps: steps,
+    }, null, 4));
+  };
+
   getNumNotes(frequencies) {
     return frequencies.length;
   }
@@ -154,8 +171,12 @@ class Composer extends React.Component {
     return 16;
   }
 
+  getBeatsPerMinute() {
+    return 300;
+  }
+
   getStepDuration() {
-    return 0.2;
+    return 60 / this.getBeatsPerMinute();
   }
 
   getInitialSelectedSteps(frequencies) {
@@ -213,7 +234,10 @@ class Composer extends React.Component {
           onStop={this.onStop}
           onClear={this.onClear}
         />
+
         {descendingNoteOffsets.map((offset) => this.renderRow(offset))}
+
+        <button className="btn btn-outline-secondary" onClick={this.onExport}>Export as JSON</button>
       </div>
     );
   }
