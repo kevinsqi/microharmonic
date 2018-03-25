@@ -52,15 +52,17 @@ function Step(props) {
 function ComposerSettings(props) {
   return (
     <div className="d-flex flex-row mb-3">
-      <div className="btn-group flex-1">
-        <button className="btn btn-primary" onClick={props.onPlay}>Play</button>
-        <button
-          className="btn btn-secondary"
-          onClick={props.onStop}
-        >
-          Stop
-        </button>
-        <button className="btn btn-outline-secondary" onClick={props.onClear}>Clear</button>
+      <div className="flex-1">
+        <div className="btn-group">
+          <button className="btn btn-primary" onClick={props.onPlay}>Play</button>
+          <button
+            className="btn btn-secondary"
+            onClick={props.onStop}
+          >
+            Stop
+          </button>
+        </div>
+        <button className="ml-2 btn btn-outline-secondary" onClick={props.onClear}>Clear</button>
       </div>
       <div>
         <button className="btn btn-outline-secondary" onClick={props.onExport}>Export as JSON</button>
