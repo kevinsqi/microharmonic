@@ -60,7 +60,7 @@ class Composer extends Component {
       currentStep: 0,
     };
 
-    this.updateCurrentStepInterval = null;
+    this.updateCurrentStepAtInterval = null;
     this.currentAudioSequencer = null;
   }
 
@@ -92,7 +92,7 @@ class Composer extends Component {
     });
     this.currentAudioSequencer.play();
 
-    this.updateCurrentStepInterval = setInterval(() => {
+    this.updateCurrentStepAtInterval = setInterval(() => {
       this.setState({
         currentStep: (this.state.currentStep + 1) % numSteps,
       });
@@ -114,7 +114,7 @@ class Composer extends Component {
     this.setState({
       currentStep: 0,
     });
-    clearInterval(this.updateCurrentStepInterval);
+    clearInterval(this.updateCurrentStepAtInterval);
 
     if (this.currentAudioSequencer) {
       this.currentAudioSequencer.stop();
