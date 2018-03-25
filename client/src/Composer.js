@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import update from 'immutability-helper';
@@ -48,7 +48,22 @@ function Step(props) {
   );
 }
 
-class Composer extends Component {
+function ComposerSettings(props) {
+  return (
+    <div className="btn-group mb-3">
+      <button className="btn btn-primary" onClick={props.onPlay}>Play</button>
+      <button
+        className="btn btn-secondary"
+        onClick={props.onStop}
+      >
+        Stop
+      </button>
+      <button className="btn btn-outline-secondary" onClick={props.onClear}>Clear</button>
+    </div>
+  );
+}
+
+class Composer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -99,15 +114,15 @@ class Composer extends Component {
     }, stepDuration * 1000);
   };
 
-  onClear = (frequencies) => {
+  clearSelectedSteps = (frequencies) => {
     this.setState({
       selectedSteps: this.getInitialSelectedSteps(frequencies),
     });
   };
 
-  onClickClear = () => {
+  onClear = () => {
     this.onStop();
-    this.onClear(this.state.frequencies);
+    this.clearSelectedSteps(this.state.frequencies);
   };
 
   onStop = () => {
@@ -154,56 +169,51 @@ class Composer extends Component {
     return selectedSteps;
   }
 
-  // TODO refactor subcomponents
+  renderRow = (offset) => {
+    const note = getNoteFromOffset(this.props.config, offset);
+    const cents = getCentsForNote(this.props.config, note);
+    return (
+      <div className="row no-gutters" key={offset}>
+        <div className="col-1">
+          <div className="text-right pr-2 py-1 line-height-1">
+            {note}<br />
+            <small>{Math.round(cents)}</small>
+          </div>
+        </div>
+        <div className="col">
+          <div className="row no-gutters">
+            {this.renderRowSteps(offset)}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  renderRowSteps = (offset) => {
+    return _.range(this.getNumSteps()).map((stepIndex) => {
+      const isSelected = this.state.selectedSteps[offset][stepIndex];
+      return (
+        <Step
+          selected={isSelected}
+          current={stepIndex === this.state.currentStep}
+          onSelect={this.onSelectItem.bind(this, offset, stepIndex, true)}
+          onDeselect={this.onSelectItem.bind(this, offset, stepIndex, false)}
+          key={stepIndex}
+        />
+      );
+    });
+  };
+
   render() {
+    const descendingNoteOffsets = _.range(this.getNumNotes(this.state.frequencies) - 1, -1, -1);
     return (
       <div>
-        <div className="btn-group mb-3">
-          <button className="btn btn-primary" onClick={this.onPlay}>Play</button>
-          <button
-            className="btn btn-secondary"
-            disabled={!this.currentAudioSequencer}
-            onClick={this.onStop}
-          >
-            Stop
-          </button>
-          <button className="btn btn-outline-secondary" onClick={this.onClickClear}>Clear</button>
-        </div>
-
-        {
-          _.range(this.getNumNotes(this.state.frequencies) - 1, -1, -1).map((offset) => {
-            const note = getNoteFromOffset(this.props.config, offset);
-            const cents = getCentsForNote(this.props.config, note);
-            return (
-              <div className="row no-gutters" key={offset}>
-                <div className="col-1">
-                  <div className="text-right pr-2 py-1 line-height-1">
-                    {note}<br />
-                    <small>{Math.round(cents)}</small>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="row no-gutters">
-                    {
-                      _.range(this.getNumSteps()).map((timeIndex) => {
-                        const isSelected = this.state.selectedSteps[offset][timeIndex];
-                        return (
-                          <Step
-                            selected={isSelected}
-                            current={timeIndex === this.state.currentStep}
-                            onSelect={this.onSelectItem.bind(this, offset, timeIndex, true)}
-                            onDeselect={this.onSelectItem.bind(this, offset, timeIndex, false)}
-                            key={timeIndex}
-                          />
-                        );
-                      })
-                    }
-                  </div>
-                </div>
-              </div>
-            );
-          })
-        }
+        <ComposerSettings
+          onPlay={this.onPlay}
+          onStop={this.onStop}
+          onClear={this.onClear}
+        />
+        {descendingNoteOffsets.map((offset) => this.renderRow(offset))}
       </div>
     );
   }
