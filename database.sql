@@ -4,5 +4,8 @@ CREATE DATABASE microharmonic;
 \connect microharmonic;
 
 CREATE TABLE compositions (
-  id INTEGER PRIMARY KEY
+  id integer PRIMARY KEY,
+  short_id text UNIQUE NOT NULL,
+  title text,
+  json_value jsonb NOT NULL
 );
