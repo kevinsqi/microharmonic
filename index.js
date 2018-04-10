@@ -19,16 +19,24 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 // Routes
 app.get('/api/compositions/', (req, res, next) => {
   // noreintegrate
-  db.query('SELECT * FROM compositions', [], (err, dbRes) => {
+  db.query('SELECT * FROM compositions', [], (err, results) => {
     if (err) {
-      return next(err);
+      console.log(err);
+      return res.status(500).json({
+        error: err,
+      });
     }
-    console.log(dbRes.rows);
-  });
-  return res.json({
-    data: [],
+    return res.json({
+      data: results.rows,
+    });
   });
 });
+
+/* noreintegrate
+app.post('/api/compositions/', (req, res) => {
+
+});
+*/
 
 // Catchall to serve react index file
 app.get('*', (request, response) => {
