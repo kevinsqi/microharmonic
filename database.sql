@@ -1,11 +1,6 @@
-DROP DATABASE IF EXISTS microharmonic;
-CREATE DATABASE microharmonic;
-
-\connect microharmonic;
-
 CREATE TABLE compositions (
-  id integer PRIMARY KEY,
-  short_id text UNIQUE NOT NULL,
-  title text,
-  json_value jsonb NOT NULL
+  id SERIAL PRIMARY KEY,
+  short_id TEXT UNIQUE NOT NULL,
+  title TEXT,
+  json_value JSONB NOT NULL
 );

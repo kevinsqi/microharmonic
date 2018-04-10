@@ -32,11 +32,23 @@ app.get('/api/compositions/', (req, res, next) => {
   });
 });
 
-/* noreintegrate
 app.post('/api/compositions/', (req, res) => {
-
+  db.query(
+    'INSERT INTO compositions(short_id, title, json_value) VALUES($1, $2, $3) RETURNING *',
+    [req.body.short_id, req.body.title, JSON.stringify(req.body.json_value)],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          error: err,
+        });
+      }
+      return res.json({
+        data: result.rows,
+      });
+    }
+  );
 });
-*/
 
 // Catchall to serve react index file
 app.get('*', (request, response) => {
