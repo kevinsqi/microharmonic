@@ -18,7 +18,6 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Routes
 app.get('/api/compositions/', (req, res, next) => {
-  // noreintegrate
   db.query('SELECT * FROM compositions', [], (err, results) => {
     if (err) {
       console.log(err);
