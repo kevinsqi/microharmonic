@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
+import shortid from 'shortid';
 import update from 'immutability-helper';
 
 import audioContext from './audioContext';
@@ -161,13 +162,23 @@ class Composer extends React.Component {
       }).filter((offset) => offset);
     });
 
-    console.log('Export composer');
-    console.log(JSON.stringify({
-      scaleConfig: this.props.config,
-      bpm: this.getBeatsPerMinute(),
-      // steps[0] contains an array of the notes at step 0
-      steps: steps,
-    }, null, 4));
+    fetch('/api/compositions', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        short_id: shortid.generate(),
+        title: 'untitled',
+        json_value: {
+          scaleConfig: this.props.config,
+          bpm: this.getBeatsPerMinute(),
+          // steps[0] contains an array of the notes at step 0
+          steps: steps,
+        },
+      }),
+    });
   };
 
   getNumNotes(frequencies) {
