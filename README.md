@@ -2,6 +2,16 @@
 
 ## Setup
 
+Create a postgres database with [this guide](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb) and set `DATABASE_URL` in `.env`.
+
+Then run:
+
+```
+psql -U <username> -f database.sql
+```
+
+## Running
+
 Running the server on localhost:5000:
 
 ```

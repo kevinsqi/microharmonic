@@ -6,15 +6,19 @@
   "author": "Kevin Qi <iqnivek@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.2"
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "pg": "^7.4.1"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
   "devDependencies": {
     "eslint": "^4.18.2",
-    "eslint-plugin-node": "^6.0.1"
+    "eslint-plugin-node": "^6.0.1",
+    "nodemon": "^1.17.3"
   },
   "engines": {
     "node": ">=7.0.0"
