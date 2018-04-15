@@ -31,6 +31,20 @@ app.get('/api/compositions/', (req, res, next) => {
   });
 });
 
+app.get('/api/compositions/:short_id', (req, res) => {
+  db.query('SELECT * FROM compositions WHERE short_id = $1', [req.params.short_id], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({
+        error: err,
+      });
+    }
+    return res.json({
+      data: results.rows[0],
+    });
+  });
+});
+
 app.post('/api/compositions/', (req, res) => {
   db.query(
     'INSERT INTO compositions(short_id, title, json_value) VALUES($1, $2, $3) RETURNING *',
