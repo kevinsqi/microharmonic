@@ -88,6 +88,17 @@ class Composer extends React.Component {
     this.currentAudioSequencer = null;
   }
 
+  componentDidMount() {
+    if (this.props.shortID) {
+      fetch(`/api/compositions/${this.props.shortID}`)
+        .then((response) => response.json())
+        .then(({ data }) => {
+          // TODO: load scale config
+          console.log('loaded composition', data);
+        });
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.config, nextProps.config)) {
       this.onStop();
@@ -178,7 +189,10 @@ class Composer extends React.Component {
           steps: steps,
         },
       }),
-    });
+    })
+      .then((response) => {
+        console.log('TODO handle composition creation');
+      });
   };
 
   getNumNotes(frequencies) {

@@ -77,6 +77,15 @@ class App extends React.Component {
               />
             </SettingsWrapper>
           )} />
+          <Route exact path="/composer/:shortID" render={(props) => (
+            <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
+              <Composer
+                config={this.state.config}
+                gain={GAIN_VALUE}
+                shortID={props.match.params.shortID}
+              />
+            </SettingsWrapper>
+          )} />
           <Route exact path="/tutorial" render={() => (
             <Tutorial gain={GAIN_VALUE} />
           )} />
