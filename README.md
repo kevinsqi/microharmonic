@@ -43,10 +43,10 @@ Login:
 heroku auth:login
 ```
 
-Initialize heroku project in root dir:
+Add heroku remote:
 
 ```
-heroku create
+heroku git:remote -a microharmonic
 ```
 
 Pushing new code:
