@@ -2,59 +2,26 @@
 
 ## Setup
 
-Create a postgres database with [this guide](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb) and set `DATABASE_URL` in `.env`.
-
-Then run:
-
-```
-psql -U <username> -f database.sql
-```
-
-## Running
-
-Running the server on localhost:5000:
-
 ```
 yarn install
+```
+
+## Running the server
+
+```
 yarn start
 ```
 
-Running the client on localhost:3000:
+Open the app at `localhost:3000`.
+
+## Running tests
 
 ```
-cd client
-yarn install
-yarn start
+yarn test
 ```
 
-Then go to localhost:3000
-
-## Deployment
-
-Install heroku-cli:
+## Publishing changes
 
 ```
-brew install heroku
+yarn run deploy
 ```
-
-Login:
-
-```
-heroku auth:login
-```
-
-Add heroku remote:
-
-```
-heroku git:remote -a microharmonic
-```
-
-Pushing new code:
-
-```
-git push heroku master
-```
-
-## Contributing
-
-See the [public trello board](https://trello.com/b/NAr6ByNU/tasks) for stories and tickets.
