@@ -21,19 +21,20 @@ class Header extends React.Component {
   render() {
     return (
       <nav
-        className="bg-blue d-flex align-items-end pb-3"
+        className="bg-blue d-flex align-items-end"
         style={{
-          height: '150px',
+          paddingTop: 60,
+          paddingBottom: 60,
         }}
       >
         <div className="container">
           <div className="d-flex">
-            <div className="mr-auto line-height-1">
-              <NavLink className="text-5 text-white font-weight-bold" to="/">
-                Microharmonic
+            <div className="mx-auto line-height-1 text-center">
+              <NavLink className="text-5 text-white" style={{ fontWeight: 200 }} to="/">
+                microharmonic
               </NavLink>
               <div className="mt-1">
-                <small className="text-light">A web microtone keyboard</small>
+                <small className="text-light">a web microtone keyboard</small>
               </div>
             </div>
             {/*
