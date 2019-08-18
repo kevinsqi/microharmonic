@@ -20,18 +20,13 @@ function getEndTime(sequence) {
   return Math.max(
     ...sequence.map(([freq, offset, duration]) => {
       return offset + duration;
-    })
+    }),
   );
 }
 
 // TODO: refactor into objects instead of arrays
 class Sequencer {
-  constructor({
-    audioContext,
-    sequences,
-    totalDuration,
-    gain
-  } = {}) {
+  constructor({ audioContext, sequences, totalDuration, gain } = {}) {
     this.context = audioContext;
     this.gain = gain;
     this.sequences = sequences;

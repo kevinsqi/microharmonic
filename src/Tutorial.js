@@ -20,10 +20,9 @@ function Tutorial(props) {
             </div>
           </div>
           <p>
-            C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, and B.
-            From these 12 notes we can play pretty much any song that we know of in modern music.
-            The approach of dividing an octave equally is known as "equal temperament".
-            You can try it out with a 12EDO keyboard here.
+            C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, and B. From these 12 notes we can play pretty much
+            any song that we know of in modern music. The approach of dividing an octave equally is
+            known as "equal temperament". You can try it out with a 12EDO keyboard here.
           </p>
           <div>
             <Keyboard
@@ -39,15 +38,11 @@ function Tutorial(props) {
             />
           </div>
           <p className="mt-3">
-            This 12 tone scale originates back to 1584, when Zhu Zaiyu
-            developed the mathematical basis for dividing the octave equally into 12 parts.
-
-            Zhu Zaiyu was a prince of the Ming court in China, and spent thirty years
-            researching equal temperament.
-
-            He demonstrated this 12 note division by constructing a set of bamboo pipes
-            over three octaves, and increasing the length of the each pipe by a factor of
-            the twelfth root of 2.
+            This 12 tone scale originates back to 1584, when Zhu Zaiyu developed the mathematical
+            basis for dividing the octave equally into 12 parts. Zhu Zaiyu was a prince of the Ming
+            court in China, and spent thirty years researching equal temperament. He demonstrated
+            this 12 note division by constructing a set of bamboo pipes over three octaves, and
+            increasing the length of the each pipe by a factor of the twelfth root of 2.
           </p>
           <div className="row py-3">
             <div className="col-md-6 offset-md-3">
@@ -58,15 +53,12 @@ function Tutorial(props) {
               />
             </div>
           </div>
+          <p>The "distance", or "interval", between any two notes is the same in 12EDO.</p>
           <p>
-            The "distance", or "interval", between any two notes is the same in 12EDO.
-          </p>
-          <p>
-            But you can make many more sounds than just these 12 notes.
-            Just use your voice to hum from C to D and you’ve produced a
-            continuous spectrum of frequencies that aren't in 12EDO.
-            And it’s not just voice. Here are some other instruments that can
-            traverse between notes:
+            But you can make many more sounds than just these 12 notes. Just use your voice to hum
+            from C to D and you’ve produced a continuous spectrum of frequencies that aren't in
+            12EDO. And it’s not just voice. Here are some other instruments that can traverse
+            between notes:
           </p>
           <div className="row my-3">
             <div className="col-12 text-center">
@@ -88,9 +80,8 @@ function Tutorial(props) {
             </div>
           </div>
           <p>
-            Microtones refer to the use of intervals that don’t fit within this
-            ubiquitous 12 tone structure.
-            Listen to this microtonal song:
+            Microtones refer to the use of intervals that don’t fit within this ubiquitous 12 tone
+            structure. Listen to this microtonal song:
           </p>
           <div>
             <iframe
@@ -103,8 +94,7 @@ function Tutorial(props) {
             />
           </div>
           <p>
-            The composer notes that this was written in 19EDO.
-            You can play around with 19EDO here.
+            The composer notes that this was written in 19EDO. You can play around with 19EDO here.
             {/* TODO: use Composer to actually transcribe The Juggler */}
           </p>
           <div>
@@ -121,8 +111,8 @@ function Tutorial(props) {
             />
           </div>
           <p>
-            Microtonal music can also sound quite strange and wonderful.
-            This song by Sevish uses a 53EDO scale:
+            Microtonal music can also sound quite strange and wonderful. This song by Sevish uses a
+            53EDO scale:
           </p>
           <div>
             <iframe
@@ -136,9 +126,10 @@ function Tutorial(props) {
           </div>
           <h2 className="h4 font-weight-bold mt4">Frequencies and cents</h2>
           <p>
-            Our perception of sound is on a logarithmic scale relative to frequency. An octave, from C to C or D to D or so on, is when you double the frequency.
-            Middle C is 440hz. Go up an octave to 880hz.
-            Being logarithmic isn’t super convenient relative to our perception, which is linear. So we can use cents instead, which is defined as:
+            Our perception of sound is on a logarithmic scale relative to frequency. An octave, from
+            C to C or D to D or so on, is when you double the frequency. Middle C is 440hz. Go up an
+            octave to 880hz. Being logarithmic isn’t super convenient relative to our perception,
+            which is linear. So we can use cents instead, which is defined as:
           </p>
           <div>
             <iframe

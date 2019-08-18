@@ -6,29 +6,23 @@ import update from 'immutability-helper';
 
 import audioContext from './audioContext';
 import AudioSequencer from './audio/Sequencer';
-import {
-  getCentsForNote,
-  getNoteFromOffset,
-  getStepFrequencies,
-} from './noteHelpers';
+import { getCentsForNote, getNoteFromOffset, getStepFrequencies } from './noteHelpers';
 
 // TODO: rename timeIndex => stepIndex
-function buildSequences({
-  selectedSteps,
-  frequencies,
-  stepDuration,
-}) {
-  return Object.keys(selectedSteps).map((offset) => {
-    const selectedStepIndexes = Object.keys(selectedSteps[offset]).filter((timeIndex) => {
-      return selectedSteps[offset][timeIndex];
+function buildSequences({ selectedSteps, frequencies, stepDuration }) {
+  return Object.keys(selectedSteps)
+    .map((offset) => {
+      const selectedStepIndexes = Object.keys(selectedSteps[offset]).filter((timeIndex) => {
+        return selectedSteps[offset][timeIndex];
+      });
+      const frequency = frequencies[offset % frequencies.length];
+      return selectedStepIndexes.map((timeIndex) => {
+        return [frequency, timeIndex * stepDuration, stepDuration];
+      });
+    })
+    .filter((sequence) => {
+      return sequence.length > 0;
     });
-    const frequency = frequencies[offset % frequencies.length];
-    return selectedStepIndexes.map((timeIndex) => {
-      return [frequency, timeIndex * stepDuration, stepDuration];
-    });
-  }).filter((sequence) => {
-    return sequence.length > 0
-  });
 }
 
 function Step(props) {
@@ -36,12 +30,10 @@ function Step(props) {
   // TODO: implement with onMouseDown instead? would change a flag on mouseDown so mouseEnter selects
   return (
     <div
-      className={
-        classNames('col sequence-item py-1', {
-          'sequence-item-selected': props.selected,
-          'sequence-item-current': props.current,
-        })
-      }
+      className={classNames('col sequence-item py-1', {
+        'sequence-item-selected': props.selected,
+        'sequence-item-current': props.current,
+      })}
       draggable
       onClick={onClick}
       onDragEnter={props.onSelect}
@@ -55,18 +47,21 @@ function ComposerSettings(props) {
     <div className="d-flex flex-row mb-3">
       <div className="flex-1">
         <div className="btn-group">
-          <button className="btn btn-primary" onClick={props.onPlay}>Play</button>
-          <button
-            className="btn btn-secondary"
-            onClick={props.onStop}
-          >
+          <button className="btn btn-primary" onClick={props.onPlay}>
+            Play
+          </button>
+          <button className="btn btn-secondary" onClick={props.onStop}>
             Stop
           </button>
         </div>
-        <button className="ml-2 btn btn-outline-secondary" onClick={props.onClear}>Clear</button>
+        <button className="ml-2 btn btn-outline-secondary" onClick={props.onClear}>
+          Clear
+        </button>
       </div>
       <div>
-        <button className="btn btn-outline-secondary" onClick={props.onExport}>Export as JSON</button>
+        <button className="btn btn-outline-secondary" onClick={props.onExport}>
+          Export as JSON
+        </button>
       </div>
     </div>
   );
@@ -160,23 +155,25 @@ class Composer extends React.Component {
     this.setState({
       selectedSteps: update(this.state.selectedSteps, {
         [offset]: {
-          [timeIndex]: { $set: value }
-        }
+          [timeIndex]: { $set: value },
+        },
       }),
     });
   };
 
   onExport = () => {
     const steps = _.range(this.getNumSteps()).map((stepIndex) => {
-      return Object.keys(this.state.selectedSteps).map((offset) => {
-        return this.state.selectedSteps[offset][stepIndex] ? offset : null;
-      }).filter((offset) => offset);
+      return Object.keys(this.state.selectedSteps)
+        .map((offset) => {
+          return this.state.selectedSteps[offset][stepIndex] ? offset : null;
+        })
+        .filter((offset) => offset);
     });
 
     fetch('/api/compositions', {
       method: 'post',
       headers: {
-        'Accept': 'application/json, text/plain, */*',
+        Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -189,10 +186,9 @@ class Composer extends React.Component {
           steps: steps,
         },
       }),
-    })
-      .then((response) => {
-        console.log('TODO handle composition creation');
-      });
+    }).then((response) => {
+      console.log('TODO handle composition creation');
+    });
   };
 
   getNumNotes(frequencies) {
@@ -229,14 +225,13 @@ class Composer extends React.Component {
       <div className="row no-gutters" key={offset}>
         <div className="col-1">
           <div className="text-right pr-2 py-1 line-height-1">
-            {note}<br />
+            {note}
+            <br />
             <small>{Math.round(cents)}</small>
           </div>
         </div>
         <div className="col">
-          <div className="row no-gutters">
-            {this.renderRowSteps(offset)}
-          </div>
+          <div className="row no-gutters">{this.renderRowSteps(offset)}</div>
         </div>
       </div>
     );

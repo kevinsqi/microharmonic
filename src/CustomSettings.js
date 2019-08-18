@@ -38,7 +38,11 @@ const PRESETS_MAP = PRESETS.reduce((map, elem) => {
 }, {});
 
 function parseCustomCentValuesStr(str) {
-  const values = str.trim().split(/\s+/).map((value) => parseFloat(value)).sort((a, b) => a - b);
+  const values = str
+    .trim()
+    .split(/\s+/)
+    .map((value) => parseFloat(value))
+    .sort((a, b) => a - b);
 
   if (values.some((value) => isNaN(value))) {
     throw new Error('Has invalid value which is not a number');
@@ -103,7 +107,9 @@ class CustomSettings extends React.Component {
         <Label>Custom scale tuning</Label>
         <div className="row">
           <div className="col-sm-6">
-            <small className="text-muted">Enter cent values between 0 and 1200, separated by line breaks</small>
+            <small className="text-muted">
+              Enter cent values between 0 and 1200, separated by line breaks
+            </small>
             <textarea
               className="form-control"
               rows="10"
@@ -111,7 +117,9 @@ class CustomSettings extends React.Component {
               onChange={this.onChangeCustomCentValues}
             />
             <div className="mt-3">
-              <button className="btn btn-primary" onClick={this.onSaveCustomCentValues}>Save</button>
+              <button className="btn btn-primary" onClick={this.onSaveCustomCentValues}>
+                Save
+              </button>
             </div>
           </div>
           <div className="col-sm-6">
@@ -121,11 +129,11 @@ class CustomSettings extends React.Component {
               value={this.state.presetName}
               onChange={this.onChangePreset}
             >
-              {
-                PRESETS.map((preset) => (
-                  <option value={preset.name} key={preset.name}>{preset.label}</option>
-                ))
-              }
+              {PRESETS.map((preset) => (
+                <option value={preset.name} key={preset.name}>
+                  {preset.label}
+                </option>
+              ))}
             </select>
           </div>
         </div>

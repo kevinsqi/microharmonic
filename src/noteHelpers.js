@@ -25,7 +25,7 @@ export function getCentsForNote(config, note) {
   if (config.useCustomCentValues) {
     return getCustomCentsForNote(note, config.customCentValues);
   } else {
-    return CENTS_IN_OCTAVE * config.numOctaves / config.numSteps * note;
+    return ((CENTS_IN_OCTAVE * config.numOctaves) / config.numSteps) * note;
   }
 }
 
@@ -67,5 +67,5 @@ export function getNoteFromOffset(config, offset) {
 
 // In 12EDO, 0 -> 1, 11 -> 12, 12 -> 1, 13 -> 2
 export function getNoteLabel(config, note) {
-  return note % config.numSteps + 1;
+  return (note % config.numSteps) + 1;
 }
