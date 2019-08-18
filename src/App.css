@@ -100,7 +100,7 @@ input[type=checkbox] {
   opacity: 1;
 }
 
-.btn-key {
+.Key {
   cursor: pointer;
   background-color: #ddd;
   width: 100%;
@@ -108,16 +108,16 @@ input[type=checkbox] {
   padding: 0;
 }
 
-.btn-octave {
+.Key--octave {
   background-color: #bbb;
 }
 
-.btn-active {
+.Key--active {
   background-color: #16b8e0;
 }
 
 @media (min-width: 576px) {
-  .btn-key {
+  .Key {
     width: 50px;
   }
 

@@ -112,26 +112,24 @@ class Keyboard extends React.Component {
     const note = this.getNoteFromKeyLabel(keyLabel);
     const cents = getCentsForNote(this.props.config, note);
     return (
-      <div className="col col-sm-1" key={note}>
-        <button
-          className={classNames('btn btn-key', {
-            'btn-octave': cents % CENTS_IN_OCTAVE === 0,
-            'btn-active': this.state.activeNotes[note],
-          })}
-          onMouseDown={this.onKeyActive.bind(this, keyLabel)}
-          onMouseUp={this.onKeyInactive.bind(this, keyLabel)}
-          onMouseLeave={this.onKeyInactive.bind(this, keyLabel)}
-          onTouchStart={this.onKeyActive.bind(this, keyLabel)}
-          onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
-          onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
-        >
-          {note}
-          <br />
-          <small>{Math.round(cents)}</small>
-          <br />
-          <small className="text-muted">{keyLabel}</small>
-        </button>
-      </div>
+      <button
+        className={classNames('Key', {
+          'Key--octave': cents % CENTS_IN_OCTAVE === 0,
+          'Key--active': this.state.activeNotes[note],
+        })}
+        onMouseDown={this.onKeyActive.bind(this, keyLabel)}
+        onMouseUp={this.onKeyInactive.bind(this, keyLabel)}
+        onMouseLeave={this.onKeyInactive.bind(this, keyLabel)}
+        onTouchStart={this.onKeyActive.bind(this, keyLabel)}
+        onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
+        onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
+      >
+        {note}
+        <br />
+        <small>{Math.round(cents)}</small>
+        <br />
+        <small className="text-muted">{keyLabel}</small>
+      </button>
     );
   }
 
