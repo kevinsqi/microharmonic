@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+/*
 function NavButton(props) {
   return (
     <NavLink
@@ -14,6 +15,7 @@ function NavButton(props) {
     </NavLink>
   );
 }
+*/
 
 class Header extends React.Component {
   render() {
@@ -31,7 +33,7 @@ class Header extends React.Component {
                 Microharmonic
               </NavLink>
               <div className="mt-1">
-                <small className="text-light">A web microtone keyboard and composer</small>
+                <small className="text-light">A web microtone keyboard</small>
               </div>
             </div>
             {/*
