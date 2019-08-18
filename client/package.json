@@ -13,7 +13,8 @@
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
-    "shortid": "^2.2.8"
+    "shortid": "^2.2.8",
+    "typeface-inter": "^3.7.0"
   },
   "scripts": {
     "predeploy": "npm run build",
