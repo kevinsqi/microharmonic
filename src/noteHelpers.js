@@ -3,14 +3,14 @@ import _ from 'lodash';
 export const CENTS_IN_OCTAVE = 1200;
 
 function getFrequencyRatio(note, numOctaves, numSteps) {
-  return Math.pow(2, note * (numOctaves / numSteps))
+  return Math.pow(2, note * (numOctaves / numSteps));
 }
 
 function getCustomCentsForNote(note, customCentValues) {
   const offset = note % customCentValues.length;
   const centOffset = customCentValues[offset];
   const octave = Math.floor(note / customCentValues.length);
-  return (CENTS_IN_OCTAVE * octave) + centOffset;
+  return CENTS_IN_OCTAVE * octave + centOffset;
 }
 
 export function getFrequency(rootFrequency, note, numOctaves, numSteps) {
@@ -25,7 +25,7 @@ export function getCentsForNote(config, note) {
   if (config.useCustomCentValues) {
     return getCustomCentsForNote(note, config.customCentValues);
   } else {
-    return (CENTS_IN_OCTAVE * config.numOctaves) / config.numSteps * note;
+    return CENTS_IN_OCTAVE * config.numOctaves / config.numSteps * note;
   }
 }
 
@@ -34,12 +34,7 @@ export function getFrequencyForNote(config, note) {
     const centValue = getCustomCentsForNote(note, config.customCentValues);
     return getFrequencyFromCents(config.minFrequency, centValue);
   } else {
-    return getFrequency(
-      config.minFrequency,
-      note,
-      config.numOctaves,
-      config.numSteps,
-    );
+    return getFrequency(config.minFrequency, note, config.numOctaves, config.numSteps);
   }
 }
 
@@ -64,8 +59,13 @@ export function getNoteFromOffset(config, offset) {
   if (numNotes > 0) {
     const octaves = Math.floor(offset / numNotes);
     const remainder = offset % numNotes;
-    return (octaves * config.numSteps) + sortedNotes[remainder];
+    return octaves * config.numSteps + sortedNotes[remainder];
   } else {
     return offset;
   }
+}
+
+// In 12EDO, 0 -> 1, 11 -> 12, 12 -> 1, 13 -> 2
+export function getNoteLabel(config, note) {
+  return note % config.numSteps + 1;
 }

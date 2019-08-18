@@ -3,6 +3,7 @@ import _ from 'lodash';
 import pluralize from 'pluralize';
 
 import Label from './Label';
+import { getNoteLabel } from './noteHelpers';
 
 const MAX_NUM_STEPS = 100;
 const MAX_NUM_OCTAVES = 10;
@@ -39,11 +40,9 @@ class EqualTemperamentSettings extends React.Component {
     const note = parseInt(event.target.name, 10);
     const value = event.target.checked;
 
-    const selectedNotes = value ? (
-      Object.assign({}, this.props.config.selectedNotes, { [note]: true })
-    ) : (
-      _.omit(this.props.config.selectedNotes, note)
-    );
+    const selectedNotes = value
+      ? Object.assign({}, this.props.config.selectedNotes, { [note]: true })
+      : _.omit(this.props.config.selectedNotes, note);
 
     this.props.setConfig({
       selectedNotes: selectedNotes,
@@ -67,23 +66,29 @@ class EqualTemperamentSettings extends React.Component {
             value={this.props.config.numOctaves}
             onChange={this.onChangeNumOctaves}
           >
-            {
-              _.range(MAX_NUM_OCTAVES).map((index) => {
-                const label = pluralize('octave', index + 1, true);
-                return <option value={index + 1} key={index}>{label}</option>;
-              })
-            }
+            {_.range(MAX_NUM_OCTAVES).map((index) => {
+              const label = pluralize('octave', index + 1, true);
+              return (
+                <option value={index + 1} key={index}>
+                  {label}
+                </option>
+              );
+            })}
           </select>
-          <span className="mx-2">
-            into
-          </span>
-          <select className="form-control" value={this.props.config.numSteps} onChange={this.onChangeNumSteps}>
-            {
-              _.range(MAX_NUM_STEPS).map((index) => {
-                const label = pluralize('step', index + 1, true);
-                return <option value={index + 1} key={index}>{label}</option>;
-              })
-            }
+          <span className="mx-2">into</span>
+          <select
+            className="form-control"
+            value={this.props.config.numSteps}
+            onChange={this.onChangeNumSteps}
+          >
+            {_.range(MAX_NUM_STEPS).map((index) => {
+              const label = pluralize('step', index + 1, true);
+              return (
+                <option value={index + 1} key={index}>
+                  {label}
+                </option>
+              );
+            })}
           </select>
         </div>
       </div>
@@ -98,23 +103,23 @@ class EqualTemperamentSettings extends React.Component {
         </div>
 
         <div>
-          {
-            _.range(this.props.config.numSteps).map((note) => {
-              return (
-                <label className="mr-3" key={note}>
-                  <input
-                    className="form-control"
-                    type="checkbox"
-                    name={note}
-                    checked={!!this.props.config.selectedNotes[note]}
-                    onChange={this.onChangeSelectedNotes}
-                  />
-                  {note}
-                </label>
-              );
-            })
-          }
-          <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>All</button>
+          {_.range(this.props.config.numSteps).map((note) => {
+            return (
+              <label className="mr-3" key={note}>
+                <input
+                  className="form-control"
+                  type="checkbox"
+                  name={note}
+                  checked={!!this.props.config.selectedNotes[note]}
+                  onChange={this.onChangeSelectedNotes}
+                />
+                {getNoteLabel(this.props.config, note)}
+              </label>
+            );
+          })}
+          <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>
+            All
+          </button>
         </div>
       </div>
     );
@@ -143,15 +148,9 @@ class EqualTemperamentSettings extends React.Component {
   render() {
     return (
       <div className="row">
-        <div className="col-sm-4">
-          {this.renderStepSettings()}
-        </div>
-        <div className="col-sm-3">
-          {this.renderMinFrequencySetting()}
-        </div>
-        <div className="col-sm-5">
-          {this.renderNotePicker()}
-        </div>
+        <div className="col-sm-4">{this.renderStepSettings()}</div>
+        <div className="col-sm-3">{this.renderMinFrequencySetting()}</div>
+        <div className="col-sm-5">{this.renderNotePicker()}</div>
       </div>
     );
   }
