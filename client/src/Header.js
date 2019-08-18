@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+/*
 function NavButton(props) {
   return (
     <NavLink
@@ -14,24 +15,34 @@ function NavButton(props) {
     </NavLink>
   );
 }
+*/
 
 class Header extends React.Component {
   render() {
     return (
       <nav
-        className="bg-blue d-flex align-items-end pb-3"
+        className="bg-blue d-flex align-items-end"
         style={{
-          height: '150px',
+          paddingTop: 60,
+          paddingBottom: 60,
         }}
       >
         <div className="container">
           <div className="d-flex">
-            <div className="mr-auto line-height-1">
-              <NavLink className="text-5 text-white font-weight-bold" to="/">
-                Microharmonic
-              </NavLink>
-              <div className="mt-1">
-                <small className="text-light">A web microtone keyboard and composer</small>
+            <div className="mx-auto line-height-1">
+              <div className="position-relative" style={{ width: 200, height: 110 }}>
+                <div className="position-absolute left-0 Parallelogram" />
+                <div
+                  className="position-absolute height-full d-flex flex-column justify-content-center"
+                  style={{ left: 30 }}
+                >
+                  <NavLink className="text-5 text-white" style={{ fontWeight: 200 }} to="/">
+                    microharmonic
+                  </NavLink>
+                  <div className="mt-1">
+                    <small className="text-light">a web microtone keyboard</small>
+                  </div>
+                </div>
               </div>
             </div>
             {/*

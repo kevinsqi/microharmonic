@@ -1,9 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import {
-  BrowserRouter as Router,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import Composer from './Composer';
@@ -18,16 +15,10 @@ const GAIN_VALUE = 0.1;
 
 function SettingsWrapper(props) {
   return (
-    <div className="container">
-      <div className="my-3">
-        <Settings
-          config={props.config}
-          setConfig={props.setConfig}
-        />
-      </div>
-
-      <div className="mt-3">
-        {props.children}
+    <div className="container d-flex flex-column height-full">
+      <div className="flex-1">{props.children}</div>
+      <div className="mt-5">
+        <Settings config={props.config} setConfig={props.setConfig} />
       </div>
     </div>
   );
@@ -59,36 +50,44 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className="d-flex flex-column height-full">
           <Header />
-          <Route exact path="/" render={() => (
-            <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-              <Keyboard
-                config={this.state.config}
-                gain={GAIN_VALUE}
-              />
-            </SettingsWrapper>
-          )} />
-          <Route exact path="/composer" render={() => (
-            <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-              <Composer
-                config={this.state.config}
-                gain={GAIN_VALUE}
-              />
-            </SettingsWrapper>
-          )} />
-          <Route exact path="/composer/:shortID" render={(props) => (
-            <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-              <Composer
-                config={this.state.config}
-                gain={GAIN_VALUE}
-                shortID={props.match.params.shortID}
-              />
-            </SettingsWrapper>
-          )} />
-          <Route exact path="/tutorial" render={() => (
-            <Tutorial gain={GAIN_VALUE} />
-          )} />
+          <div className="flex-1" style={{ paddingTop: 80 }}>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
+                  <div className="d-flex">
+                    <Keyboard className="mx-auto" config={this.state.config} gain={GAIN_VALUE} />
+                  </div>
+                </SettingsWrapper>
+              )}
+            />
+            <Route
+              exact
+              path="/composer"
+              render={() => (
+                <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
+                  <Composer config={this.state.config} gain={GAIN_VALUE} />
+                </SettingsWrapper>
+              )}
+            />
+            <Route
+              exact
+              path="/composer/:shortID"
+              render={(props) => (
+                <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
+                  <Composer
+                    config={this.state.config}
+                    gain={GAIN_VALUE}
+                    shortID={props.match.params.shortID}
+                  />
+                </SettingsWrapper>
+              )}
+            />
+            <Route exact path="/tutorial" render={() => <Tutorial gain={GAIN_VALUE} />} />
+          </div>
           <Footer className="mt-3" />
         </div>
       </Router>

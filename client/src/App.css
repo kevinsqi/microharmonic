@@ -1,9 +1,26 @@
-body {
-  font-family: Arimo;
+* {
+  font-family: inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+a:hover {
+  text-decoration: none;
 }
 
 input[type=checkbox] {
   width: 1em;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.height-full {
+  height: 100%;
 }
 
 .opacity-60 {
@@ -123,4 +140,17 @@ input[type=checkbox] {
   .keyrow-3 {
     margin-left: 0px;
   }
+}
+
+/*
+ * Custom components
+ */
+
+.Parallelogram {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #fff;
+  border-radius: 2px;
+  transform: skew(16deg);
 }
