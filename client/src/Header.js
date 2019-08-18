@@ -29,12 +29,20 @@ class Header extends React.Component {
       >
         <div className="container">
           <div className="d-flex">
-            <div className="mx-auto line-height-1 text-center">
-              <NavLink className="text-5 text-white" style={{ fontWeight: 200 }} to="/">
-                microharmonic
-              </NavLink>
-              <div className="mt-1">
-                <small className="text-light">a web microtone keyboard</small>
+            <div className="mx-auto line-height-1">
+              <div className="position-relative" style={{ width: 200, height: 110 }}>
+                <div className="position-absolute left-0 Parallelogram" />
+                <div
+                  className="position-absolute height-full d-flex flex-column justify-content-center"
+                  style={{ left: 30 }}
+                >
+                  <NavLink className="text-5 text-white" style={{ fontWeight: 200 }} to="/">
+                    microharmonic
+                  </NavLink>
+                  <div className="mt-1">
+                    <small className="text-light">a web microtone keyboard</small>
+                  </div>
+                </div>
               </div>
             </div>
             {/*
