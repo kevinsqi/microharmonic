@@ -125,19 +125,37 @@ input[type=checkbox] {
 
 .Key {
   cursor: pointer;
-  background-color: #ddd;
+  background-color: #e6e6e6;
   width: 100%;
   margin: 1px;
   padding: 0;
   flex: 1;
   border-radius: 2px;
+  padding-top: 4px;
 }
+
 .Key:focus {
   outline: none;
 }
 
+.Key__note {
+  font-weight: 500;
+  color: #444;
+}
+
+.Key__cents {
+  color: #888;
+}
+
+.Key__shortcut {
+  background: #d4d4d4;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-top: 6px;
+}
+
 .Key--octave {
-  background-color: #bbb;
+  background-color: #fff;
 }
 
 .Key--active {

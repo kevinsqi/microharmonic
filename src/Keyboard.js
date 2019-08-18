@@ -125,11 +125,9 @@ class Keyboard extends React.Component {
         onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
         onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
       >
-        {note}
-        <br />
-        <small>{Math.round(cents)}</small>
-        <br />
-        <small className="text-muted">{keyLabel}</small>
+        <div className="Key__note">{note}</div>
+        <div className="Key__cents small">{Math.round(cents)}</div>
+        <div className="Key__shortcut small text-muted">{keyLabel}</div>
       </button>
     );
   }
