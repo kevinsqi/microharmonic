@@ -5,7 +5,7 @@
   "homepage": "https://www.microharmonic.com",
   "dependencies": {
     "classnames": "^2.2.5",
-    "gh-pages": "^1.0.0",
+    "gh-pages": "^2.1.1",
     "immutability-helper": "^2.2.3",
     "lodash": "^4.17.4",
     "pluralize": "^7.0.0",
