@@ -8,6 +8,7 @@ import {
   getCentsForNote,
   getFrequencyForNote,
   getNoteFromOffset,
+  getNoteLabel,
   CENTS_IN_OCTAVE,
 } from './noteHelpers';
 
@@ -125,7 +126,7 @@ class Keyboard extends React.Component {
         onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
         onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
       >
-        <div className="Key__note">{note}</div>
+        <div className="Key__note">{getNoteLabel(this.props.config, note)}</div>
         <div className="Key__cents small">{Math.round(cents)}</div>
         <div className="Key__shortcut small text-muted">{keyLabel}</div>
       </button>
