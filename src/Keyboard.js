@@ -11,6 +11,7 @@ import {
   CENTS_IN_OCTAVE,
 } from './noteHelpers';
 
+// This has to be in pitch ascending order to be able to use getOffsetFromKeyLabel
 const KEY_LABELS_IN_ROWS = [`zxcvbnm,./`, `asdfghjkl;`, `qwertyuiop`, `1234567890`];
 
 const KEY_LABELS = KEY_LABELS_IN_ROWS.join(''); // keys in ascending pitch order
@@ -134,16 +135,13 @@ class Keyboard extends React.Component {
   }
 
   render() {
+    const reversedRowIndexes = _.range(KEY_LABELS_IN_ROWS.length - 1, -1, -1);
     return (
-      <div className={this.props.className}>
-        {_.range(KEY_LABELS_IN_ROWS.length - 1, -1, -1).map((rowIndex) => {
+      <div className={classNames('Keyboard', this.props.className)}>
+        {reversedRowIndexes.map((rowIndex) => {
           const keyLabels = KEY_LABELS_IN_ROWS[rowIndex].split('');
-
           return (
-            <div
-              className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)}
-              key={rowIndex}
-            >
+            <div className={classNames('Keyrow', `Keyrow--${rowIndex}`)} key={rowIndex}>
               {keyLabels.map((keyLabel) => this.renderKey(keyLabel))}
             </div>
           );
