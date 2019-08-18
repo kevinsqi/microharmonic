@@ -5,7 +5,7 @@ class Footer extends React.Component {
   render() {
     return (
       <footer className={classNames('d-flex align-items-end', this.props.className)}>
-        <div className="container text-center small my-4">
+        <div className="container text-center small my-5">
           <div>
             Built by <a href="https://www.kevinqi.com/">@kevinsqi</a>
           </div>

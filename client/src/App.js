@@ -15,12 +15,9 @@ const GAIN_VALUE = 0.1;
 
 function SettingsWrapper(props) {
   return (
-    <div className="container">
-      <div className="my-3">
-        <Settings config={props.config} setConfig={props.setConfig} />
-      </div>
-
-      <div className="mt-3">{props.children}</div>
+    <div className="container d-flex flex-column height-full">
+      <div className="flex-1">{props.children}</div>
+      <Settings config={props.config} setConfig={props.setConfig} />
     </div>
   );
 }
@@ -53,7 +50,7 @@ class App extends React.Component {
       <Router>
         <div className="d-flex flex-column height-full">
           <Header />
-          <div className="flex-1">
+          <div className="flex-1" style={{ paddingTop: 60 }}>
             <Route
               exact
               path="/"
