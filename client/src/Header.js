@@ -27,13 +27,14 @@ class Header extends React.Component {
         <div className="container">
           <div className="d-flex">
             <div className="mr-auto line-height-1">
-              <NavLink className="text-5 text-white font-weight-bold" to="/">Microharmonic</NavLink>
+              <NavLink className="text-5 text-white font-weight-bold" to="/">
+                Microharmonic
+              </NavLink>
               <div className="mt-1">
-                <small className="text-light">
-                  A web microtone keyboard and composer
-                </small>
+                <small className="text-light">A web microtone keyboard and composer</small>
               </div>
             </div>
+            {/*
             <ul className="list-inline list-unstyled m-0">
               <li className="list-inline-item">
                 <NavButton
@@ -43,11 +44,7 @@ class Header extends React.Component {
                 />
               </li>
               <li className="list-inline-item">
-                <NavButton
-                  to="/"
-                  title="Keyboard"
-                  subtitle="Explore"
-                />
+                <NavButton to="/" title="Keyboard" subtitle="Explore" />
               </li>
               <li className="list-inline-item">
                 <NavButton
@@ -57,6 +54,7 @@ class Header extends React.Component {
                 />
               </li>
             </ul>
+            */}
           </div>
         </div>
       </nav>
