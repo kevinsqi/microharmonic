@@ -80,6 +80,19 @@ input[type=checkbox] {
   letter-spacing: 0.8px;
 }
 
+/*
+ * Custom components
+ */
+
+.Parallelogram {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #fff;
+  border-radius: 2px;
+  transform: skew(16deg);
+}
+
 .sequence-item {
   height: 40px;
   border: 1px solid #abb;
@@ -100,57 +113,75 @@ input[type=checkbox] {
   opacity: 1;
 }
 
-.btn-key {
+/*
+ * Keyboard
+ */
+
+@media (min-width: 576px) {
+  .Keyrow {
+    width: 550px;
+  }
+}
+
+.Key {
   cursor: pointer;
-  background-color: #ddd;
+  background-color: #e6e6e6;
   width: 100%;
   margin: 1px;
   padding: 0;
+  flex: 1;
+  border-radius: 2px;
+  padding-top: 4px;
 }
 
-.btn-octave {
-  background-color: #bbb;
+.Key:focus {
+  outline: none;
 }
 
-.btn-active {
+.Key__note {
+  font-weight: 500;
+  color: #444;
+}
+
+.Key__cents {
+  color: #888;
+}
+
+.Key__shortcut {
+  background: #d4d4d4;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-top: 6px;
+}
+
+.Key--octave {
+  background-color: #fff;
+}
+
+.Key--active {
   background-color: #16b8e0;
 }
 
-@media (min-width: 576px) {
-  .btn-key {
-    width: 50px;
-  }
-
-  .keyrow {
-    width: 640px; /* TODO: sorta hack, fix */
-  }
-
-  .keyrow-0 {
-    margin-left: 75px;
-  }
-
-  .keyrow-1 {
-    margin-left: 50px;
-  }
-
-  .keyrow-2 {
-    margin-left: 25px;
-  }
-
-  .keyrow-3 {
-    margin-left: 0px;
-  }
+.Keyrow {
+  display: flex;
 }
 
-/*
- * Custom components
- */
 
-.Parallelogram {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  border: 2px solid #fff;
-  border-radius: 2px;
-  transform: skew(16deg);
+@media (min-width: 576px) {
+  /* Based on each key being 10% width */
+  .Keyrow--0 {
+    margin-left: 7.5%;
+  }
+
+  .Keyrow--1 {
+    margin-left: 2.5%;
+  }
+
+  .Keyrow--2 {
+    margin-left: -2.5%;
+  }
+
+  .Keyrow--3 {
+    margin-left: -7.5%;
+  }
 }

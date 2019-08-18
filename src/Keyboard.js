@@ -11,6 +11,7 @@ import {
   CENTS_IN_OCTAVE,
 } from './noteHelpers';
 
+// This has to be in pitch ascending order to be able to use getOffsetFromKeyLabel
 const KEY_LABELS_IN_ROWS = [`zxcvbnm,./`, `asdfghjkl;`, `qwertyuiop`, `1234567890`];
 
 const KEY_LABELS = KEY_LABELS_IN_ROWS.join(''); // keys in ascending pitch order
@@ -112,40 +113,33 @@ class Keyboard extends React.Component {
     const note = this.getNoteFromKeyLabel(keyLabel);
     const cents = getCentsForNote(this.props.config, note);
     return (
-      <div className="col col-sm-1" key={note}>
-        <button
-          className={classNames('btn btn-key', {
-            'btn-octave': cents % CENTS_IN_OCTAVE === 0,
-            'btn-active': this.state.activeNotes[note],
-          })}
-          onMouseDown={this.onKeyActive.bind(this, keyLabel)}
-          onMouseUp={this.onKeyInactive.bind(this, keyLabel)}
-          onMouseLeave={this.onKeyInactive.bind(this, keyLabel)}
-          onTouchStart={this.onKeyActive.bind(this, keyLabel)}
-          onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
-          onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
-        >
-          {note}
-          <br />
-          <small>{Math.round(cents)}</small>
-          <br />
-          <small className="text-muted">{keyLabel}</small>
-        </button>
-      </div>
+      <button
+        className={classNames('Key', {
+          'Key--octave': cents % CENTS_IN_OCTAVE === 0,
+          'Key--active': this.state.activeNotes[note],
+        })}
+        onMouseDown={this.onKeyActive.bind(this, keyLabel)}
+        onMouseUp={this.onKeyInactive.bind(this, keyLabel)}
+        onMouseLeave={this.onKeyInactive.bind(this, keyLabel)}
+        onTouchStart={this.onKeyActive.bind(this, keyLabel)}
+        onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
+        onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
+      >
+        <div className="Key__note">{note}</div>
+        <div className="Key__cents small">{Math.round(cents)}</div>
+        <div className="Key__shortcut small text-muted">{keyLabel}</div>
+      </button>
     );
   }
 
   render() {
+    const reversedRowIndexes = _.range(KEY_LABELS_IN_ROWS.length - 1, -1, -1);
     return (
-      <div className={this.props.className}>
-        {_.range(KEY_LABELS_IN_ROWS.length - 1, -1, -1).map((rowIndex) => {
+      <div className={classNames('Keyboard', this.props.className)}>
+        {reversedRowIndexes.map((rowIndex) => {
           const keyLabels = KEY_LABELS_IN_ROWS[rowIndex].split('');
-
           return (
-            <div
-              className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)}
-              key={rowIndex}
-            >
+            <div className={classNames('Keyrow', `Keyrow--${rowIndex}`)} key={rowIndex}>
               {keyLabels.map((keyLabel) => this.renderKey(keyLabel))}
             </div>
           );
