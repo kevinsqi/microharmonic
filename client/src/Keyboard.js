@@ -11,14 +11,9 @@ import {
   CENTS_IN_OCTAVE,
 } from './noteHelpers';
 
-const KEY_LABELS_IN_ROWS = [
-  `zxcvbnm,./`,
-  `asdfghjkl;`,
-  `qwertyuiop`,
-  `1234567890`,
-];
+const KEY_LABELS_IN_ROWS = [`zxcvbnm,./`, `asdfghjkl;`, `qwertyuiop`, `1234567890`];
 
-const KEY_LABELS = KEY_LABELS_IN_ROWS.join('');  // keys in ascending pitch order
+const KEY_LABELS = KEY_LABELS_IN_ROWS.join(''); // keys in ascending pitch order
 
 function getOffsetFromKeyLabel(keyLabel) {
   const offset = KEY_LABELS.indexOf(keyLabel);
@@ -119,12 +114,10 @@ class Keyboard extends React.Component {
     return (
       <div className="col col-sm-1" key={note}>
         <button
-          className={
-            classNames('btn btn-key', {
-              'btn-octave': cents % CENTS_IN_OCTAVE === 0,
-              'btn-active': this.state.activeNotes[note],
-            })
-          }
+          className={classNames('btn btn-key', {
+            'btn-octave': cents % CENTS_IN_OCTAVE === 0,
+            'btn-active': this.state.activeNotes[note],
+          })}
           onMouseDown={this.onKeyActive.bind(this, keyLabel)}
           onMouseUp={this.onKeyInactive.bind(this, keyLabel)}
           onMouseLeave={this.onKeyInactive.bind(this, keyLabel)}
@@ -132,8 +125,10 @@ class Keyboard extends React.Component {
           onTouchCancel={this.onKeyInactive.bind(this, keyLabel)}
           onTouchEnd={this.onKeyInactive.bind(this, keyLabel)}
         >
-          {note}<br />
-          <small>{Math.round(cents)}</small><br />
+          {note}
+          <br />
+          <small>{Math.round(cents)}</small>
+          <br />
           <small className="text-muted">{keyLabel}</small>
         </button>
       </div>
@@ -142,26 +137,19 @@ class Keyboard extends React.Component {
 
   render() {
     return (
-      <div>
-        {
-          _.range(KEY_LABELS_IN_ROWS.length - 1, -1, -1).map((rowIndex) => {
-            const keyLabels = KEY_LABELS_IN_ROWS[rowIndex].split('');
+      <div className={this.props.className}>
+        {_.range(KEY_LABELS_IN_ROWS.length - 1, -1, -1).map((rowIndex) => {
+          const keyLabels = KEY_LABELS_IN_ROWS[rowIndex].split('');
 
-            return (
-              <div
-                className={classNames(
-                  'row',
-                  'no-gutters',
-                  'keyrow',
-                  `keyrow-${rowIndex}`
-                )}
-                key={rowIndex}
-              >
-                {keyLabels.map((keyLabel) => this.renderKey(keyLabel))}
-              </div>
-            );
-          })
-        }
+          return (
+            <div
+              className={classNames('row', 'no-gutters', 'keyrow', `keyrow-${rowIndex}`)}
+              key={rowIndex}
+            >
+              {keyLabels.map((keyLabel) => this.renderKey(keyLabel))}
+            </div>
+          );
+        })}
       </div>
     );
   }

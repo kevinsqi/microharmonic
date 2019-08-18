@@ -17,7 +17,9 @@ function SettingsWrapper(props) {
   return (
     <div className="container d-flex flex-column height-full">
       <div className="flex-1">{props.children}</div>
-      <Settings config={props.config} setConfig={props.setConfig} />
+      <div className="mt-5">
+        <Settings config={props.config} setConfig={props.setConfig} />
+      </div>
     </div>
   );
 }
@@ -50,13 +52,15 @@ class App extends React.Component {
       <Router>
         <div className="d-flex flex-column height-full">
           <Header />
-          <div className="flex-1" style={{ paddingTop: 60 }}>
+          <div className="flex-1" style={{ paddingTop: 80 }}>
             <Route
               exact
               path="/"
               render={() => (
                 <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-                  <Keyboard config={this.state.config} gain={GAIN_VALUE} />
+                  <div className="d-flex">
+                    <Keyboard className="mx-auto" config={this.state.config} gain={GAIN_VALUE} />
+                  </div>
                 </SettingsWrapper>
               )}
             />
