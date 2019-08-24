@@ -38,7 +38,6 @@ function getFrequencyForMidiNumber(midiNumber) {
 }
 
 export function getFrequencyForNote(config, note) {
-  console.log('getFrequencyForNote', config);
   const lowestNoteMidiNumber = MidiNumbers.fromNote(config.lowestNote);
   const rootFrequency = getFrequencyForMidiNumber(lowestNoteMidiNumber);
 
