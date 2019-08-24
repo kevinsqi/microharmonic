@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Composer from './Composer';
 import Footer from './Footer';
+import GAListener from './GAListener';
 import Header from './Header';
 import Keyboard from './Keyboard';
 import Settings from './Settings';
@@ -50,46 +51,48 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <div className="d-flex flex-column height-full">
-          <Header />
-          <div className="flex-1" style={{ paddingTop: 80 }}>
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-                  <div className="d-flex">
-                    <Keyboard className="mx-auto" config={this.state.config} gain={GAIN_VALUE} />
-                  </div>
-                </SettingsWrapper>
-              )}
-            />
-            <Route
-              exact
-              path="/composer"
-              render={() => (
-                <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-                  <Composer config={this.state.config} gain={GAIN_VALUE} />
-                </SettingsWrapper>
-              )}
-            />
-            <Route
-              exact
-              path="/composer/:shortID"
-              render={(props) => (
-                <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-                  <Composer
-                    config={this.state.config}
-                    gain={GAIN_VALUE}
-                    shortID={props.match.params.shortID}
-                  />
-                </SettingsWrapper>
-              )}
-            />
-            <Route exact path="/tutorial" render={() => <Tutorial gain={GAIN_VALUE} />} />
+        <GAListener trackingId="UA-145919044-1">
+          <div className="d-flex flex-column height-full">
+            <Header />
+            <div className="flex-1" style={{ paddingTop: 80 }}>
+              <Route
+                exact
+                path="/"
+                render={() => (
+                  <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
+                    <div className="d-flex">
+                      <Keyboard className="mx-auto" config={this.state.config} gain={GAIN_VALUE} />
+                    </div>
+                  </SettingsWrapper>
+                )}
+              />
+              <Route
+                exact
+                path="/composer"
+                render={() => (
+                  <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
+                    <Composer config={this.state.config} gain={GAIN_VALUE} />
+                  </SettingsWrapper>
+                )}
+              />
+              <Route
+                exact
+                path="/composer/:shortID"
+                render={(props) => (
+                  <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
+                    <Composer
+                      config={this.state.config}
+                      gain={GAIN_VALUE}
+                      shortID={props.match.params.shortID}
+                    />
+                  </SettingsWrapper>
+                )}
+              />
+              <Route exact path="/tutorial" render={() => <Tutorial gain={GAIN_VALUE} />} />
+            </div>
+            <Footer className="mt-3" />
           </div>
-          <Footer className="mt-3" />
-        </div>
+        </GAListener>
       </Router>
     );
   }
