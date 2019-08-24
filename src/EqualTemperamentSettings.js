@@ -15,10 +15,10 @@ class EqualTemperamentSettings extends React.Component {
     });
   }
 
-  onChangeMinFrequency = (event) => {
+  onChangeLowestNote = (event) => {
     this.reset();
     this.props.setConfig({
-      minFrequency: parseFloat(event.target.value),
+      lowestNote: event.target.value,
     });
   };
 
@@ -125,21 +125,27 @@ class EqualTemperamentSettings extends React.Component {
     );
   }
 
-  renderMinFrequencySetting() {
+  renderLowestNoteSetting() {
     return (
       <div>
         <div>
-          <Label>Frequency of low note</Label>
+          <Label>Lowest note</Label>
         </div>
         <div className="form-inline">
-          <input
+          <select
             className="form-control"
-            type="text"
-            value={this.props.config.minFrequency}
-            onChange={this.onChangeMinFrequency}
+            value={this.props.config.lowestNote}
+            onChange={this.onChangeLowestNote}
             style={{ width: '60px' }}
-          />
-          <span className="ml-2">hz</span>
+          >
+            {['c3', 'c4', 'c5', 'c6'].map((noteName) => {
+              return (
+                <option value={noteName} key={noteName}>
+                  {noteName}
+                </option>
+              );
+            })}
+          </select>
         </div>
       </div>
     );
@@ -149,7 +155,7 @@ class EqualTemperamentSettings extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-4">{this.renderStepSettings()}</div>
-        <div className="col-sm-3">{this.renderMinFrequencySetting()}</div>
+        <div className="col-sm-3">{this.renderLowestNoteSetting()}</div>
         <div className="col-sm-5">{this.renderNotePicker()}</div>
       </div>
     );

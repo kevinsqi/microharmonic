@@ -34,7 +34,7 @@ class App extends React.Component {
         useCustomCentValues: false,
         // TODO: make this be in sync with CustomSettings preset
         customCentValues: _.range(0, CENTS_IN_OCTAVE, 100),
-        minFrequency: 220,
+        lowestNote: 'c4',
         numOctaves: 1,
         numSteps: 12,
         selectedNotes: {},

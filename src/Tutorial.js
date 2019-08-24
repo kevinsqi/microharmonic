@@ -28,7 +28,7 @@ function Tutorial(props) {
             <Keyboard
               config={{
                 useCustomCentValues: false,
-                minFrequency: 220,
+                lowestNote: 'c4',
                 numOctaves: 1,
                 numSteps: 12,
                 selectedNotes: {},
@@ -101,7 +101,7 @@ function Tutorial(props) {
             <Keyboard
               config={{
                 useCustomCentValues: false,
-                minFrequency: 220,
+                lowestNote: 'c4',
                 numOctaves: 1,
                 numSteps: 19,
                 selectedNotes: {},

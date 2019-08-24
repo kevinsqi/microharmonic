@@ -5874,6 +5874,11 @@ lodash.memoize@^4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
+lodash.range@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/lodash.range/-/lodash.range-3.2.0.tgz#f461e588f66683f7eadeade513e38a69a565a15d"
+  integrity sha1-9GHliPZmg/fq3q3lE+OKaaVloV0=
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -6936,6 +6941,13 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+piano-utils@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/piano-utils/-/piano-utils-0.1.0.tgz#17754858e0343cd40e83d82bca26907eceff6705"
+  integrity sha512-6bWgKZ8BTLytUbLj8cDnu+kuArLjRFLSPgW5Qvqkvj2WE7rGI3whE3tdTcPogwtn8EiZ0VGWHKSRiJJL8LskYA==
+  dependencies:
+    lodash.range "^3.2.0"
 
 pify@^2.0.0:
   version "2.3.0"

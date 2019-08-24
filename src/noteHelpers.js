@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { MidiNumbers } from 'piano-utils';
 
 export const CENTS_IN_OCTAVE = 1200;
 
@@ -29,12 +30,23 @@ export function getCentsForNote(config, note) {
   }
 }
 
+// TODO: port this to piano-utils
+// http://subsynth.sourceforge.net/midinote2freq.html
+function getFrequencyForMidiNumber(midiNumber) {
+  const A440 = 440;
+  return (A440 / 32) * Math.pow(2, (midiNumber - 9) / 12);
+}
+
 export function getFrequencyForNote(config, note) {
+  console.log('getFrequencyForNote', config);
+  const lowestNoteMidiNumber = MidiNumbers.fromNote(config.lowestNote);
+  const rootFrequency = getFrequencyForMidiNumber(lowestNoteMidiNumber);
+
   if (config.useCustomCentValues) {
     const centValue = getCustomCentsForNote(note, config.customCentValues);
-    return getFrequencyFromCents(config.minFrequency, centValue);
+    return getFrequencyFromCents(rootFrequency, centValue);
   } else {
-    return getFrequency(config.minFrequency, note, config.numOctaves, config.numSteps);
+    return getFrequency(rootFrequency, note, config.numOctaves, config.numSteps);
   }
 }
 
@@ -46,8 +58,8 @@ export function getStepFrequencies(config) {
 }
 
 // Notes are a numeric index into the microtone scale.
-// For example, given a standard 12 EDO scale, note 0 corresponds to minFrequency, note 12 corresponds
-// to 1200 cents above minFrequency, etc.
+// For example, given a standard 12 EDO scale, note 0 corresponds to lowestNote, note 12 corresponds
+// to 1200 cents above lowestNote, etc.
 //
 // Because you can select specific notes to include in the scale with state.config.selectedNotes,
 // we have offset which is slightly different from notes.
