@@ -34,7 +34,7 @@ class Settings extends React.Component {
             </button>
           </div>
         </div>
-        <div className="mt-5">
+        <div>
           {useCustomCentValues ? (
             <CustomSettings config={this.props.config} setConfig={this.props.setConfig} />
           ) : (

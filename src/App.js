@@ -8,6 +8,7 @@ import Footer from './Footer';
 import GAListener from './GAListener';
 import Header from './Header';
 import Keyboard from './Keyboard';
+import KeyboardLegend from './KeyboardLegend';
 import Settings from './Settings';
 import Tutorial from './Tutorial';
 import { CENTS_IN_OCTAVE } from './noteHelpers';
@@ -60,8 +61,11 @@ class App extends React.Component {
                 path="/"
                 render={() => (
                   <SettingsWrapper config={this.state.config} setConfig={this.setConfig}>
-                    <div className="d-flex">
+                    <div className="d-flex flex-column">
                       <Keyboard className="mx-auto" config={this.state.config} gain={GAIN_VALUE} />
+                      <div className="mx-auto" style={{ paddingTop: 80 }}>
+                        <KeyboardLegend />
+                      </div>
                     </div>
                   </SettingsWrapper>
                 )}

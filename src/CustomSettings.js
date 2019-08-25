@@ -103,7 +103,7 @@ class CustomSettings extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="mt-4">
         <Label>Custom scale tuning</Label>
         <div className="row">
           <div className="col-sm-6">
