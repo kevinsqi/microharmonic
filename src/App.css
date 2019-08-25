@@ -1,3 +1,7 @@
+/*
+ * Defaults and bootstrap overrides
+ */
+
 * {
   font-family: inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial,
     sans-serif;
@@ -17,6 +21,14 @@ a:hover {
 input[type='checkbox'] {
   width: 1em;
 }
+
+.btn-primary {
+  background-color: #0076ae;
+}
+
+/* 
+ * Utility classes
+ */
 
 .left-0 {
   left: 0;
@@ -40,23 +52,6 @@ input[type='checkbox'] {
 
 .flex-1 {
   flex: 1;
-}
-
-.mb1 {
-  margin-bottom: 10px;
-}
-
-.mt4 {
-  margin-top: 40px;
-}
-
-.mt5 {
-  margin-top: 50px;
-}
-
-.my5 {
-  margin-top: 50px;
-  margin-bottom: 50px;
 }
 
 .line-height-1 {

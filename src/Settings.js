@@ -12,38 +12,29 @@ class Settings extends React.Component {
   }
 
   render() {
-    const activeClass = 'btn-outline-primary';
+    const activeClass = 'btn-primary';
     const inactiveClass = 'btn-outline-secondary';
     const { useCustomCentValues } = this.props.config;
 
     return (
-      <div className="card">
-        <div className="card-header">
-          <div className="float-left">Scale settings</div>
-          <div className="float-right">
-            <div className="btn-group">
-              <button
-                className={classNames(
-                  'btn btn-sm',
-                  useCustomCentValues ? inactiveClass : activeClass,
-                )}
-                onClick={() => this.toggleCustomSettings(false)}
-              >
-                Equal temperament
-              </button>
-              <button
-                className={classNames(
-                  'btn btn-sm',
-                  useCustomCentValues ? activeClass : inactiveClass,
-                )}
-                onClick={() => this.toggleCustomSettings(true)}
-              >
-                Custom tuning
-              </button>
-            </div>
+      <div>
+        <div className="text-center">
+          <div className="btn-group btn-group-lg">
+            <button
+              className={classNames('btn', useCustomCentValues ? inactiveClass : activeClass)}
+              onClick={() => this.toggleCustomSettings(false)}
+            >
+              Equal temperament
+            </button>
+            <button
+              className={classNames('btn', useCustomCentValues ? activeClass : inactiveClass)}
+              onClick={() => this.toggleCustomSettings(true)}
+            >
+              Custom tuning
+            </button>
           </div>
         </div>
-        <div className="card-body">
+        <div className="mt-5">
           {useCustomCentValues ? (
             <CustomSettings config={this.props.config} setConfig={this.props.setConfig} />
           ) : (
