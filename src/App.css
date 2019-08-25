@@ -161,9 +161,15 @@ input[type='checkbox'] {
   font-weight: 500;
   color: #444;
 }
+.Key--active .Key__note {
+  color: #fff;
+}
 
 .Key__cents {
   color: #888;
+}
+.Key--active .Key__cents {
+  color: #ccc;
 }
 
 .Key__shortcut {
@@ -171,6 +177,11 @@ input[type='checkbox'] {
   padding-top: 3px;
   padding-bottom: 3px;
   margin-top: 6px;
+  color: #888;
+}
+.Key--active .Key__shortcut {
+  background: #0076ae;
+  color: #ccc;
 }
 
 .Key--octave {
@@ -178,7 +189,8 @@ input[type='checkbox'] {
 }
 
 .Key--active {
-  background-color: #16b8e0;
+  color: #fff;
+  background-color: #0076ae;
 }
 
 .Keyrow {

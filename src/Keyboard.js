@@ -129,7 +129,7 @@ class Keyboard extends React.Component {
       >
         <div className="Key__note">{getNoteLabel(this.props.config, note)}</div>
         <div className="Key__cents small">{Math.round(cents)}</div>
-        <div className="Key__shortcut small text-muted">{keyLabel}</div>
+        <div className="Key__shortcut small">{keyLabel}</div>
       </button>
     );
   }
