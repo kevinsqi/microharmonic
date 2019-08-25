@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import pluralize from 'pluralize';
+import classNames from 'classnames';
 
 import Label from './Label';
 import { getNoteLabel } from './noteHelpers';
@@ -105,9 +106,14 @@ class EqualTemperamentSettings extends React.Component {
         <div>
           {_.range(this.props.config.numSteps).map((note) => {
             return (
-              <label className="mr-3" key={note}>
+              <label
+                className={classNames('mr-1 mb-1', 'NoteLabel', {
+                  'NoteLabel--selected': this.props.config.selectedNotes[note],
+                })}
+                key={note}
+              >
                 <input
-                  className="form-control"
+                  className="form-control d-none"
                   type="checkbox"
                   name={note}
                   checked={!!this.props.config.selectedNotes[note]}
@@ -117,8 +123,8 @@ class EqualTemperamentSettings extends React.Component {
               </label>
             );
           })}
-          <button className="btn btn-link" onClick={this.onClickResetSelectedNotes}>
-            All
+          <button className="ml-4 btn btn-link" onClick={this.onClickResetSelectedNotes}>
+            Reset
           </button>
         </div>
       </div>

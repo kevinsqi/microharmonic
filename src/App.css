@@ -89,6 +89,20 @@ input[type='checkbox'] {
   margin-bottom: 20px;
 }
 
+.NoteLabel {
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 6px 9px;
+  margin: 0;
+  color: #0076ae;
+  border: 1px solid #0076ae;
+}
+
+.NoteLabel--selected {
+  background: #0076ae;
+  color: #fff;
+}
+
 .Parallelogram {
   display: inline-block;
   width: 100%;
