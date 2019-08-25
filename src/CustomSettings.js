@@ -118,7 +118,7 @@ class CustomSettings extends React.Component {
             />
             <div className="mt-3">
               <button className="btn btn-primary" onClick={this.onSaveCustomCentValues}>
-                Save
+                Apply
               </button>
             </div>
           </div>

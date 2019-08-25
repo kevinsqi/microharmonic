@@ -154,9 +154,9 @@ class EqualTemperamentSettings extends React.Component {
   render() {
     return (
       <div className="row">
-        <div className="col-sm-4">{this.renderStepSettings()}</div>
-        <div className="col-sm-3">{this.renderLowestNoteSetting()}</div>
-        <div className="col-sm-5">{this.renderNotePicker()}</div>
+        <div className="col-sm-4 mt-4">{this.renderStepSettings()}</div>
+        <div className="col-sm-2 mt-4">{this.renderLowestNoteSetting()}</div>
+        <div className="col-sm-6 mt-4">{this.renderNotePicker()}</div>
       </div>
     );
   }
