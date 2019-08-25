@@ -36,7 +36,7 @@ class App extends React.Component {
         customCentValues: _.range(0, CENTS_IN_OCTAVE, 100),
         lowestNote: 'c4',
         numOctaves: 1,
-        numSteps: 12,
+        numSteps: 24,
         selectedNotes: {},
       },
     };
