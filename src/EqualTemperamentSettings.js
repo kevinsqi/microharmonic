@@ -135,7 +135,7 @@ class EqualTemperamentSettings extends React.Component {
     return (
       <div>
         <div>
-          <Label>Lowest note</Label>
+          <Label>Lowest frequency</Label>
         </div>
         <div className="form-inline">
           <select
