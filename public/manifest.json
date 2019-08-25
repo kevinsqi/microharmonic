@@ -3,8 +3,8 @@
   "name": "Microharmonic - a web microtone keyboard",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "192x192",
+      "src": "favicon.png",
+      "sizes": "60x60",
       "type": "image/png"
     }
   ],
